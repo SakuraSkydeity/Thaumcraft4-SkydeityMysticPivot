@@ -1,0 +1,13 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "minecraft:snow_block"
+  },
+  "result": {
+    "id": "minecraft:ice"
+  },
+  "aspects": {
+    "ordo": 1,
+    "gelum": 1
+  }
+}

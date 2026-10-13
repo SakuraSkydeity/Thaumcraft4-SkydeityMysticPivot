@@ -1,0 +1,13 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "skydeitymysticpivot:azure_dragon_ingot"
+  },
+  "result": {
+    "id": "skydeitymysticpivot:bagua_shard",
+    "count": 2
+  },
+  "experience": 0.0,
+  "cookingtime": 40
+}

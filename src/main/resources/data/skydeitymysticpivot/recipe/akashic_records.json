@@ -1,0 +1,46 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "skydeitymysticpivot:bagua_shard"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    }
+  ],
+  "instability": 8,
+  "aspects": {
+    "skydeitymysticpivot:qian": 20,
+    "skydeitymysticpivot:dui": 20,
+    "skydeitymysticpivot:li": 20,
+    "skydeitymysticpivot:zhen": 20,
+    "skydeitymysticpivot:xun": 20,
+    "skydeitymysticpivot:kan": 20,
+    "skydeitymysticpivot:gen": 20,
+    "skydeitymysticpivot:kun": 20
+  },
+  "result": {
+    "id": "skydeitymysticpivot:akashic_records"
+  }
+}

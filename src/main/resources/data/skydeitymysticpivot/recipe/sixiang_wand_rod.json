@@ -1,0 +1,55 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "thaumcraft:obsidian_wand_rod"
+  },
+  "components": [
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "skydeitymysticpivot:sixiang_cloth"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:azure_dragon_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:white_tiger_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:sixiang_cloth"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:black_tortoise_ingot"
+    }
+  ],
+  "instability": 4,
+  "aspects": {
+    "skydeitymysticpivot:qian": 12,
+    "skydeitymysticpivot:dui": 12,
+    "skydeitymysticpivot:li": 12,
+    "skydeitymysticpivot:zhen": 12,
+    "skydeitymysticpivot:xun": 12,
+    "skydeitymysticpivot:kan": 12,
+    "skydeitymysticpivot:gen": 12,
+    "skydeitymysticpivot:kun": 12
+  },
+  "result": {
+    "id": "skydeitymysticpivot:sixiang_wand_rod"
+  }
+}

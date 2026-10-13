@@ -1,0 +1,13 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "minecraft:bone"
+  },
+  "result": {
+    "id": "minecraft:bone_meal",
+    "count": 4
+  },
+  "aspects": {
+    "perditio": 1
+  }
+}

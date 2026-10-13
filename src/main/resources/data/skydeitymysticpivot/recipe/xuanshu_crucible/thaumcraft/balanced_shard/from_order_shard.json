@@ -1,0 +1,16 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "thaumcraft:order_shard"
+  },
+  "result": {
+    "id": "thaumcraft:balanced_shard"
+  },
+  "aspects": {
+    "aer": 2,
+    "ignis": 2,
+    "aqua": 2,
+    "terra": 2,
+    "perditio": 2
+  }
+}

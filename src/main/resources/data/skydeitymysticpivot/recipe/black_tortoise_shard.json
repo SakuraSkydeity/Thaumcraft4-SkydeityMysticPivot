@@ -1,0 +1,19 @@
+{
+  "type": "thaumcraft:crucible",
+  "catalyst": {
+    "item": "skydeitymysticpivot:black_tortoise_ingot"
+  },
+  "result": {
+    "id": "skydeitymysticpivot:black_tortoise_shard"
+  },
+  "aspects": {
+    "skydeitymysticpivot:qian": 2,
+    "skydeitymysticpivot:dui": 2,
+    "skydeitymysticpivot:li": 2,
+    "skydeitymysticpivot:zhen": 2,
+    "skydeitymysticpivot:xun": 2,
+    "skydeitymysticpivot:kan": 2,
+    "skydeitymysticpivot:gen": 2,
+    "skydeitymysticpivot:kun": 2
+  }
+}

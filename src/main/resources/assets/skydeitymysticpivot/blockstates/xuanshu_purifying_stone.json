@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "skydeitymysticpivot:block/xuanshu_purifying_stone"
+    },
+    "active=true": {
+      "model": "skydeitymysticpivot:block/xuanshu_purifying_stone_active"
+    }
+  }
+}

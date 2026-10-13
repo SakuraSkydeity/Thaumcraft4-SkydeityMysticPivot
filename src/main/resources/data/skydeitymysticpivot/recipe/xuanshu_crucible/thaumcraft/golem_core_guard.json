@@ -1,0 +1,13 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "thaumcraft:golem_core"
+  },
+  "result": {
+    "id": "thaumcraft:golem_core_guard"
+  },
+  "aspects": {
+    "telum": 5,
+    "vinculum": 5
+  }
+}

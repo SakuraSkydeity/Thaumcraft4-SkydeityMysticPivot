@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "skydeitymysticpivot:item/onyx_wand_rod"
+  }
+}

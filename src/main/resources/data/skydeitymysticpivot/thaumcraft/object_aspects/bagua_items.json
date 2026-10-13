@@ -1,0 +1,158 @@
+{
+  "direct": {
+    "skydeitymysticpivot:azure_dragon_ingot": {
+      "skydeitymysticpivot:qian": 1,
+      "skydeitymysticpivot:dui": 1,
+      "skydeitymysticpivot:li": 1,
+      "skydeitymysticpivot:zhen": 6,
+      "skydeitymysticpivot:xun": 6,
+      "skydeitymysticpivot:kan": 1,
+      "skydeitymysticpivot:gen": 1,
+      "skydeitymysticpivot:kun": 1
+    },
+    "skydeitymysticpivot:vermilion_bird_ingot": {
+      "skydeitymysticpivot:qian": 6,
+      "skydeitymysticpivot:dui": 1,
+      "skydeitymysticpivot:li": 6,
+      "skydeitymysticpivot:zhen": 1,
+      "skydeitymysticpivot:xun": 1,
+      "skydeitymysticpivot:kan": 1,
+      "skydeitymysticpivot:gen": 1,
+      "skydeitymysticpivot:kun": 1
+    },
+    "skydeitymysticpivot:white_tiger_ingot": {
+      "skydeitymysticpivot:qian": 1,
+      "skydeitymysticpivot:dui": 6,
+      "skydeitymysticpivot:li": 1,
+      "skydeitymysticpivot:zhen": 1,
+      "skydeitymysticpivot:xun": 1,
+      "skydeitymysticpivot:kan": 1,
+      "skydeitymysticpivot:gen": 6,
+      "skydeitymysticpivot:kun": 1
+    },
+    "skydeitymysticpivot:black_tortoise_ingot": {
+      "skydeitymysticpivot:qian": 1,
+      "skydeitymysticpivot:dui": 1,
+      "skydeitymysticpivot:li": 1,
+      "skydeitymysticpivot:zhen": 1,
+      "skydeitymysticpivot:xun": 1,
+      "skydeitymysticpivot:kan": 6,
+      "skydeitymysticpivot:gen": 1,
+      "skydeitymysticpivot:kun": 6
+    },
+    "skydeitymysticpivot:xuanshu_ingot": {
+      "skydeitymysticpivot:qian": 2,
+      "skydeitymysticpivot:dui": 2,
+      "skydeitymysticpivot:li": 2,
+      "skydeitymysticpivot:zhen": 2,
+      "skydeitymysticpivot:xun": 2,
+      "skydeitymysticpivot:kan": 8,
+      "skydeitymysticpivot:gen": 2,
+      "skydeitymysticpivot:kun": 8
+    },
+    "skydeitymysticpivot:xuanshu_shard": {
+      "skydeitymysticpivot:qian": 2,
+      "skydeitymysticpivot:dui": 2,
+      "skydeitymysticpivot:li": 2,
+      "skydeitymysticpivot:zhen": 2,
+      "skydeitymysticpivot:xun": 2,
+      "skydeitymysticpivot:kan": 6,
+      "skydeitymysticpivot:gen": 2,
+      "skydeitymysticpivot:kun": 6
+    },
+    "skydeitymysticpivot:bagua_shard": {
+      "skydeitymysticpivot:qian": 3,
+      "skydeitymysticpivot:dui": 3,
+      "skydeitymysticpivot:li": 3,
+      "skydeitymysticpivot:zhen": 3,
+      "skydeitymysticpivot:xun": 3,
+      "skydeitymysticpivot:kan": 3,
+      "skydeitymysticpivot:gen": 3,
+      "skydeitymysticpivot:kun": 3
+    },
+    "skydeitymysticpivot:xuanshu_bagua_salt": {
+      "skydeitymysticpivot:qian": 2,
+      "skydeitymysticpivot:dui": 2,
+      "skydeitymysticpivot:li": 2,
+      "skydeitymysticpivot:zhen": 2,
+      "skydeitymysticpivot:xun": 2,
+      "skydeitymysticpivot:kan": 2,
+      "skydeitymysticpivot:gen": 2,
+      "skydeitymysticpivot:kun": 2
+    },
+    "skydeitymysticpivot:xuanshu_crystal_cluster": {
+      "skydeitymysticpivot:qian": 4,
+      "skydeitymysticpivot:kun": 4
+    },
+    "skydeitymysticpivot:sixiang_cloth": {
+      "skydeitymysticpivot:qian": 1,
+      "skydeitymysticpivot:dui": 1,
+      "skydeitymysticpivot:li": 1,
+      "skydeitymysticpivot:zhen": 1,
+      "skydeitymysticpivot:xun": 1,
+      "skydeitymysticpivot:kan": 1,
+      "skydeitymysticpivot:gen": 1,
+      "skydeitymysticpivot:kun": 1
+    },
+    "skydeitymysticpivot:xuanshu_cloth": {
+      "skydeitymysticpivot:qian": 2,
+      "skydeitymysticpivot:dui": 2,
+      "skydeitymysticpivot:li": 2,
+      "skydeitymysticpivot:zhen": 2,
+      "skydeitymysticpivot:xun": 2,
+      "skydeitymysticpivot:kan": 2,
+      "skydeitymysticpivot:gen": 2,
+      "skydeitymysticpivot:kun": 2
+    },
+    "skydeitymysticpivot:xuanshu_pickaxe": {
+      "skydeitymysticpivot:qian": 2,
+      "skydeitymysticpivot:dui": 2,
+      "skydeitymysticpivot:li": 2,
+      "skydeitymysticpivot:zhen": 2,
+      "skydeitymysticpivot:xun": 2,
+      "skydeitymysticpivot:kan": 2,
+      "skydeitymysticpivot:gen": 2,
+      "skydeitymysticpivot:kun": 2
+    },
+    "skydeitymysticpivot:azure_dragon_shard": {
+      "skydeitymysticpivot:qian": 1,
+      "skydeitymysticpivot:dui": 1,
+      "skydeitymysticpivot:li": 1,
+      "skydeitymysticpivot:zhen": 6,
+      "skydeitymysticpivot:xun": 6,
+      "skydeitymysticpivot:kan": 1,
+      "skydeitymysticpivot:gen": 1,
+      "skydeitymysticpivot:kun": 1
+    },
+    "skydeitymysticpivot:vermilion_bird_shard": {
+      "skydeitymysticpivot:qian": 6,
+      "skydeitymysticpivot:dui": 1,
+      "skydeitymysticpivot:li": 6,
+      "skydeitymysticpivot:zhen": 1,
+      "skydeitymysticpivot:xun": 1,
+      "skydeitymysticpivot:kan": 1,
+      "skydeitymysticpivot:gen": 1,
+      "skydeitymysticpivot:kun": 1
+    },
+    "skydeitymysticpivot:white_tiger_shard": {
+      "skydeitymysticpivot:qian": 1,
+      "skydeitymysticpivot:dui": 6,
+      "skydeitymysticpivot:li": 1,
+      "skydeitymysticpivot:zhen": 1,
+      "skydeitymysticpivot:xun": 1,
+      "skydeitymysticpivot:kan": 1,
+      "skydeitymysticpivot:gen": 6,
+      "skydeitymysticpivot:kun": 1
+    },
+    "skydeitymysticpivot:black_tortoise_shard": {
+      "skydeitymysticpivot:qian": 1,
+      "skydeitymysticpivot:dui": 1,
+      "skydeitymysticpivot:li": 1,
+      "skydeitymysticpivot:zhen": 1,
+      "skydeitymysticpivot:xun": 1,
+      "skydeitymysticpivot:kan": 6,
+      "skydeitymysticpivot:gen": 1,
+      "skydeitymysticpivot:kun": 6
+    }
+  }
+}

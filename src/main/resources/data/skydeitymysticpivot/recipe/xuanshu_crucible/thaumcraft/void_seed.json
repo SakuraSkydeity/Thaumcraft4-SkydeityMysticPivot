@@ -1,0 +1,14 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "minecraft:wheat_seeds"
+  },
+  "result": {
+    "id": "thaumcraft:void_seed"
+  },
+  "aspects": {
+    "tenebrae": 8,
+    "vacuos": 8,
+    "alienis": 2
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "skydeitymysticpivot:onyx_wand_rod": {
+    "trigram": ["qian", "dui", "li", "zhen", "xun", "kan", "gen", "kun"],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:gilded_wand_cap": {
+    "trigram": ["qian", "dui", "li", "zhen", "xun", "kan", "gen", "kun"],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:sixiang_wand_rod": {
+    "trigram": ["gen", "li", "xun", "kun"],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:bagua_wand_cap": {
+    "trigram": ["gen", "li", "xun", "kun"],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:zhuque_wand_rod": {
+    "trigram": ["li", "gen"],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:zhuque_wand_cap": {
+    "trigram": ["li", "gen"],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  }
+}

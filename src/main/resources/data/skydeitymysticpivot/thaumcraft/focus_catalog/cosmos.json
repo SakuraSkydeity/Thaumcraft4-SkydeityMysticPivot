@@ -1,0 +1,50 @@
+{
+  "focus_profiles": [
+    {
+      "focus": "skydeitymysticpivot:cosmos",
+      "color": 8087752,
+      "per_tick": false,
+      "base_cost": {
+        "aer": 100,
+        "terra": 100,
+        "ignis": 100,
+        "aqua": 100,
+        "ordo": 100,
+        "perditio": 100
+      },
+      "ranks": [
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ],
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ],
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ],
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ],
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ]
+      ],
+      "parameters": {
+        "vis_discount": {
+          "base": 0,
+          "per_level": {},
+          "min": 0,
+          "max": 1
+        }
+      },
+      "client_presentation": {
+        "ornament_texture": "skydeitymysticpivot:textures/item/focus_cosmos_orn.png"
+      }
+    }
+  ]
+}

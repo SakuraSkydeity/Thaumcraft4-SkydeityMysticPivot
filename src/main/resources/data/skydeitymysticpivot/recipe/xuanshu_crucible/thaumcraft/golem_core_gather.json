@@ -1,0 +1,13 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "thaumcraft:golem_core"
+  },
+  "result": {
+    "id": "thaumcraft:golem_core_gather"
+  },
+  "aspects": {
+    "lucrum": 5,
+    "terra": 5
+  }
+}

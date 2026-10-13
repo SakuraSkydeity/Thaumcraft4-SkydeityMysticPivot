@@ -1,0 +1,23 @@
+# Gradle
+.gradle/
+build/
+out/
+classes/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+bin/
+run/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Local dev environment & pre-downloaded dependency jars (not source)
+.none/
+deps/

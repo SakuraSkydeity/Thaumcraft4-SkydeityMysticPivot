@@ -1,0 +1,13 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "thaumcraft:golem_core"
+  },
+  "result": {
+    "id": "thaumcraft:golem_core_harvest"
+  },
+  "aspects": {
+    "meto": 5,
+    "messis": 5
+  }
+}

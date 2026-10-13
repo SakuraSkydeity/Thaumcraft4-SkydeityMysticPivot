@@ -1,0 +1,38 @@
+{
+  "skydeitymysticpivot:xuanshu_crucible": {
+    "trigram": "xun",
+    "mode": "count",
+    "min": 1,
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_alchemy_furnace": {
+    "trigram": "xun",
+    "mode": "count",
+    "min": 1,
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_infernal_furnace": {
+    "trigram": "xun",
+    "mode": "count",
+    "min": 1,
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_pickaxe": {
+    "trigram": "qian",
+    "mode": "count",
+    "min": 1,
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  }
+}

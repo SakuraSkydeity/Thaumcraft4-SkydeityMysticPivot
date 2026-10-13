@@ -1,0 +1,58 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "minecraft:nether_star"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:azure_dragon_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:white_tiger_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:black_tortoise_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:azure_dragon_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:white_tiger_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:black_tortoise_ingot"
+    }
+  ],
+  "instability": 6,
+  "aspects": {
+    "skydeitymysticpivot:qian": 12,
+    "skydeitymysticpivot:dui": 12,
+    "skydeitymysticpivot:li": 12,
+    "skydeitymysticpivot:zhen": 12,
+    "skydeitymysticpivot:xun": 12,
+    "skydeitymysticpivot:kan": 12,
+    "skydeitymysticpivot:gen": 12,
+    "skydeitymysticpivot:kun": 12
+  },
+  "result": {
+    "id": "skydeitymysticpivot:bagua_wand_cap"
+  }
+}

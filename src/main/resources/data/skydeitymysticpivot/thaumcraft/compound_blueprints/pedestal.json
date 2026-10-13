@@ -1,0 +1,24 @@
+{
+  "blueprints": [
+    {
+      "id": "skydeitymysticpivot:compound/xuanshu_pedestal",
+      "research": "skydeitymysticpivot:PEDESTAL",
+      "aspects": {},
+      "width": 3,
+      "height": 1,
+      "depth": 3,
+      "cells": [
+        "skydeitymysticpivot:sixiang_stone_brick",
+        "",
+        "skydeitymysticpivot:sixiang_stone_brick",
+        "",
+        "skydeitymysticpivot:xuanshu_pedestal",
+        "",
+        "skydeitymysticpivot:sixiang_stone_brick",
+        "",
+        "skydeitymysticpivot:sixiang_stone_brick"
+      ],
+      "output": "skydeitymysticpivot:xuanshu_pedestal"
+    }
+  ]
+}

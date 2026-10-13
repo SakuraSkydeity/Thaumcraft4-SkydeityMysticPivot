@@ -1,0 +1,41 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "thaumcraft:alchemical_furnace"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "thaumcraft:thaumium_ingot"
+    },
+    {
+      "item": "thaumcraft:alumentum"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "thaumcraft:alumentum"
+    },
+    {
+      "item": "thaumcraft:thaumium_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    }
+  ],
+  "instability": 6,
+  "aspects": {
+    "aer": 24,
+    "ignis": 24,
+    "aqua": 24,
+    "terra": 24,
+    "ordo": 24,
+    "perditio": 24
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_alchemy_furnace"
+  }
+}

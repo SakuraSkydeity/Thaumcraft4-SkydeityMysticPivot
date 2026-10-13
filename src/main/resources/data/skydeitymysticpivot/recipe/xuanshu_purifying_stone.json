@@ -1,0 +1,47 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "thaumcraft:flux_scrubber"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "thaumcraft:ethereal_bloom"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "thaumcraft:ethereal_bloom"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    }
+  ],
+  "instability": 6,
+  "aspects": {
+    "aer": 32,
+    "ignis": 32,
+    "aqua": 32,
+    "terra": 32,
+    "ordo": 32,
+    "perditio": 32
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_purifying_stone"
+  }
+}

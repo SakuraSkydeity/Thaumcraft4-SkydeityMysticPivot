@@ -1,0 +1,58 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "minecraft:totem_of_undying"
+  },
+  "components": [
+    {
+      "item": "thaumcraft:quicksilver"
+    },
+    {
+      "item": "thaumcraft:nitor"
+    },
+    {
+      "item": "thaumcraft:salis_mundus"
+    },
+    {
+      "item": "thaumcraft:quicksilver"
+    },
+    {
+      "item": "thaumcraft:nitor"
+    },
+    {
+      "item": "thaumcraft:enchanted_fabric"
+    },
+    {
+      "item": "thaumcraft:quicksilver"
+    },
+    {
+      "item": "thaumcraft:nitor"
+    },
+    {
+      "item": "thaumcraft:salis_mundus"
+    },
+    {
+      "item": "thaumcraft:quicksilver"
+    },
+    {
+      "item": "thaumcraft:nitor"
+    },
+    {
+      "item": "thaumcraft:enchanted_fabric"
+    }
+  ],
+  "instability": 6,
+  "aspects": {
+    "skydeitymysticpivot:qian": 64,
+    "skydeitymysticpivot:dui": 64,
+    "skydeitymysticpivot:li": 64,
+    "skydeitymysticpivot:zhen": 64,
+    "skydeitymysticpivot:xun": 64,
+    "skydeitymysticpivot:kan": 64,
+    "skydeitymysticpivot:gen": 64,
+    "skydeitymysticpivot:kun": 64
+  },
+  "result": {
+    "id": "skydeitymysticpivot:focus_guardian"
+  }
+}

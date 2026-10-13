@@ -1,0 +1,14 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "minecraft:gunpowder"
+  },
+  "result": {
+    "id": "minecraft:gunpowder",
+    "count": 2
+  },
+  "aspects": {
+    "ignis": 4,
+    "perditio": 4
+  }
+}

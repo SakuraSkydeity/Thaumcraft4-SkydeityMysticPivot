@@ -1,0 +1,13 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "minecraft:cobblestone"
+  },
+  "result": {
+    "id": "minecraft:mossy_cobblestone"
+  },
+  "aspects": {
+    "herba": 2,
+    "praecantatio": 1
+  }
+}

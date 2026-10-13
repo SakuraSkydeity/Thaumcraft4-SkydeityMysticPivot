@@ -1,0 +1,13 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "tag": "c:raw_materials/iron"
+  },
+  "result": {
+    "id": "thaumcraft:native_iron_cluster"
+  },
+  "aspects": {
+    "metallum": 1,
+    "ordo": 1
+  }
+}

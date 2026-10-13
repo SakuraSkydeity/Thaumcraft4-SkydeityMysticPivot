@@ -1,0 +1,12 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "minecraft:rotten_flesh"
+  },
+  "result": {
+    "id": "thaumcraft:magic_tallow"
+  },
+  "aspects": {
+    "praecantatio": 2
+  }
+}

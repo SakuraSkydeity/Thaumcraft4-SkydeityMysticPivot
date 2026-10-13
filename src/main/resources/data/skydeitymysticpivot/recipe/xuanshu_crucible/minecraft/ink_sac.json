@@ -1,0 +1,14 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "minecraft:ink_sac"
+  },
+  "result": {
+    "id": "minecraft:ink_sac",
+    "count": 2
+  },
+  "aspects": {
+    "aqua": 2,
+    "sensus": 2
+  }
+}

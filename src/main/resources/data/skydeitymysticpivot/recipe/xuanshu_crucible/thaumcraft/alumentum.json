@@ -1,0 +1,14 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "minecraft:coal"
+  },
+  "result": {
+    "id": "thaumcraft:alumentum"
+  },
+  "aspects": {
+    "potentia": 3,
+    "ignis": 3,
+    "perditio": 3
+  }
+}

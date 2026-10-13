@@ -1,0 +1,14 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "tag": "c:dusts/glowstone"
+  },
+  "result": {
+    "id": "thaumcraft:nitor"
+  },
+  "aspects": {
+    "potentia": 3,
+    "ignis": 3,
+    "lux": 3
+  }
+}

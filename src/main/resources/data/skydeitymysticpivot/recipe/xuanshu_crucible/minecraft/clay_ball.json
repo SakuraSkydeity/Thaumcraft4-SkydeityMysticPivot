@@ -1,0 +1,14 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "minecraft:clay_ball"
+  },
+  "result": {
+    "id": "minecraft:clay_ball",
+    "count": 2
+  },
+  "aspects": {
+    "aqua": 1,
+    "terra": 2
+  }
+}

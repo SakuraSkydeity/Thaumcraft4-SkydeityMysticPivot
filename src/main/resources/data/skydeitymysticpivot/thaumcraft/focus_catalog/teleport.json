@@ -1,0 +1,50 @@
+{
+  "focus_profiles": [
+    {
+      "focus": "skydeitymysticpivot:teleport",
+      "color": 8084694,
+      "per_tick": false,
+      "base_cost": {
+        "aer": 1000,
+        "terra": 1000,
+        "ignis": 1000,
+        "aqua": 1000,
+        "ordo": 1000,
+        "perditio": 1000
+      },
+      "ranks": [
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ],
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ],
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ],
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ],
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ]
+      ],
+      "parameters": {
+        "vis_discount": {
+          "base": 0,
+          "per_level": {},
+          "min": 0,
+          "max": 1
+        }
+      },
+      "client_presentation": {
+        "ornament_texture": "skydeitymysticpivot:textures/item/focus_teleport_orn.png"
+      }
+    }
+  ]
+}

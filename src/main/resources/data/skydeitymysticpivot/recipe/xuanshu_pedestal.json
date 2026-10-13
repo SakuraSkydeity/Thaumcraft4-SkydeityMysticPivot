@@ -1,0 +1,33 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "pattern": [
+    "SOS",
+    "MOM",
+    "SDS"
+  ],
+  "key": {
+    "S": {
+      "item": "thaumcraft:salis_mundus"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "M": {
+      "item": "thaumcraft:thaumium_ingot"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_pedestal"
+  },
+  "vis": {
+    "aer": 100,
+    "terra": 100,
+    "ignis": 100,
+    "aqua": 100,
+    "ordo": 100,
+    "perditio": 100
+  }
+}

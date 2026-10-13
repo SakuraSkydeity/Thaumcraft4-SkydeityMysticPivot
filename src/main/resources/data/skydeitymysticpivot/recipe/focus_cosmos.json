@@ -1,0 +1,40 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "thaumcraft:primordial_pearl"
+  },
+  "components": [
+    {
+      "item": "thaumcraft:air_shard"
+    },
+    {
+      "item": "thaumcraft:fire_shard"
+    },
+    {
+      "item": "thaumcraft:water_shard"
+    },
+    {
+      "item": "thaumcraft:earth_shard"
+    },
+    {
+      "item": "thaumcraft:order_shard"
+    },
+    {
+      "item": "thaumcraft:entropy_shard"
+    }
+  ],
+  "instability": 6,
+  "aspects": {
+    "skydeitymysticpivot:qian": 64,
+    "skydeitymysticpivot:dui": 64,
+    "skydeitymysticpivot:li": 64,
+    "skydeitymysticpivot:zhen": 64,
+    "skydeitymysticpivot:xun": 64,
+    "skydeitymysticpivot:kan": 64,
+    "skydeitymysticpivot:gen": 64,
+    "skydeitymysticpivot:kun": 64
+  },
+  "result": {
+    "id": "skydeitymysticpivot:focus_cosmos"
+  }
+}

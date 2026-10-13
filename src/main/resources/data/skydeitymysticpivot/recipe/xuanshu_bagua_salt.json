@@ -1,0 +1,13 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "skydeitymysticpivot:xuanshu_shard"
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_bagua_salt",
+    "count": 2
+  },
+  "experience": 0.0,
+  "cookingtime": 40
+}

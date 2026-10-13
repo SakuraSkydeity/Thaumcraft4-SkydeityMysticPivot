@@ -1,0 +1,83 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "skydeitymysticpivot:block/xuanshu_crucible",
+    "side": "skydeitymysticpivot:block/xuanshu_crucible",
+    "top": "skydeitymysticpivot:block/xuanshu_crucible_top",
+    "inner": "skydeitymysticpivot:block/xuanshu_crucible_inner",
+    "floor": "skydeitymysticpivot:block/xuanshu_crucible_bottom",
+    "lens": "skydeitymysticpivot:block/xuanshu_crucible_lens"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 2.5, 16],
+      "faces": {
+        "north": {"texture": "#side"},
+        "south": {"texture": "#side"},
+        "west": {"texture": "#side"},
+        "east": {"texture": "#side"},
+        "down": {"texture": "#top"},
+        "up": {"texture": "#floor"}
+      }
+    },
+    {
+      "from": [0, 2.5, 0],
+      "to": [16, 16, 3],
+      "faces": {
+        "north": {"texture": "#side"},
+        "south": {"texture": "#inner"},
+        "west": {"texture": "#side"},
+        "east": {"texture": "#side"},
+        "up": {"texture": "#top"}
+      }
+    },
+    {
+      "from": [0, 2.5, 13],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": {"texture": "#inner"},
+        "south": {"texture": "#side"},
+        "west": {"texture": "#side"},
+        "east": {"texture": "#side"},
+        "up": {"texture": "#top"}
+      }
+    },
+    {
+      "from": [0, 2.5, 3],
+      "to": [3, 16, 13],
+      "faces": {
+        "north": {"texture": "#side"},
+        "south": {"texture": "#side"},
+        "west": {"texture": "#side"},
+        "east": {"texture": "#inner"},
+        "up": {"texture": "#top"}
+      }
+    },
+    {
+      "from": [13, 2.5, 3],
+      "to": [16, 16, 13],
+      "faces": {
+        "north": {"texture": "#side"},
+        "south": {"texture": "#side"},
+        "west": {"texture": "#inner"},
+        "east": {"texture": "#side"},
+        "up": {"texture": "#top"}
+      }
+    },
+    {
+      "from": [5.5, 7, -0.45],
+      "to": [10.5, 12, -0.05],
+      "faces": {
+        "north": {"texture": "#lens", "uv": [0, 0, 16, 16]},
+        "south": {"texture": "#side"},
+        "west": {"texture": "#side"},
+        "east": {"texture": "#side"},
+        "down": {"texture": "#side"},
+        "up": {"texture": "#side"}
+      }
+    }
+  ]
+}

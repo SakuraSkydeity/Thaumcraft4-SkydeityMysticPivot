@@ -1,0 +1,58 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "skydeitymysticpivot:bagua_shard"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:azure_dragon_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:white_tiger_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:black_tortoise_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    }
+  ],
+  "instability": 4,
+  "aspects": {
+    "skydeitymysticpivot:qian": 6,
+    "skydeitymysticpivot:dui": 6,
+    "skydeitymysticpivot:li": 6,
+    "skydeitymysticpivot:zhen": 6,
+    "skydeitymysticpivot:xun": 6,
+    "skydeitymysticpivot:kan": 6,
+    "skydeitymysticpivot:gen": 6,
+    "skydeitymysticpivot:kun": 6
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_crystal_cluster"
+  }
+}

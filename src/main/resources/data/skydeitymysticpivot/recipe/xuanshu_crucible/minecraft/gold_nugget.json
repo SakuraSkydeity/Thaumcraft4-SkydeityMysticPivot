@@ -1,0 +1,14 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "minecraft:gold_nugget"
+  },
+  "result": {
+    "id": "minecraft:gold_nugget",
+    "count": 3
+  },
+  "aspects": {
+    "metallum": 2,
+    "lucrum": 1
+  }
+}

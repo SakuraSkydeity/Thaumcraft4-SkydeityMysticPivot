@@ -1,0 +1,77 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "skydeitymysticpivot:block/sixiang_stone_brick_active",
+    "band": "skydeitymysticpivot:block/sixiang_stone_brick_active",
+    "plain": "skydeitymysticpivot:block/sixiang_stone_brick_plain",
+    "top": "skydeitymysticpivot:block/sixiang_stone_brick_top"
+  },
+  "elements": [
+    {
+      "comment": "E0 坛脚：满 16x16、高 2，与台座最下一层（y0~2、16x16）同高同深，贴缝那条竖棱不错台。四面取 band 的底部 2 行（uv 14..16）——面高正好 2 像素 ⇒ 1:1 不拉伸，那道「上亮下暗」的腰带才画得出清楚的受光棱。",
+      "from": [0, 0, 0],
+      "to": [16, 2, 16],
+      "faces": {
+        "north": { "texture": "#band", "uv": [0, 14, 16, 16] },
+        "south": { "texture": "#band", "uv": [0, 14, 16, 16] },
+        "west": { "texture": "#band", "uv": [0, 14, 16, 16] },
+        "east": { "texture": "#band", "uv": [0, 14, 16, 16] },
+        "up": { "texture": "#plain", "uv": [0, 0, 16, 16] },
+        "down": { "texture": "#plain", "uv": [0, 0, 16, 16] }
+      }
+    },
+    {
+      "comment": "E1：内侧（贴台座那两边 = north/west）退 1，与台座第二层（y2~3.5、14x14、离外缘 1）的进深一致 ⇒ 两块石头贴缝那条竖棱一级一级接得上。东、南两面被外唇整个压住（完全埋在唇体内），刻意省略不画，免得与唇面共面打架。",
+      "from": [1, 2, 1],
+      "to": [12, 3, 12],
+      "faces": {
+        "north": { "texture": "#plain", "uv": [0, 6, 11, 7] },
+        "west": { "texture": "#plain", "uv": [0, 6, 11, 7] },
+        "up": { "texture": "#plain", "uv": [0, 0, 11, 11] }
+      }
+    },
+    {
+      "comment": "E2：内侧再退 1（共 2），照抄台座第三层（y3.5~5、12x12）。down 省略——它整片坐在 E1 顶面上。",
+      "from": [2, 3, 2],
+      "to": [12, 5, 12],
+      "faces": {
+        "north": { "texture": "#plain", "uv": [0, 6, 10, 8] },
+        "west": { "texture": "#plain", "uv": [0, 6, 10, 8] },
+        "up": { "texture": "#plain", "uv": [0, 0, 10, 10] }
+      }
+    },
+    {
+      "comment": "E3 内台：内侧退到 4、外侧止于 12 ⇒ 足迹正好是 [4,12] 的 8x8，与台座肩台（y5~6、[4,12]）同尺寸、顶面同高 y6，两块石头连成一条横线。顶面取 top 贴图正中 8x8（uv 4..12，1:1），星盘原样落在最高处。",
+      "from": [4, 5, 4],
+      "to": [12, 6, 12],
+      "faces": {
+        "north": { "texture": "#plain", "uv": [0, 6, 8, 7] },
+        "west": { "texture": "#plain", "uv": [0, 6, 8, 7] },
+        "up": { "texture": "#top", "uv": [4, 4, 12, 12] }
+      }
+    },
+    {
+      "comment": "E4 外唇·纵轴半边：沿外侧 x12..16 抬起的一道唇（y2~8，比台座肩台高 2 像素），把整个坛场从外侧「兜」起来——这就是本批要的包裹感。北面（z0）与东面（x16）是外轮廓，西面（x12）是朝向坛内的唇内壁（y6~8 那段露在平台之上，正好看得见）；down 整片埋在 E0 顶面下，省略。",
+      "from": [12, 2, 0],
+      "to": [16, 8, 16],
+      "faces": {
+        "north": { "texture": "#plain", "uv": [6, 10, 10, 16] },
+        "south": { "texture": "#plain", "uv": [6, 10, 10, 16] },
+        "east": { "texture": "#plain", "uv": [0, 10, 16, 16] },
+        "west": { "texture": "#plain", "uv": [0, 10, 16, 16] },
+        "up": { "texture": "#plain", "uv": [6, 0, 10, 16] }
+      }
+    },
+    {
+      "comment": "E5 外唇·横轴半边：沿外侧 z12..16 的那一段。E4 已经占满整条 z 轴（含外角），所以 E5 的东面刻意止于 x12、且不画 east——两段合起来是沿两条外边的一条整 L 形唇沿，外角不会缺一块。",
+      "from": [0, 2, 12],
+      "to": [12, 8, 16],
+      "faces": {
+        "north": { "texture": "#plain", "uv": [0, 10, 12, 16] },
+        "south": { "texture": "#plain", "uv": [0, 10, 12, 16] },
+        "west": { "texture": "#plain", "uv": [0, 10, 16, 16] },
+        "up": { "texture": "#plain", "uv": [0, 0, 12, 4] }
+      }
+    }
+  ]
+}

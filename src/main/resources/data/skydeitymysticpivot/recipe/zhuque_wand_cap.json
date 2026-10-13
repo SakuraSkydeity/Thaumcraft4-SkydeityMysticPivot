@@ -1,0 +1,58 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "thaumcraft:fire_shard"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_shard"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_shard"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_shard"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_shard"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    }
+  ],
+  "instability": 3,
+  "aspects": {
+    "skydeitymysticpivot:qian": 6,
+    "skydeitymysticpivot:dui": 6,
+    "skydeitymysticpivot:li": 6,
+    "skydeitymysticpivot:zhen": 6,
+    "skydeitymysticpivot:xun": 6,
+    "skydeitymysticpivot:kan": 6,
+    "skydeitymysticpivot:gen": 6,
+    "skydeitymysticpivot:kun": 6
+  },
+  "result": {
+    "id": "skydeitymysticpivot:zhuque_wand_cap"
+  }
+}

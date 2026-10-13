@@ -1,0 +1,14 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "minecraft:bucket"
+  },
+  "result": {
+    "id": "thaumcraft:liquid_death_bucket"
+  },
+  "aspects": {
+    "mortuus": 32,
+    "venenum": 32,
+    "perditio": 32
+  }
+}

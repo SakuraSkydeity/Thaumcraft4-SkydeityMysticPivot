@@ -1,0 +1,15 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "thaumcraft:shimmerleaf"
+  },
+  "result": {
+    "id": "thaumcraft:ethereal_bloom"
+  },
+  "aspects": {
+    "praecantatio": 16,
+    "herba": 16,
+    "sano": 16,
+    "vitium": 8
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "skydeitymysticpivot:block/bagua_stone_xun"
+    },
+    "active=true": {
+      "model": "skydeitymysticpivot:block/array_station_active"
+    }
+  }
+}

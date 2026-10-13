@@ -1,0 +1,12 @@
+{
+  "type": "thaumcraft:crucible",
+  "catalyst": {
+    "item": "minecraft:stone_bricks"
+  },
+  "result": {
+    "id": "skydeitymysticpivot:bagua_stone_zhen"
+  },
+  "aspects": {
+    "skydeitymysticpivot:zhen": 8
+  }
+}

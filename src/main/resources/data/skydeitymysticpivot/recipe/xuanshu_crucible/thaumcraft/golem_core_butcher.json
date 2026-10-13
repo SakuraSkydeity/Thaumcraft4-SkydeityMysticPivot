@@ -1,0 +1,13 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "thaumcraft:golem_core_guard"
+  },
+  "result": {
+    "id": "thaumcraft:golem_core_butcher"
+  },
+  "aspects": {
+    "corpus": 5,
+    "bestia": 5
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "pattern": [
+    "SAS",
+    "BMB",
+    "SDS"
+  ],
+  "key": {
+    "S": {
+      "item": "thaumcraft:salis_mundus"
+    },
+    "A": {
+      "item": "minecraft:turtle_scute"
+    },
+    "B": {
+      "item": "minecraft:prismarine_shard"
+    },
+    "M": {
+      "item": "thaumcraft:thaumium_ingot"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "result": {
+    "id": "skydeitymysticpivot:black_tortoise_ingot"
+  },
+  "vis": {
+    "aer": 100,
+    "terra": 100,
+    "ignis": 100,
+    "aqua": 100,
+    "ordo": 100,
+    "perditio": 100
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "skydeitymysticpivot:bagua_shard"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:azure_dragon_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:white_tiger_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:black_tortoise_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:azure_dragon_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:white_tiger_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:black_tortoise_ingot"
+    }
+  ],
+  "instability": 5,
+  "aspects": {
+    "skydeitymysticpivot:qian": 10,
+    "skydeitymysticpivot:dui": 10,
+    "skydeitymysticpivot:li": 10,
+    "skydeitymysticpivot:zhen": 10,
+    "skydeitymysticpivot:xun": 10,
+    "skydeitymysticpivot:kan": 10,
+    "skydeitymysticpivot:gen": 10,
+    "skydeitymysticpivot:kun": 10
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_ingot"
+  }
+}

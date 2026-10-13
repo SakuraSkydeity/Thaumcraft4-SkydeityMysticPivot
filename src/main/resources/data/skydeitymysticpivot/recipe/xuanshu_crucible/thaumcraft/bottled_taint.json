@@ -1,0 +1,20 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "type": "neoforge:components",
+    "items": "thaumcraft:essence_phial",
+    "components": {
+      "thaumcraft:aspects": {
+        "vitium": 8
+      }
+    },
+    "strict": false
+  },
+  "result": {
+    "id": "thaumcraft:bottled_taint"
+  },
+  "aspects": {
+    "vitium": 8,
+    "praecantatio": 8
+  }
+}
