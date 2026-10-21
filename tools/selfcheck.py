@@ -23,7 +23,7 @@ ASSETS = os.path.join(ROOT, "src/main/resources/assets/skydeitymysticpivot")
 DATA = os.path.join(ROOT, "src/main/resources/data")
 OK_ANGLES = {-45.0, -22.5, 0.0, 22.5, 45.0}
 BANNED = {"\u3000": "U+3000 表意空格", "\u2014": "U+2014 em dash", "\u2212": "U+2212 minus"}
-OK_EXT = {".json", ".png", ".mcmeta", ".toml", ".txt", ".ogg"}
+OK_EXT = {".json", ".png", ".mcmeta", ".toml", ".txt", ".ogg", ".obj", ".mtl"}
 
 errors = []
 warnings = []
@@ -151,7 +151,9 @@ def check_textures():
         w = int.from_bytes(head[16:20], "big")
         h = int.from_bytes(head[20:24], "big")
         sizes[(w, h)] = sizes.get((w, h), 0) + 1
-        if w not in (16, 32, 64, 128, 256) or h not in (16, 32, 64, 128, 256):
+        if w not in (16, 32, 64, 128, 256, 512) or h not in (16, 32, 64, 128, 256, 512):
+            # 512 是 gui 大图的合法尺寸：研究书分类背景与本体
+            # gui_researchback.png 同为 512x512（视口 224x196 + 288x316 平移扫视）。
             warnings.append("贴图尺寸少见 %dx%d: %s" % (w, h, os.path.relpath(p, ROOT)))
     return sizes
 

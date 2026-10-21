@@ -24,11 +24,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * 「法杖核心:传送」的行为（{@code focus_teleport}，装到任意杖柄上使用）。
+ * 「法杖核心:赤羽焚天瞬」的行为（{@code focus_teleport}，装到任意杖柄上使用）。
  *
  * <ul>
  *   <li><b>潜行右键</b>：把当前脚下坐标记进这柄杖（位置 + 维度都记，跟杖走，换手也带着）。</li>
- *   <li><b>右键</b>：从杖里抽出六种原始要素各 {@value #VIS_PER_CHANNEL} 点，
+ *   <li><b>右键</b>：从杖里抽出六种原始要素各 <b>10</b> 点，
  *       把玩家送到记下的那一点。</li>
  * </ul>
  *
@@ -43,8 +43,11 @@ import net.minecraft.world.phys.Vec3;
  */
 public final class TeleportCore {
 
-    /** 每种原始要素各扣多少点。 */
-    public static final int VIS_PER_CHANNEL = 10;
+    /*
+     * 价码（六元各 10 整 Vis）**只写在** data/skydeitymysticpivot/thaumcraft/focus_catalog/teleport.json
+     * 的 base_cost 里（1000 厘 = 10 整 Vis）。第一百批把「要素不足」提示统一成不带数字的短句后，
+     * 原来的 VIS_PER_CHANNEL 常量就没人用了，已删——改价只改 json。
+     */
 
     /** 落点被堵时最多往上找几格。 */
     private static final int SAFE_SEARCH_UP = 4;
@@ -105,7 +108,7 @@ public final class TeleportCore {
         if (action == VisAction.SIMULATE) {
             if (paid != VisPaymentResult.AVAILABLE) {
                 message(player, Component.translatable(
-                        "message.skydeitymysticpivot.teleport.no_vis", VIS_PER_CHANNEL)
+                        "message.skydeitymysticpivot.no_vis")
                         .withStyle(ChatFormatting.RED));
                 failSound(player);
                 return FocusActionResult.FAILED;

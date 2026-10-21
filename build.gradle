@@ -43,6 +43,15 @@ neoForge {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+// ★ 第 60 批：源码是 UTF-8（注释与字符串字面量里全是中文），而 Windows 简中环境下
+//   javac 的默认源码编码是 GBK ⇒ 每遇一个中文字符就报
+//   "unmappable character for encoding GBK"，并且把 case "乾" 这类中文标签搅成
+//   两只相同的乱码标签，进而误报 "case 标签重复"（一次编译 101 个错误，其实全是这一条病因）。
+//   显式钉死 UTF-8 后，上述报错整体消失。
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
 dependencies {
     compileOnly files(parent_api)
     // Only for compiling the InfusionMatrixBlockEntity accessor mixin; never bundled (compileOnly).
@@ -71,4 +80,16 @@ tasks.named('processResources', ProcessResources).configure {
     filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties + [project: project]
     }
+}
+
+// ★ 第 143 批：build 完成后自动把 jar 复制进本机客户端 mods 目录（目录不存在就跳过，不报错）。
+def modsDir = file('D:/Minecraft/M-luomuq/.minecraft/versions/1.21.1-NeoForge_21.1.248/mods')
+tasks.register('copyToMods', Copy) {
+    dependsOn tasks.named('jar')
+    onlyIf { modsDir.exists() }
+    from tasks.named('jar')
+    into modsDir
+}
+tasks.named('build') {
+    dependsOn tasks.named('copyToMods')
 }

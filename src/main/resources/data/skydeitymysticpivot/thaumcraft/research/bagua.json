@@ -12,8 +12,8 @@
       "key": "skydeitymysticpivot:BAGUA",
       "category": "skydeitymysticpivot:BAGUA",
       "aspects": {},
-      "display_column": 0,
-      "display_row": 0,
+      "display_column": -4,
+      "display_row": 2,
       "complexity": 1,
       "icon": {
         "type": "TEXTURE",
@@ -101,22 +101,6 @@
         },
         {
           "type": "TEXT",
-          "value": "bagua.page.assembly",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
-          "value": "bagua.page.focus",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
           "value": "bagua.page.caps",
           "aspects": {},
           "compound_blueprint": "",
@@ -133,323 +117,7 @@
         },
         {
           "type": "TEXT",
-          "value": "bagua.page.stones",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
-          "value": "bagua.page.trigram_gate",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        }
-      ]
-    },
-    {
-      "key": "skydeitymysticpivot:GUA_QIAN",
-      "category": "skydeitymysticpivot:BAGUA",
-      "aspects": {
-        "skydeitymysticpivot:qian": 1
-      },
-      "display_column": 0,
-      "display_row": -3,
-      "complexity": 1,
-      "icon": {
-        "type": "PRIMARY_ASPECT"
-      },
-      "flags": [
-        "ROUND",
-        "AUTO_UNLOCK"
-      ],
-      "parents": [
-        "skydeitymysticpivot:BAGUA"
-      ],
-      "hidden_parents": [],
-      "siblings": [],
-      "object_triggers": [],
-      "entity_triggers": [],
-      "aspect_triggers": [],
-      "warp": 0,
-      "pages": [
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.qian",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.qian.scan",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        }
-      ]
-    },
-    {
-      "key": "skydeitymysticpivot:GUA_DUI",
-      "category": "skydeitymysticpivot:BAGUA",
-      "aspects": {
-        "skydeitymysticpivot:dui": 1
-      },
-      "display_column": -2,
-      "display_row": -2,
-      "complexity": 1,
-      "icon": {
-        "type": "PRIMARY_ASPECT"
-      },
-      "flags": [
-        "ROUND",
-        "AUTO_UNLOCK"
-      ],
-      "parents": [
-        "skydeitymysticpivot:BAGUA"
-      ],
-      "hidden_parents": [],
-      "siblings": [],
-      "object_triggers": [],
-      "entity_triggers": [],
-      "aspect_triggers": [],
-      "warp": 0,
-      "pages": [
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.dui",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.dui.scan",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        }
-      ]
-    },
-    {
-      "key": "skydeitymysticpivot:GUA_LI",
-      "category": "skydeitymysticpivot:BAGUA",
-      "aspects": {
-        "skydeitymysticpivot:li": 1
-      },
-      "display_column": -3,
-      "display_row": 0,
-      "complexity": 1,
-      "icon": {
-        "type": "PRIMARY_ASPECT"
-      },
-      "flags": [
-        "ROUND",
-        "AUTO_UNLOCK"
-      ],
-      "parents": [
-        "skydeitymysticpivot:BAGUA"
-      ],
-      "hidden_parents": [],
-      "siblings": [],
-      "object_triggers": [],
-      "entity_triggers": [],
-      "aspect_triggers": [],
-      "warp": 0,
-      "pages": [
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.li",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.li.scan",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        }
-      ]
-    },
-    {
-      "key": "skydeitymysticpivot:GUA_ZHEN",
-      "category": "skydeitymysticpivot:BAGUA",
-      "aspects": {
-        "skydeitymysticpivot:zhen": 1
-      },
-      "display_column": -2,
-      "display_row": 2,
-      "complexity": 1,
-      "icon": {
-        "type": "PRIMARY_ASPECT"
-      },
-      "flags": [
-        "ROUND",
-        "AUTO_UNLOCK"
-      ],
-      "parents": [
-        "skydeitymysticpivot:BAGUA"
-      ],
-      "hidden_parents": [],
-      "siblings": [],
-      "object_triggers": [],
-      "entity_triggers": [],
-      "aspect_triggers": [],
-      "warp": 0,
-      "pages": [
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.zhen",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.zhen.scan",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        }
-      ]
-    },
-    {
-      "key": "skydeitymysticpivot:GUA_XUN",
-      "category": "skydeitymysticpivot:BAGUA",
-      "aspects": {
-        "skydeitymysticpivot:xun": 1
-      },
-      "display_column": 2,
-      "display_row": -2,
-      "complexity": 1,
-      "icon": {
-        "type": "PRIMARY_ASPECT"
-      },
-      "flags": [
-        "ROUND",
-        "AUTO_UNLOCK"
-      ],
-      "parents": [
-        "skydeitymysticpivot:BAGUA"
-      ],
-      "hidden_parents": [],
-      "siblings": [],
-      "object_triggers": [],
-      "entity_triggers": [],
-      "aspect_triggers": [],
-      "warp": 0,
-      "pages": [
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.xun",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.xun.scan",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        }
-      ]
-    },
-    {
-      "key": "skydeitymysticpivot:GUA_KAN",
-      "category": "skydeitymysticpivot:BAGUA",
-      "aspects": {
-        "skydeitymysticpivot:kan": 1
-      },
-      "display_column": 3,
-      "display_row": 0,
-      "complexity": 1,
-      "icon": {
-        "type": "PRIMARY_ASPECT"
-      },
-      "flags": [
-        "ROUND",
-        "AUTO_UNLOCK"
-      ],
-      "parents": [
-        "skydeitymysticpivot:BAGUA"
-      ],
-      "hidden_parents": [],
-      "siblings": [],
-      "object_triggers": [],
-      "entity_triggers": [],
-      "aspect_triggers": [],
-      "warp": 0,
-      "pages": [
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.kan",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.kan.scan",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        }
-      ]
-    },
-    {
-      "key": "skydeitymysticpivot:GUA_GEN",
-      "category": "skydeitymysticpivot:BAGUA",
-      "aspects": {
-        "skydeitymysticpivot:gen": 1
-      },
-      "display_column": 2,
-      "display_row": 2,
-      "complexity": 1,
-      "icon": {
-        "type": "PRIMARY_ASPECT"
-      },
-      "flags": [
-        "ROUND",
-        "AUTO_UNLOCK"
-      ],
-      "parents": [
-        "skydeitymysticpivot:BAGUA"
-      ],
-      "hidden_parents": [],
-      "siblings": [],
-      "object_triggers": [],
-      "entity_triggers": [],
-      "aspect_triggers": [],
-      "warp": 0,
-      "pages": [
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.gen",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.gen.scan",
+          "value": "bagua.page.lore",
           "aspects": {},
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
@@ -463,8 +131,8 @@
       "aspects": {
         "skydeitymysticpivot:gen": 1
       },
-      "display_column": 4,
-      "display_row": 2,
+      "display_column": 1,
+      "display_row": 6,
       "complexity": 1,
       "icon": {
         "type": "TEXTURE",
@@ -475,7 +143,7 @@
         "AUTO_UNLOCK"
       ],
       "parents": [
-        "skydeitymysticpivot:GUA_GEN"
+        "skydeitymysticpivot:TERRAIN"
       ],
       "hidden_parents": [],
       "siblings": [],
@@ -486,14 +154,6 @@
       "pages": [
         {
           "type": "TEXT",
-          "value": "bagua.page.stones_place",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
           "value": "bagua.page.stones_what",
           "aspects": {},
           "compound_blueprint": "",
@@ -501,21 +161,12 @@
           "recipe_ids": []
         },
         {
-          "type": "CRUCIBLE_CRAFTING",
-          "value": "",
+          "type": "TEXT",
+          "value": "bagua.page.stones_place",
           "aspects": {},
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
-          "recipe_ids": [
-            "skydeitymysticpivot:bagua_stone_qian",
-            "skydeitymysticpivot:bagua_stone_dui",
-            "skydeitymysticpivot:bagua_stone_li",
-            "skydeitymysticpivot:bagua_stone_zhen",
-            "skydeitymysticpivot:bagua_stone_xun",
-            "skydeitymysticpivot:bagua_stone_kan",
-            "skydeitymysticpivot:bagua_stone_gen",
-            "skydeitymysticpivot:bagua_stone_kun"
-          ]
+          "recipe_ids": []
         },
         {
           "type": "TEXT",
@@ -527,7 +178,7 @@
         },
         {
           "type": "TEXT",
-          "value": "bagua.page.stones_use",
+          "value": "bagua.page.stones_lore",
           "aspects": {},
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
@@ -536,7 +187,7 @@
       ]
     },
     {
-      "key": "skydeitymysticpivot:XUANSHU_PICKAXE",
+      "key": "skydeitymysticpivot:BAGUA_PICKAXE",
       "category": "skydeitymysticpivot:BAGUA",
       "aspects": {
         "skydeitymysticpivot:qian": 1
@@ -547,7 +198,7 @@
       "icon": {
         "type": "STACK",
         "stack": {
-          "id": "skydeitymysticpivot:xuanshu_pickaxe"
+          "id": "skydeitymysticpivot:bagua_pickaxe"
         }
       },
       "flags": [
@@ -566,7 +217,25 @@
       "pages": [
         {
           "type": "TEXT",
-          "value": "bagua.page.pickaxe_intro",
+          "value": "bagua.page.bagua_pickaxe_func",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "INFUSION_CRAFTING",
+          "value": "",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": [
+            "skydeitymysticpivot:bagua_pickaxe"
+          ]
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.recipe.bagua_pickaxe",
           "aspects": {},
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
@@ -574,7 +243,54 @@
         },
         {
           "type": "TEXT",
-          "value": "bagua.page.pickaxe_qian",
+          "value": "bagua.page.bagua_pickaxe_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:XUANSHU_PICKAXE",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {
+        "skydeitymysticpivot:qian": 1
+      },
+      "display_column": -3,
+      "display_row": -4,
+      "complexity": 1,
+      "icon": {
+        "type": "STACK",
+        "stack": {
+          "id": "skydeitymysticpivot:xuanshu_pickaxe"
+        }
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:BAGUA_PICKAXE"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.page.pickaxe2_intro",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.pickaxe2_tunnel",
           "aspects": {},
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
@@ -597,6 +313,79 @@
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
           "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.pickaxe2_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:XUANSHU_HOE",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {
+        "skydeitymysticpivot:kun": 1
+      },
+      "display_column": -1,
+      "display_row": -6,
+      "complexity": 1,
+      "icon": {
+        "type": "STACK",
+        "stack": {
+          "id": "skydeitymysticpivot:xuanshu_hoe"
+        }
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:BAGUA_PICKAXE"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.page.hoe_intro",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "INFUSION_CRAFTING",
+          "value": "",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": [
+            "skydeitymysticpivot:xuanshu_hoe"
+          ]
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.recipe.xuanshu_hoe",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.hoe_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
         }
       ]
     },
@@ -606,8 +395,8 @@
       "aspects": {
         "skydeitymysticpivot:kun": 1
       },
-      "display_column": -2,
-      "display_row": 4,
+      "display_column": -1,
+      "display_row": 3,
       "complexity": 1,
       "icon": {
         "type": "STACK",
@@ -678,46 +467,10 @@
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
           "recipe_ids": []
-        }
-      ]
-    },
-    {
-      "key": "skydeitymysticpivot:GUA_KUN",
-      "category": "skydeitymysticpivot:BAGUA",
-      "aspects": {
-        "skydeitymysticpivot:kun": 1
-      },
-      "display_column": 0,
-      "display_row": 3,
-      "complexity": 1,
-      "icon": {
-        "type": "PRIMARY_ASPECT"
-      },
-      "flags": [
-        "ROUND",
-        "AUTO_UNLOCK"
-      ],
-      "parents": [
-        "skydeitymysticpivot:BAGUA"
-      ],
-      "hidden_parents": [],
-      "siblings": [],
-      "object_triggers": [],
-      "entity_triggers": [],
-      "aspect_triggers": [],
-      "warp": 0,
-      "pages": [
-        {
-          "type": "TEXT",
-          "value": "bagua.gua.kun",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
         },
         {
           "type": "TEXT",
-          "value": "bagua.gua.kun.scan",
+          "value": "bagua.page.purify_lore",
           "aspects": {},
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
@@ -731,7 +484,7 @@
       "aspects": {
         "skydeitymysticpivot:kun": 1
       },
-      "display_column": 2,
+      "display_column": 1,
       "display_row": 4,
       "complexity": 1,
       "icon": {
@@ -757,14 +510,6 @@
         {
           "type": "TEXT",
           "value": "bagua.page.terrain_all",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
-          "value": "bagua.page.terrain_all2",
           "aspects": {},
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
@@ -833,6 +578,14 @@
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
           "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.terrain_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
         }
       ]
     },
@@ -882,7 +635,7 @@
         },
         {
           "type": "TEXT",
-          "value": "bagua.page.ingot_a",
+          "value": "bagua.page.ingot_req",
           "aspects": {},
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
@@ -890,15 +643,7 @@
         },
         {
           "type": "TEXT",
-          "value": "bagua.page.ingot_a2",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
-          "value": "bagua.page.ingot_a3",
+          "value": "bagua.page.recipe_ingot_note",
           "aspects": {},
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
@@ -977,18 +722,8 @@
           "recipe_ids": []
         },
         {
-          "type": "INFUSION_CRAFTING",
-          "value": "",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": [
-            "skydeitymysticpivot:xuanshu_ingot"
-          ]
-        },
-        {
           "type": "TEXT",
-          "value": "bagua.recipe.xuanshu_ingot",
+          "value": "bagua.page.ingots_lore",
           "aspects": {},
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
@@ -1009,7 +744,7 @@
         "skydeitymysticpivot:gen": 1,
         "skydeitymysticpivot:kun": 1
       },
-      "display_column": 6,
+      "display_column": 5,
       "display_row": 0,
       "complexity": 1,
       "icon": {
@@ -1042,7 +777,7 @@
         },
         {
           "type": "TEXT",
-          "value": "bagua.page.node_shards2",
+          "value": "bagua.page.shards_req",
           "aspects": {},
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
@@ -1227,6 +962,14 @@
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
           "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.shards_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
         }
       ]
     },
@@ -1243,7 +986,7 @@
         "skydeitymysticpivot:gen": 1,
         "skydeitymysticpivot:kun": 1
       },
-      "display_column": 8,
+      "display_column": 6,
       "display_row": -2,
       "complexity": 1,
       "icon": {
@@ -1269,14 +1012,6 @@
         {
           "type": "TEXT",
           "value": "bagua.page.node_cloths",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
-          "value": "bagua.page.node_cloths2",
           "aspects": {},
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
@@ -1317,6 +1052,14 @@
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
           "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.cloths_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
         }
       ]
     },
@@ -1333,7 +1076,7 @@
         "skydeitymysticpivot:gen": 1,
         "skydeitymysticpivot:kun": 1
       },
-      "display_column": 8,
+      "display_column": 6,
       "display_row": 0,
       "complexity": 1,
       "icon": {
@@ -1425,6 +1168,14 @@
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
           "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.wands_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
         }
       ]
     },
@@ -1441,7 +1192,7 @@
         "skydeitymysticpivot:gen": 1,
         "skydeitymysticpivot:kun": 1
       },
-      "display_column": 8,
+      "display_column": 6,
       "display_row": 2,
       "complexity": 1,
       "icon": {
@@ -1533,6 +1284,257 @@
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
           "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.caps_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:WAND_ASSEMBLY",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {},
+      "display_column": 7,
+      "display_row": 1,
+      "complexity": 1,
+      "icon": {
+        "type": "STACK",
+        "stack": {
+          "id": "skydeitymysticpivot:sixiang_wand_rod"
+        }
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:WANDS",
+        "skydeitymysticpivot:CAPS"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.page.wand_assembly",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.assembly",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.wand_assembly_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:FOCUS_GUARDIAN",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {},
+      "display_column": 2,
+      "display_row": 3,
+      "complexity": 1,
+      "icon": {
+        "type": "STACK",
+        "stack": {
+          "id": "skydeitymysticpivot:focus_guardian"
+        }
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:GUA_GEN"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.page.focus_guardian_func",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "INFUSION_CRAFTING",
+          "value": "",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": [
+            "skydeitymysticpivot:focus_guardian"
+          ]
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.recipe.focus_guardian",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.focus_guardian_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:FOCUS_TELEPORT",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {},
+      "display_column": 4,
+      "display_row": 2,
+      "complexity": 1,
+      "icon": {
+        "type": "STACK",
+        "stack": {
+          "id": "skydeitymysticpivot:focus_teleport"
+        }
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:GUA_GEN"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.page.focus_teleport_func",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "INFUSION_CRAFTING",
+          "value": "",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": [
+            "skydeitymysticpivot:focus_teleport"
+          ]
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.recipe.focus_teleport",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.focus_teleport_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:FOCUS_COSMOS",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {},
+      "display_column": 3,
+      "display_row": 3,
+      "complexity": 1,
+      "icon": {
+        "type": "STACK",
+        "stack": {
+          "id": "skydeitymysticpivot:focus_cosmos"
+        }
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:GUA_GEN"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.page.focus_cosmos_func",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "INFUSION_CRAFTING",
+          "value": "",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": [
+            "skydeitymysticpivot:focus_cosmos"
+          ]
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.recipe.focus_cosmos",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.focus_cosmos_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
         }
       ]
     },
@@ -1540,7 +1542,7 @@
       "key": "skydeitymysticpivot:MACHINE_ALCHEMY",
       "category": "skydeitymysticpivot:BAGUA",
       "aspects": {},
-      "display_column": 5,
+      "display_column": 2,
       "display_row": -3,
       "complexity": 1,
       "icon": {
@@ -1572,14 +1574,6 @@
           "recipe_ids": []
         },
         {
-          "type": "TEXT",
-          "value": "bagua.page.machine_alchemy2",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
           "type": "INFUSION_CRAFTING",
           "value": "",
           "aspects": {},
@@ -1596,6 +1590,79 @@
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
           "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.machine_alchemy2",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:XUANSHU_CHARGER",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {},
+      "display_column": 2,
+      "display_row": -5,
+      "complexity": 1,
+      "icon": {
+        "type": "STACK",
+        "stack": {
+          "id": "skydeitymysticpivot:xuanshu_charger"
+        }
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:MACHINE_FURNACE",
+        "skydeitymysticpivot:MACHINE_CRUCIBLE",
+        "skydeitymysticpivot:MACHINE_ALCHEMY"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.page.charger_intro",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "INFUSION_CRAFTING",
+          "value": "",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": [
+            "skydeitymysticpivot:xuanshu_charger"
+          ]
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.recipe.xuanshu_charger",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.charger_intro2",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
         }
       ]
     },
@@ -1604,7 +1671,7 @@
       "category": "skydeitymysticpivot:BAGUA",
       "aspects": {},
       "display_column": 1,
-      "display_row": -5,
+      "display_row": -3,
       "complexity": 1,
       "icon": {
         "type": "STACK",
@@ -1635,14 +1702,6 @@
           "recipe_ids": []
         },
         {
-          "type": "TEXT",
-          "value": "bagua.page.machine_furnace2",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
           "type": "INFUSION_CRAFTING",
           "value": "",
           "aspects": {},
@@ -1659,6 +1718,14 @@
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
           "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.machine_furnace2",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
         }
       ]
     },
@@ -1667,7 +1734,7 @@
       "category": "skydeitymysticpivot:BAGUA",
       "aspects": {},
       "display_column": 3,
-      "display_row": -4,
+      "display_row": -3,
       "complexity": 1,
       "icon": {
         "type": "STACK",
@@ -1698,14 +1765,6 @@
           "recipe_ids": []
         },
         {
-          "type": "TEXT",
-          "value": "bagua.page.machine_crucible2",
-          "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
           "type": "INFUSION_CRAFTING",
           "value": "",
           "aspects": {},
@@ -1722,6 +1781,14 @@
           "compound_blueprint": "",
           "recipe_link_policy": "DISABLED",
           "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.machine_crucible2",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
         }
       ]
     },
@@ -1731,8 +1798,8 @@
       "aspects": {
         "skydeitymysticpivot:zhen": 1
       },
-      "display_column": -4,
-      "display_row": 4,
+      "display_column": 0,
+      "display_row": 0,
       "complexity": 1,
       "icon": {
         "type": "STACK",
@@ -1745,7 +1812,7 @@
         "AUTO_UNLOCK"
       ],
       "parents": [
-        "skydeitymysticpivot:GUA_ZHEN"
+        "skydeitymysticpivot:BAGUA"
       ],
       "hidden_parents": [],
       "siblings": [],
@@ -1771,14 +1838,6 @@
           "recipe_ids": []
         },
         {
-          "type": "COMPOUND_CRAFTING",
-          "value": "",
-          "aspects": {},
-          "compound_blueprint": "skydeitymysticpivot:compound/xuanshu_pedestal",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
           "type": "TEXT",
           "value": "bagua.page.pedestal_qi",
           "aspects": {},
@@ -1787,18 +1846,10 @@
           "recipe_ids": []
         },
         {
-          "type": "TEXT",
-          "value": "bagua.page.pedestal_lands",
+          "type": "COMPOUND_CRAFTING",
+          "value": "",
           "aspects": {},
-          "compound_blueprint": "",
-          "recipe_link_policy": "DISABLED",
-          "recipe_ids": []
-        },
-        {
-          "type": "TEXT",
-          "value": "bagua.page.pedestal_lands2",
-          "aspects": {},
-          "compound_blueprint": "",
+          "compound_blueprint": "skydeitymysticpivot:compound/xuanshu_pedestal",
           "recipe_link_policy": "DISABLED",
           "recipe_ids": []
         },
@@ -1821,6 +1872,844 @@
           "recipe_ids": [
             "skydeitymysticpivot:sixiang_stone_brick"
           ]
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.pedestal_lands",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.pedestal_essentia",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.pedestal_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:XUANSHU_SPIRIT_CORE",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {},
+      "display_column": 7,
+      "display_row": -2,
+      "complexity": 1,
+      "icon": {
+        "type": "STACK",
+        "stack": {
+          "id": "skydeitymysticpivot:xuanshu_spirit_core"
+        }
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:CLOTHS"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.page.spirit_core",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "INFUSION_CRAFTING",
+          "value": "",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": [
+            "skydeitymysticpivot:xuanshu_spirit_core"
+          ]
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.recipe.xuanshu_spirit_core",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.spirit_core_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:XUANSHU_ARCANE_TABLE",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {},
+      "display_column": 8,
+      "display_row": -3,
+      "complexity": 1,
+      "icon": {
+        "type": "STACK",
+        "stack": {
+          "id": "skydeitymysticpivot:xuanshu_arcane_table"
+        }
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:XUANSHU_SPIRIT_CORE"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.page.arcane_table",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "INFUSION_CRAFTING",
+          "value": "",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": [
+            "skydeitymysticpivot:xuanshu_arcane_table"
+          ]
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.recipe.xuanshu_arcane_table",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.star_gate_tables",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.arcane_table_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:XUANSHU_NODE_MODIFIER",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {},
+      "display_column": 8,
+      "display_row": -1,
+      "complexity": 1,
+      "icon": {
+        "type": "STACK",
+        "stack": {
+          "id": "skydeitymysticpivot:xuanshu_node_modifier"
+        }
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:XUANSHU_SPIRIT_CORE"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.page.node_modifier",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "INFUSION_CRAFTING",
+          "value": "",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": [
+            "skydeitymysticpivot:xuanshu_node_modifier"
+          ]
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.recipe.xuanshu_node_modifier",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.star_gate_tables",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.node_modifier_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:GUA_QIAN",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {
+        "skydeitymysticpivot:qian": 1
+      },
+      "display_column": 0,
+      "display_row": -2,
+      "complexity": 1,
+      "icon": {
+        "type": "PRIMARY_ASPECT"
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:PEDESTAL"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.qian",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.qian.scan",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.qian.lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:GUA_DUI",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {
+        "skydeitymysticpivot:dui": 1
+      },
+      "display_column": -1,
+      "display_row": -1,
+      "complexity": 1,
+      "icon": {
+        "type": "PRIMARY_ASPECT"
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:PEDESTAL"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.dui",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.dui.scan",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.dui.lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:GUA_LI",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {
+        "skydeitymysticpivot:li": 1
+      },
+      "display_column": -2,
+      "display_row": 0,
+      "complexity": 1,
+      "icon": {
+        "type": "PRIMARY_ASPECT"
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:PEDESTAL"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.li",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.li.scan",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.li.lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:GUA_ZHEN",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {
+        "skydeitymysticpivot:zhen": 1
+      },
+      "display_column": -1,
+      "display_row": 1,
+      "complexity": 1,
+      "icon": {
+        "type": "PRIMARY_ASPECT"
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:PEDESTAL"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.zhen",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.zhen.scan",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.zhen.lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:GUA_XUN",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {
+        "skydeitymysticpivot:xun": 1
+      },
+      "display_column": 1,
+      "display_row": -1,
+      "complexity": 1,
+      "icon": {
+        "type": "PRIMARY_ASPECT"
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:PEDESTAL"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.xun",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.xun.scan",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.xun.lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:GUA_KAN",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {
+        "skydeitymysticpivot:kan": 1
+      },
+      "display_column": 2,
+      "display_row": 0,
+      "complexity": 1,
+      "icon": {
+        "type": "PRIMARY_ASPECT"
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:PEDESTAL"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.kan",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.kan.scan",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.kan.lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:GUA_GEN",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {
+        "skydeitymysticpivot:gen": 1
+      },
+      "display_column": 1,
+      "display_row": 1,
+      "complexity": 1,
+      "icon": {
+        "type": "PRIMARY_ASPECT"
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:PEDESTAL"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.gen",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.gen.scan",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.gen.lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:GUA_KUN",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {
+        "skydeitymysticpivot:kun": 1
+      },
+      "display_column": 0,
+      "display_row": 2,
+      "complexity": 1,
+      "icon": {
+        "type": "PRIMARY_ASPECT"
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:PEDESTAL"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.kun",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.kun.scan",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.gua.kun.lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:STAR_CRAFT",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {},
+      "display_column": -6,
+      "display_row": 2,
+      "complexity": 2,
+      "icon": {
+        "type": "STACK",
+        "stack": {
+          "id": "skydeitymysticpivot:star_dial"
+        }
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:BAGUA"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.page.star_craft_board",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "COMPOUND_CRAFTING",
+          "value": "",
+          "aspects": {},
+          "compound_blueprint": "skydeitymysticpivot:compound/star_array",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.star_craft_activate",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.star_craft_machines",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.star_craft_use",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.star_craft_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:XUANSHU_INGOT_UNFIRED",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {},
+      "display_column": -6,
+      "display_row": 4,
+      "complexity": 2,
+      "icon": {
+        "type": "STACK",
+        "stack": {
+          "id": "skydeitymysticpivot:xuanshu_ingot_unfired"
+        }
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:STAR_CRAFT"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.page.unfired_ingot",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "ARCANE_CRAFTING",
+          "value": "",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": [
+            "skydeitymysticpivot:xuanshu_ingot_unfired"
+          ]
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.unfired_req",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.unfired_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        }
+      ]
+    },
+    {
+      "key": "skydeitymysticpivot:XUANSHU_INGOT_FORGED",
+      "category": "skydeitymysticpivot:BAGUA",
+      "aspects": {},
+      "display_column": -6,
+      "display_row": 6,
+      "complexity": 2,
+      "icon": {
+        "type": "STACK",
+        "stack": {
+          "id": "skydeitymysticpivot:xuanshu_ingot"
+        }
+      },
+      "flags": [
+        "ROUND",
+        "AUTO_UNLOCK"
+      ],
+      "parents": [
+        "skydeitymysticpivot:XUANSHU_INGOT_UNFIRED"
+      ],
+      "hidden_parents": [],
+      "siblings": [],
+      "object_triggers": [],
+      "entity_triggers": [],
+      "aspect_triggers": [],
+      "warp": 0,
+      "pages": [
+        {
+          "type": "TEXT",
+          "value": "bagua.page.forged_ingot",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.forged_ingot_recipe",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
+        },
+        {
+          "type": "TEXT",
+          "value": "bagua.page.forged_lore",
+          "aspects": {},
+          "compound_blueprint": "",
+          "recipe_link_policy": "DISABLED",
+          "recipe_ids": []
         }
       ]
     }

@@ -1,0 +1,58 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "skydeitymysticpivot:xuanshu_ingot"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "thaumcraft:thaumic_charm"
+    },
+    {
+      "item": "minecraft:glass"
+    },
+    {
+      "item": "thaumcraft:thaumium_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "thaumcraft:focus_primal"
+    },
+    {
+      "item": "minecraft:glass"
+    },
+    {
+      "item": "thaumcraft:thaumium_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "thaumcraft:thaumic_charm"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    }
+  ],
+  "instability": 8,
+  "aspects": {
+    "ordo": 48,
+    "aer": 32,
+    "ignis": 24,
+    "aqua": 24,
+    "terra": 24,
+    "perditio": 32,
+    "skydeitymysticpivot:kan": 24,
+    "skydeitymysticpivot:xun": 24
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_replicator"
+  }
+}

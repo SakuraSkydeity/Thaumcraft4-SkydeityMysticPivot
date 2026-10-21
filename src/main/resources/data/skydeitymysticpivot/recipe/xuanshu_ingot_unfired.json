@@ -1,0 +1,43 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "vis": {
+    "aer": 77,
+    "terra": 77,
+    "ignis": 77,
+    "aqua": 77,
+    "ordo": 77,
+    "perditio": 77
+  },
+  "pattern": [
+    "TNR",
+    "CSC",
+    "WNB"
+  ],
+  "key": {
+    "T": {
+      "item": "skydeitymysticpivot:azure_dragon_ingot"
+    },
+    "R": {
+      "item": "skydeitymysticpivot:vermilion_bird_ingot"
+    },
+    "W": {
+      "item": "skydeitymysticpivot:white_tiger_ingot"
+    },
+    "B": {
+      "item": "skydeitymysticpivot:black_tortoise_ingot"
+    },
+    "N": {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    "C": {
+      "item": "skydeitymysticpivot:xuanshu_cloth"
+    },
+    "S": {
+      "item": "minecraft:nether_star"
+    }
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_ingot_unfired",
+    "count": 1
+  }
+}

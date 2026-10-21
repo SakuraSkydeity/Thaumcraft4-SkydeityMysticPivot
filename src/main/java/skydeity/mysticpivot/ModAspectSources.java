@@ -62,7 +62,13 @@ public final class ModAspectSources {
         ThaumcraftApiCommon.registerAdditionalObjectAspects(item, AspectAmounts.of(aspectId(aspect), amount));
     }
 
-    private static AspectId aspectId(String path) {
+    /**
+     * 本模组某一支八卦要素的 ID（{@code skydeitymysticpivot:<path>}）。
+     *
+     * <p>公开出来是给玄枢台座用的：它要从罐子里抽「本地卦气那一支」要素，
+     * 得有个地方把 {@link Fengshui.Trigram} 翻成 {@link AspectId}。</p>
+     */
+    public static AspectId aspectId(String path) {
         return AspectId.of(ResourceLocation.fromNamespaceAndPath(MysticPivot.MODID, path));
     }
 }

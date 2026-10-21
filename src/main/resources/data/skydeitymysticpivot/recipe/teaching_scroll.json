@@ -1,0 +1,46 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "skydeitymysticpivot:akashic_records"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    }
+  ],
+  "instability": 10,
+  "aspects": {
+    "skydeitymysticpivot:qian": 32,
+    "skydeitymysticpivot:dui": 32,
+    "skydeitymysticpivot:li": 32,
+    "skydeitymysticpivot:zhen": 32,
+    "skydeitymysticpivot:xun": 32,
+    "skydeitymysticpivot:kan": 32,
+    "skydeitymysticpivot:gen": 32,
+    "skydeitymysticpivot:kun": 32
+  },
+  "result": {
+    "id": "skydeitymysticpivot:teaching_scroll"
+  }
+}

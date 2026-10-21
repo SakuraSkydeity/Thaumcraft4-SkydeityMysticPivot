@@ -31,9 +31,9 @@ import skydeity.mysticpivot.XuanshuPedestalBlockEntity;
 public final class XuanshuPedestalJeiCategory
         implements IRecipeCategory<XuanshuPedestalBlockEntity.Transformation> {
 
-    /** 版式尺寸：一行槽位 + 两行说明。宽度与坩埚那页（108）对齐。 */
+    /** 版式尺寸：一行槽位 + 两行说明（卦石多一行要素价）。宽度与坩埚那页（108）对齐。 */
     public static final int WIDTH = 108;
-    public static final int HEIGHT = 48;
+    public static final int HEIGHT = 58;
 
     private static final int INPUT_X = 4, INPUT_Y = 4;
     private static final int ARROW_X = 28, ARROW_Y = 5;
@@ -104,5 +104,12 @@ public final class XuanshuPedestalJeiCategory
         graphics.drawString(font,
                 Component.translatable("gui.skydeitymysticpivot.pedestal_qi_hint"),
                 TEXT_X, TEXT_Y + TEXT_LINE, 0xFFFFFFFF, true);
+        // 第三行（仅卦石）：每件还要耗本卦要素若干份——由台座从周围罐子里吸纳
+        if (transformation.essentiaCost() > 0) {
+            graphics.drawString(font,
+                    Component.translatable("gui.skydeitymysticpivot.pedestal_essentia",
+                            transformation.essentiaCost(), Fengshui.displayName(qi)),
+                    TEXT_X, TEXT_Y + TEXT_LINE * 2, 0xFFFFFFFF, true);
+        }
     }
 }

@@ -35,11 +35,14 @@
   "instability": 6,
   "aspects": {
     "aer": 32,
-    "ignis": 32,
     "aqua": 32,
-    "terra": 32,
+    "ignis": 32,
     "ordo": 32,
-    "perditio": 32
+    "perditio": 32,
+    "terra": 32,
+    "skydeitymysticpivot:gen": 20,
+    "skydeitymysticpivot:kun": 20,
+    "skydeitymysticpivot:zhen": 20
   },
   "result": {
     "id": "skydeitymysticpivot:xuanshu_purifying_stone"

@@ -1,0 +1,4 @@
+# SkydeityMysticPivot - active (animated) material for the xuanshu star ding
+newmtl ding
+Kd 1.000000 1.000000 1.000000
+map_Kd skydeitymysticpivot:block/xuanshu_charger_active

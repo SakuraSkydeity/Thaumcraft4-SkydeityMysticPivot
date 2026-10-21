@@ -6,6 +6,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -20,6 +23,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -63,7 +67,7 @@ import javax.annotation.Nullable;
  * <p>在上面的配方校验之上再收一道：{@link #hasStrictInput()} 为真时，自动输入<b>只拉能烧炼的原料</b>，
  * 燃料必须玩家自己放（燃料槽不再接受自动送入）。关闭（出厂默认）时燃料也照拉。</p>
  */
-public class XuanshuInfernalFurnaceBlockEntity extends BlockEntity implements MenuProvider {
+public class XuanshuInfernalFurnaceBlockEntity extends BlockEntity implements MenuProvider, StarReader {
 
     /** 并行加工位数：三炉同烧。 */
     public static final int LANES = 3;
@@ -86,6 +90,21 @@ public class XuanshuInfernalFurnaceBlockEntity extends BlockEntity implements Me
 
     /** 一炉最多一次消化的件数：「上限 64 个」。 */
     public static final int MAX_BATCH = 64;
+
+    /**
+     * 星象加成（第一百二十批）：斗口四星各供玄枢锭 → 产出翻倍。
+     *
+     * <p>每 {@value #STAR_CACHE_TICKS} tick 重算一次（{@link #refreshStarRite()}）；
+     * 出货时只看这个布尔，所以<b>任何</b>配方都自动适用。</p>
+     */
+    private boolean starDoubled;
+    private long starCacheTick = Long.MIN_VALUE;
+
+    /** 星象加成多久重算一次（tick）。 */
+    private static final int STAR_CACHE_TICKS = 20;
+
+    /** 头顶引导线的颜色：深赤（第一百二十三批「深一点、浓一点」，从 0xE0402C 压到 0x9E1808）。 */
+    private static final int GUIDE_RED = 0xD81B0C;
 
     /** 熔炼周期（tick）：★ 1 tick——一炉 64 件、每 tick 一炉，即本机最大速度（第 47 批由 20 改到此值）。 */
     public static final int SMELT_INTERVAL = 1;
@@ -325,7 +344,41 @@ public class XuanshuInfernalFurnaceBlockEntity extends BlockEntity implements Me
             be.autoInput();
             be.autoOutput();
         }
+        be.refreshStarRite();
         be.tickSmelting();
+    }
+
+    @Override
+    public int guideColor() {
+        return GUIDE_RED;
+    }
+
+    /** 红线只在「斗口四星各供玄枢锭」成立时亮。 */
+    @Override
+    public boolean guideActive(Constellation constellation) {
+        return this.starDoubled;
+    }
+
+    /** 重算星象加成（节流）；只读一个布尔，出货口直接用。 */
+    private void refreshStarRite() {
+        if (this.level == null) {
+            return;
+        }
+        long now = this.level.getGameTime();
+        // ★ 第一百二十四批：这里原来写的是 `now - starCacheTick < 20`，而 starCacheTick 初值是
+        //   Long.MIN_VALUE —— 相减直接溢出成负数，条件永远成立，refreshStarRite 一次都没真正跑过，
+        //   于是 starDoubled 恒为 false（用户说的「位置对、名字对，就是不翻倍」）。
+        if (this.starCacheTick != Long.MIN_VALUE && now - this.starCacheTick < STAR_CACHE_TICKS) {
+            return;
+        }
+        this.starCacheTick = now;
+        boolean next = StarRite.doubled(this.level, this.worldPosition);
+        if (next != this.starDoubled) {
+            this.starDoubled = next;
+            if (!this.level.isClientSide) {
+                this.syncToClient();     // 红线亮不亮要下发，客户端才知道
+            }
+        }
     }
 
     /** 从所有「自动输入 / 输入输出」面拉取物品——必查配方，只收能烧或能当燃料的。 */
@@ -517,24 +570,39 @@ public class XuanshuInfernalFurnaceBlockEntity extends BlockEntity implements Me
             }
         }
 
-        // 4. 燃烧中且这一格可烧 → 推进进度；否则进度清零（原版同款，三个格子各算各的）
+        // 4. 推进进度。★ 第 82 批改造（与炼金炉的「排要素阶段」同款思路）：
+        //    - 不满格时照旧：没活干 / 火灭了就清零；
+        //    - 刚做完一炉时进度<b>不再立刻归零</b>，而是留在满格：
+        //      成品还压在输出槽 → 保持满格（「做完了，等你取走」，绿箭头不消失）；
+        //      成品被取走 / 还能连做下一炉 → 翻篇归零，从头再涨。
         if (litRemaining > 0) {
             for (int lane = 0; lane < LANES; lane++) {
                 if (plans[lane] <= 0) {
-                    progress[lane] = 0;
+                    // 没活可干：满格 + 输出槽还有成品 → 保持；否则清零
+                    if (progress[lane] < SMELT_INTERVAL
+                            || items.getStackInSlot(outputSlot(lane)).isEmpty()) {
+                        progress[lane] = 0;
+                    }
                     continue;
+                }
+                if (progress[lane] >= SMELT_INTERVAL) {
+                    // 上一炉的满格翻篇：成品已取走，或输出腾得出空间可以连做
+                    progress[lane] = 0;
                 }
                 progress[lane]++;
                 if (progress[lane] >= SMELT_INTERVAL) {
-                    progress[lane] = 0;
                     finishLane(lane, results[lane], plans[lane]);
                     emitEffects();
                 }
                 dirty = true;
             }
         } else {
+            // 火灭了：满格 + 输出槽还有成品 → 保持（成品还在等取）；否则清零
             for (int lane = 0; lane < LANES; lane++) {
-                progress[lane] = 0;
+                if (progress[lane] < SMELT_INTERVAL
+                        || items.getStackInSlot(outputSlot(lane)).isEmpty()) {
+                    progress[lane] = 0;
+                }
             }
         }
 
@@ -553,7 +621,12 @@ public class XuanshuInfernalFurnaceBlockEntity extends BlockEntity implements Me
         if (input.isEmpty() || result.isEmpty()) {
             return 0;
         }
-        int per = Math.max(1, result.getCount());
+        // ★ 第一百三十一批：翻倍时按「双份」算占位。
+        //   原来按单份算，64 件一批能塞进输出槽，翻倍后 128 件只装得下 64，
+        //   剩下 64 全被弹到地上（自动弹出也来不及运）。现在一批最多 32 件、
+        //   出 64 件正好装满一格，下一 tick 自动输出搬走、再烧下一批——通量不变，也不再掉地上。
+        int mult = this.starDoubled ? StarRite.MULTIPLIER : 1;
+        int per = Math.max(1, result.getCount() * mult);
         int batch = Math.min(input.getCount(), MAX_BATCH);
         return Math.min(batch, Math.max(0, outputSpace(lane, result) / per));
     }
@@ -577,12 +650,24 @@ public class XuanshuInfernalFurnaceBlockEntity extends BlockEntity implements Me
             return;
         }
         items.extractItem(inputSlot(lane), batch, false);
-        ItemStack produced = result.copyWithCount(result.getCount() * batch);
+        // ★ 第一百二十批：星象仪式成立时产出翻倍。翻倍只改件数、不碰配方，
+        //   所以原版 / 附属 / 数据包的任何烧炼配方都自动适用。
+        int produced = result.getCount() * batch * (this.starDoubled ? StarRite.MULTIPLIER : 1);
         ItemStack out = items.getStackInSlot(outputSlot(lane));
-        if (out.isEmpty()) {
-            items.setStackInSlot(outputSlot(lane), produced);
-        } else {
-            items.setStackInSlot(outputSlot(lane), out.copyWithCount(out.getCount() + produced.getCount()));
+        int limit = Math.min(items.getSlotLimit(outputSlot(lane)), result.getMaxStackSize());
+        int space = out.isEmpty()
+                ? limit
+                : (ItemStack.isSameItemSameComponents(out, result) ? limit - out.getCount() : 0);
+        int put = Math.min(produced, Math.max(0, space));
+        if (put > 0) {
+            items.setStackInSlot(outputSlot(lane), out.isEmpty()
+                    ? result.copyWithCount(put)
+                    : out.copyWithCount(out.getCount() + put));
+        }
+        // 翻倍之后装不下的那部分绝不凭空吞掉，掉在炉边
+        int drop = produced - put;
+        if (drop > 0) {
+            Block.popResource(this.level, this.worldPosition, result.copyWithCount(drop));
         }
     }
 
@@ -652,6 +737,24 @@ public class XuanshuInfernalFurnaceBlockEntity extends BlockEntity implements Me
     // 存档
     // ------------------------------------------------------------------
 
+    /** 状态一变就推给客户端（红线的亮灭靠它）。 */
+    public void syncToClient() {
+        if (this.level != null && !this.level.isClientSide) {
+            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(),
+                    this.getBlockState(), Block.UPDATE_ALL);
+        }
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return this.saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
@@ -661,6 +764,7 @@ public class XuanshuInfernalFurnaceBlockEntity extends BlockEntity implements Me
         tag.putInt("LitRemaining", litRemaining);
         tag.putInt("LitTotal", litTotal);
         tag.putIntArray("Progress", progress);
+        tag.putBoolean("StarDoubled", this.starDoubled);
     }
 
     @Override
@@ -674,6 +778,7 @@ public class XuanshuInfernalFurnaceBlockEntity extends BlockEntity implements Me
             System.arraycopy(modes, 0, sideModes, 0, 6);
         }
         strictInput = tag.getBoolean("StrictInput");
+        this.starDoubled = tag.getBoolean("StarDoubled");
         litRemaining = tag.getInt("LitRemaining");
         litTotal = tag.getInt("LitTotal");
         int[] saved = tag.getIntArray("Progress");

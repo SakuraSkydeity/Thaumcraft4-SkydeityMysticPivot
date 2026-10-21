@@ -1,0 +1,38 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "thaumcraft:thaumium_pickaxe"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "thaumcraft:thaumium_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "thaumcraft:thaumium_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "thaumcraft:thaumium_ingot"
+    }
+  ],
+  "instability": 4,
+  "aspects": {
+    "terra": 48,
+    "ordo": 48,
+    "ignis": 32,
+    "aer": 32,
+    "aqua": 32,
+    "perditio": 32
+  },
+  "result": {
+    "id": "skydeitymysticpivot:bagua_pickaxe"
+  }
+}

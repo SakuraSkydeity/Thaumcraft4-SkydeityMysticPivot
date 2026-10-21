@@ -33,8 +33,11 @@ import java.util.Map;
  * （格框就画在底图上）就不会出现，漏画的表现是「打开物品栏一片空白」。</p>
  *
  * <h2>「传输配置」面板</h2>
- * <p>左缘一枚按键样的页签展开；板上有 3×3 十字的六个面按钮——这台机器只有<b>两档</b>：
- * 灰 = 关闭、蓝 = 自动输入（它没有物品产出，产物是源质、走管子出去）。</p>
+ * <p>左缘一枚按键样的页签展开；<b>板子尺寸、标题、色例与玄枢坩埚 / 玄枢炎炉逐字相同</b>
+ * （标题「传输配置」，底部两行色例：输入 / 输出 / 输入输出）。</p>
+ * <p>★ 但本机<b>只有两档</b>——灰 = 关闭、蓝 = 自动输入（它没有物品产出，产物是源质、走管子出去，
+ * 所以没有「输出」这一档可配）；<b>也没有精确输入开关</b>。两处「少掉的东西」都不去假造：
+ * 橙 / 紫两枚色例照画（三台要一致），开关那一条留白。</p>
  */
 public class XuanshuAlchemyFurnaceScreen extends AbstractContainerScreen<XuanshuAlchemyFurnaceMenu> {
 
@@ -49,13 +52,20 @@ public class XuanshuAlchemyFurnaceScreen extends AbstractContainerScreen<Xuanshu
     /** 左缘展开页签（相对面板左上角）。 */
     private static final int TAB_W = 14, TAB_H = 16, TAB_Y = 62;
 
-    /** 配置板尺寸与内部布局（这台机器档数少，板子比另外两台矮一截）。 */
-    private static final int WIN_W = 84, WIN_H = 118;
+    /**
+     * 配置板尺寸与内部布局（与玄枢坩埚 / 玄枢炎炉<b>同一套</b>，见 {@link XuanshuCrucibleScreen}）。
+     *
+     * <p>★ 本机<b>没有精确输入开关</b>（它只进料、不问来料是给哪一膛的），所以标题下方
+     * 那条 {@code y = 17~31} 的开关位<b>留白</b>——板子尺寸与另两台一致，位置也一致。
+     * 不去动它，是为了「三台机器的传输配置板看起来是同一块」。</p>
+     */
+    private static final int WIN_W = 84, WIN_H = 130;
     private static final int CELL = 20, GAP = 3;
     private static final int GRID_W = CELL * 3 + GAP * 2;
     private static final int GRID_X = (WIN_W - GRID_W) / 2;
-    private static final int GRID_Y = 33;
-    private static final int LEGEND_Y = 100, LEGEND_ROW = 11;
+    private static final int GRID_Y = 35;
+    /** 图例：两行（输入 / 输出 一行，输入输出 一行），与另两台同坐标。 */
+    private static final int LEGEND_Y = 105, LEGEND_ROW = 11;
 
     /** 六个面在 3×3 十字里的位置（行, 列）；中心格（1,1）代表北面。 */
     private static final int[][] CELL_POS = new int[6][];
@@ -79,6 +89,10 @@ public class XuanshuAlchemyFurnaceScreen extends AbstractContainerScreen<Xuanshu
     private static final int COL_CELL_EDGE = XuanshuGui.PANEL_EDGE;
     private static final int COL_OFF = 0xFF8B8B8B, COL_OFF_DK = 0xFF6E6E6E;
     private static final int COL_INPUT = 0xFF3B6FD4, COL_INPUT_DK = 0xFF27498F;
+    // ★ 本机只有「关闭 / 自动输入」两档，橙色与紫色<b>不会出现在按钮上</b>；
+    //   它们只是色例——三台机器的色例必须一行不差地相同（用户要求「所有机器都一样」）。
+    private static final int COL_OUTPUT = 0xFFE07A1F, COL_OUTPUT_DK = 0xFF9A4E10;
+    private static final int COL_EJECT = 0xFF915DCD, COL_EJECT_DK = 0xFF5B2E96;
 
     /**
      * 进度箭头（AE2 压印器那支粗箭头；相对面板，三行各一支，横在行内）。
@@ -166,11 +180,10 @@ public class XuanshuAlchemyFurnaceScreen extends AbstractContainerScreen<Xuanshu
         }
     }
 
-    /** 面板上的信息全在格子与色例里，不再画任何说明文字、也不挂悬停提示。 */
-    @Override
-    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-        super.renderLabels(graphics, mouseX, mouseY);
-    }
+    // ★ 第七十七批清理：这里原本有一个 {@code renderLabels} 覆写，方法体只有一行
+    //   {@code super.renderLabels(graphics, mouseX, mouseY);} —— 与不覆写完全等价，纯属残留。
+    //   标题与「物品栏」两行文字照常由父类默认绘制（{@code init()} 里设的
+    //   {@code titleLabelX} / {@code inventoryLabelY} 就是在给它们定位）。
 
     /** 一块 AE2 风的面板（画法在 {@link XuanshuGui#panel}）。 */
     private static void drawPanel(GuiGraphics graphics, int x, int y, int w, int h) {
@@ -281,9 +294,11 @@ public class XuanshuAlchemyFurnaceScreen extends AbstractContainerScreen<Xuanshu
             drawSideButton(graphics, wx, wy, face);
         }
 
+        // 底部色例：第一行 输入 / 输出，第二行 输入输出——与玄枢坩埚、玄枢炎炉逐字相同。
         int ly = wy + LEGEND_Y;
-        drawLegend(graphics, wx + 7, ly, COL_OFF, "skydeitymysticpivot.gui.off");
-        drawLegend(graphics, wx + 45, ly, COL_INPUT, "skydeitymysticpivot.gui.input");
+        drawLegend(graphics, wx + 7, ly, COL_INPUT, "skydeitymysticpivot.gui.input");
+        drawLegend(graphics, wx + 45, ly, COL_OUTPUT, "skydeitymysticpivot.gui.output");
+        drawLegend(graphics, wx + 7, ly + LEGEND_ROW, COL_EJECT, "skydeitymysticpivot.gui.eject");
     }
 
     private void drawLegend(GuiGraphics graphics, int lx, int ly, int color, String key) {

@@ -7,8 +7,8 @@ modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
 authors="${mod_authors}"
-description='''神秘时代:天神玄枢 —— Thaumcraft Skydeity Mystic Pivot
-An addon built against the parent mod's public API. The parent mod is required at runtime.'''
+description='''An addon built against the parent mod's public API. The parent mod is required at runtime.
+Chinese display name (creative tab only): 神秘时代：玄枢学'''
 
 [[mixins]]
 config="${mod_id}.mixins.json"
@@ -31,6 +31,15 @@ side="BOTH"
 modId="thaumcraft"
 type="required"
 versionRange="[4,)"
+ordering="AFTER"
+side="BOTH"
+
+# Curios 为必需前置：本体 TC4 硬依赖它（[9.5.1,)），玄枢洞虚灵目直接调用其 API
+# （通用 curio 栏位 + CurioAttributeModifiers 护甲组件）。
+[[dependencies.${mod_id}]]
+modId="curios"
+type="required"
+versionRange="[9.5.1,)"
 ordering="AFTER"
 side="BOTH"
 

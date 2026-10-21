@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "skydeitymysticpivot:block/xuanshu_charger"
+    },
+    "active=true": {
+      "model": "skydeitymysticpivot:block/xuanshu_charger_active"
+    }
+  }
+}

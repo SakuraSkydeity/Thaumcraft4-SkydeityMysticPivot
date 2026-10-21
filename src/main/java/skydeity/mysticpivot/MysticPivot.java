@@ -20,7 +20,6 @@ public class MysticPivot {
         ModMenus.MENUS.register(modEventBus);
         ModRecipes.RECIPE_TYPES.register(modEventBus);
         ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
-        ModParticles.PARTICLE_TYPES.register(modEventBus);
         ModTab.TABS.register(modEventBus);
         ModFocuses.ATTACHMENTS.register(modEventBus);
         ModWandParts.register();
@@ -32,5 +31,7 @@ public class MysticPivot {
         NeoForge.EVENT_BUS.addListener(ModEvents::onServerStarted);
         NeoForge.EVENT_BUS.addListener(ModEvents::onAddReloadListener);
         modEventBus.addListener(ModEvents::onRegisterCapabilities);
+        // 第七十八批：Curios 饰品登记（玄枢洞虚灵目），走模组事件总线的通用设置期
+        modEventBus.addListener(ModEvents::onCommonSetup);
     }
 }

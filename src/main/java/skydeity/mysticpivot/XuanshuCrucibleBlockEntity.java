@@ -94,7 +94,7 @@ import java.util.Optional;
  * 自动输入<b>只收有坩埚配方的触媒</b>（见 {@link #acceptsExternal}），其余一概拒收。
  * 这一套只管<b>物品</b>，与上面的要素吸入互不相干。</p>
  */
-public class XuanshuCrucibleBlockEntity extends BlockEntity implements MenuProvider, EssentiaTransport {
+public class XuanshuCrucibleBlockEntity extends BlockEntity implements MenuProvider, EssentiaTransport, StarReader {
 
     /** 并行加工位数：三炉同烧。 */
     public static final int LANES = 3;
@@ -277,6 +277,51 @@ public class XuanshuCrucibleBlockEntity extends BlockEntity implements MenuProvi
     private long lastAbsorbTick = -1;
 
     /** 本炉次抽过要素的源（画轨迹用）。 */
+    /**
+     * 北斗七座是否各供一枚玄枢碎片（第一百三十三批立门、<b>第一百五十一批加严</b>）：
+     * 未烬的玄枢锭要这个条件才炼得成。
+     *
+     * <p>原来只查「北斗全曜」——七颗星亮着就算，星位上摆圆石也行；用户改口径后改成核供物，
+     * 见 {@link StarRite#beidouShard}。服务端每 {@value #STAR_CACHE_TICKS} tick 重算一次；
+     * 头顶那条绿线不读这个字段，客户端自己算星象。</p>
+     */
+    private boolean starBeidouShard;
+    private long starCacheTick = Long.MIN_VALUE;
+
+    private static final int STAR_CACHE_TICKS = 20;
+
+    /** 头顶引导线的颜色：翠绿（北斗七星全亮时亮）。 */
+    private static final int GUIDE_GREEN = 0x1FD45E;
+
+    @Override
+    public int guideColor() {
+        return GUIDE_GREEN;
+    }
+
+    /**
+     * 绿线只在「北斗七座各供玄枢碎片」成立时亮（第一百五十一批改口径）。
+     *
+     * <p>原来是 {@code constellation.beidouComplete()}——七颗星亮着就算，与加严后的门禁
+     * （{@link StarRite#beidouShard}）对不上。这里改成同一套判定，十 tick 一算。</p>
+     */
+    @Override
+    public boolean guideActive(Constellation constellation) {
+        if (this.level == null) {
+            return false;
+        }
+        long now = this.level.getGameTime();
+        if (this.guideGateTick == Long.MIN_VALUE || now - this.guideGateTick >= GUIDE_GATE_TICKS) {
+            this.guideGateTick = now;
+            this.guideGateCache = StarRite.beidouShard(this.level, this.worldPosition);
+        }
+        return this.guideGateCache;
+    }
+
+    /** 引导线判定的缓存（见 {@link #guideActive}）。 */
+    private boolean guideGateCache;
+    private long guideGateTick = Long.MIN_VALUE;
+    private static final int GUIDE_GATE_TICKS = 10;
+
     private final List<BlockPos> trailSources = new ArrayList<>(MAX_TRAILS);
 
     /** 对应的要素色（画轨迹用）。 */
@@ -555,6 +600,10 @@ public class XuanshuCrucibleBlockEntity extends BlockEntity implements MenuProvi
         if (level == null || level.isClientSide) {
             return;
         }
+        if (this.starCacheTick == Long.MIN_VALUE || time - this.starCacheTick >= STAR_CACHE_TICKS) {
+            this.starCacheTick = time;
+            this.starBeidouShard = StarRite.beidouShard(level, this.worldPosition);
+        }
         for (int lane = 0; lane < LANES; lane++) {
             tickLane(lane, time);
         }
@@ -595,7 +644,21 @@ public class XuanshuCrucibleBlockEntity extends BlockEntity implements MenuProvi
             return;
         }
 
+        // ★ 第 82 批：完成态（进度停在满格等取货）——成品被取走就把进度归零；
+        //   成品还压在输出槽里就保持满格，箭头一直亮着。而「能连做下一炉」的路径
+        //   不受影响：下面要素够 + 输出有空间会走 startLane，把进度翻篇从头再涨。
+        if (state.progress >= PROCESS_TICKS
+                && items.getStackInSlot(outputSlot(lane)).isEmpty()) {
+            state.progress = 0;
+            syncToClient();
+        }
+
         XuanshuCrucibleRecipe recipe = XuanshuCrucibleRecipe.find(level, input);
+        // ★ 第一百三十三批立门、第一百五十一批加严：未烬的玄枢锭要北斗七座各供玄枢碎片
+        //   才炼得成，其余配方不受影响
+        if (recipe != null && input.is(ModItems.XUANSHU_INGOT_UNFIRED.get()) && !this.starBeidouShard) {
+            recipe = null;
+        }
         int cap = planBatch(lane, recipe, input);
         refreshNeeded(state, recipe, cap);
         if (recipe == null || cap <= 0) {
@@ -835,7 +898,14 @@ public class XuanshuCrucibleBlockEntity extends BlockEntity implements MenuProvi
             // 产物槽满了：绝不凭空吞掉，掉在锅边上
             Block.popResource(level, worldPosition, result.copy());
         }
-        state.reset();
+        // ★ 第 82 批：不调 state.reset()——进度条要<b>留在满格</b>（PROCESS_TICKS）上，
+        //   表示「这一炉做完了，成品在输出槽等你取」，绿箭头不消失（对齐炼金炉的排要素阶段）。
+        //   只清本炉的「账」：working / batch / recipe / pending。
+        //   成品被取走（输出槽空）后由 tickLane 把进度归零；能连做下一炉时 startLane 也会归零。
+        state.working = false;
+        state.batch = 0;
+        state.recipe = null;
+        state.pending = ItemStack.EMPTY;
         if (level instanceof net.minecraft.server.level.ServerLevel server) {
             server.playSound(null, worldPosition, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 0.8F, 1.1F);
         }

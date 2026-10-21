@@ -16,6 +16,10 @@ public final class ModMenus {
             MENUS.register("xuanshu_infernal_furnace",
                     () -> new MenuType<>(XuanshuInfernalFurnaceMenu::new, FeatureFlags.VANILLA_SET));
 
+    public static final DeferredHolder<MenuType<?>, MenuType<XuanshuReplicatorMenu>> XUANSHU_REPLICATOR =
+            MENUS.register("xuanshu_replicator",
+                    () -> new MenuType<>(XuanshuReplicatorMenu::new, FeatureFlags.VANILLA_SET));
+
     public static final DeferredHolder<MenuType<?>, MenuType<XuanshuCrucibleMenu>> XUANSHU_CRUCIBLE =
             MENUS.register("xuanshu_crucible",
                     () -> new MenuType<>(XuanshuCrucibleMenu::new, FeatureFlags.VANILLA_SET));
@@ -23,6 +27,14 @@ public final class ModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<XuanshuAlchemyFurnaceMenu>> XUANSHU_ALCHEMY_FURNACE =
             MENUS.register("xuanshu_alchemy_furnace",
                     () -> new MenuType<>(XuanshuAlchemyFurnaceMenu::new, FeatureFlags.VANILLA_SET));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<XuanshuNodeModifierMenu>> XUANSHU_NODE_MODIFIER =
+            MENUS.register("xuanshu_node_modifier",
+                    () -> new MenuType<>(XuanshuNodeModifierMenu::new, FeatureFlags.VANILLA_SET));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<XuanshuArcaneTableMenu>> XUANSHU_ARCANE_TABLE =
+            MENUS.register("xuanshu_arcane_table",
+                    () -> new MenuType<>(XuanshuArcaneTableMenu::new, FeatureFlags.VANILLA_SET));
 
     private ModMenus() {
     }

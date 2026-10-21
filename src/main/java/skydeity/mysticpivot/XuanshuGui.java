@@ -1,6 +1,8 @@
 package skydeity.mysticpivot;
 
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
 /**
@@ -33,22 +35,20 @@ public final class XuanshuGui {
     // ---- AE2 面板调色板（appliedenergistics2 19.2.18 / inscriber.png 实测） ----
 
     /** 面板体（浅灰蓝）。 */
-    public static final int PANEL_BODY = 0xFFCBCCD4;
+    public static final int PANEL_BODY = 0xFFE4E7F2;
     /** 面板内上 / 左高光（冷白）。 */
-    public static final int PANEL_HI = 0xFFF2F2F2;
+    public static final int PANEL_HI = 0xFFFFFFFF;
     /** 面板内下 / 右灰影。 */
-    public static final int PANEL_LO = 0xFF878FA5;
+    public static final int PANEL_LO = 0xFFA7AEC6;
     /** 最外一圈近黑描边。 */
-    public static final int PANEL_EDGE = 0xFF413F54;
+    public static final int PANEL_EDGE = 0xFF454C68;
 
     // ---- AE2 槽位：亮框 + 深底 ----
 
     /** 槽底（比面板暗一档）。 */
-    public static final int SLOT_FILL = 0xFFADB0C4;
+    public static final int SLOT_FILL = 0xFFC8CCDE;
     /** 槽内顶部那道更深的影。 */
-    public static final int SLOT_TOP = 0xFF9A9FB4;
-    /** 更深的灰（未用态 / 暗线）。 */
-    public static final int SLOT_DARK = 0xFF696D88;
+    public static final int SLOT_TOP = 0xFFDADFED;
 
     // ---- 符文进度箭（自家青金主题，取代 AE2 那支平涂灰箭头） ----
 
@@ -74,6 +74,29 @@ public final class XuanshuGui {
     private static final double ARROW_TAIL_RATIO = 0.46;
     /** 箭尾内凹缺口的深度（像素，正中最深）。 */
     private static final int ARROW_NOTCH = 2;
+
+    // ---- 面板上的三种字色（第 150 批：不再「一团黑」，金色一律换 lore 蓝） ----
+
+    /**
+     * 说明文字：槽位小字、节点存量这类正文。
+     *
+     * <p>旧值 {@code 0xFF4A4E66} / {@code 0xFF23253A} 在浅面板上几乎就是黑，
+     * 中文小字一压上去显得又黑又厚；这里抬到灰蓝 {@code 0xFF6E7794}，
+     * 笔画立刻轻一档，远看的层次也更像 AE2 自己那套界面。</p>
+     */
+    public static final int TEXT_SOFT = 0xFF6E7794;
+
+    /**
+     * 强调文字：标题旁的提示、附魔条数、节点类型这类「要一眼看到」的字。
+     *
+     * <p>旧值是土金 {@code 0xFF7A5A12}；用户要求换成物品 lore 的那种蓝
+     * （{@code ModItems#starLore} 的 {@code 0x8FB0FF}）。原色在浅面板上对比度只有 1.7:1，
+     * 读不清，所以同色相压深一档取 {@code 0xFF4A6FE0}：还是那支蓝，但落在浅底上看得清。</p>
+     */
+    public static final int TEXT_ACCENT = 0xFF4A6FE0;
+
+    /** 强调文字里更「淡」的一档（信息框正文，比 {@link #TEXT_ACCENT} 再沉一点）。 */
+    public static final int TEXT_ACCENT_SOFT = 0xFF5E7FE0;
 
     private XuanshuGui() {
     }
@@ -112,6 +135,20 @@ public final class XuanshuGui {
         graphics.fill(sx + 1, sy + 1, sx + 17, sy + 17, SLOT_FILL);
         // 顶部一道更深的影（内凹感）
         graphics.fill(sx + 1, sy + 1, sx + 17, sy + 2, SLOT_TOP);
+    }
+
+    /**
+     * 居中画一行<b>不带投影</b>的字（第一百五十三批）。
+     *
+     * <p>用户：「注灵台和奥术台字体还是有点厚重的感觉」。第 150 批只把字色抬浅了，但那层
+     * <b>1 像素投影</b>还在——{@code drawCenteredString} 默认 {@code dropShadow = true}，
+     * 中文小字叠上投影就发糊、发厚。这里统一走 {@code drawString(..., false)}，
+     * 字色不变、只去掉投影，笔画立刻干净。</p>
+     *
+     * @param cx 文字块的水平中线
+     */
+    public static void centerText(GuiGraphics graphics, Font font, Component text, int cx, int y, int color) {
+        graphics.drawString(font, text, cx - font.width(text) / 2, y, color, false);
     }
 
     /**

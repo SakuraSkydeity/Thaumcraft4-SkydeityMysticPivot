@@ -23,9 +23,9 @@ import java.util.List;
  */
 public final class XuanshuPedestalEmiRecipe implements EmiRecipe {
 
-    /** 宽度与坩埚那页（108）对齐；高度容两行说明。 */
+    /** 宽度与坩埚那页（108）对齐；高度容三行说明（卦石多一行要素价）。 */
     private static final int WIDTH = 108;
-    private static final int HEIGHT = 48;
+    private static final int HEIGHT = 58;
     private static final int INPUT_X = 4, INPUT_Y = 4;
     private static final int ARROW_X = 28, ARROW_Y = 5;
     private static final int OUTPUT_X = 58, OUTPUT_Y = 4;
@@ -36,9 +36,11 @@ public final class XuanshuPedestalEmiRecipe implements EmiRecipe {
 
     public XuanshuPedestalEmiRecipe(XuanshuPedestalBlockEntity.Transformation transformation) {
         this.transformation = transformation;
-        // id 取「输入物品」的名字（台座目前只有一条转化，够用；再多也不会撞车）。
+        // id 取「输入_输出」两个物品名。★ 只用输入会撞车：八条卦石转化的输入都是石砖，
+        //   早先那条 {@code pedestal/stone_bricks} 会同时顶掉八条，EMI 里只剩一条。
         this.id = ResourceLocation.fromNamespaceAndPath(MysticPivot.MODID,
-                "pedestal/" + BuiltInRegistries.ITEM.getKey(transformation.input().getItem()).getPath());
+                "pedestal/" + BuiltInRegistries.ITEM.getKey(transformation.input().getItem()).getPath()
+                        + "_to_" + BuiltInRegistries.ITEM.getKey(transformation.output().getItem()).getPath());
     }
 
     @Override
@@ -84,5 +86,11 @@ public final class XuanshuPedestalEmiRecipe implements EmiRecipe {
                 Fengshui.displayName(qi)), TEXT_X, TEXT_Y, 0xFFFFFFFF, true);
         widgets.addText(Component.translatable("gui.skydeitymysticpivot.pedestal_qi_hint"),
                 TEXT_X, TEXT_Y + TEXT_LINE, 0xFFFFFFFF, true);
+        // 第三行（仅卦石）：每件还要耗本卦要素若干份——由台座从周围罐子里吸纳
+        if (this.transformation.essentiaCost() > 0) {
+            widgets.addText(Component.translatable("gui.skydeitymysticpivot.pedestal_essentia",
+                    this.transformation.essentiaCost(), Fengshui.displayName(qi)),
+                    TEXT_X, TEXT_Y + TEXT_LINE * 2, 0xFFFFFFFF, true);
+        }
     }
 }

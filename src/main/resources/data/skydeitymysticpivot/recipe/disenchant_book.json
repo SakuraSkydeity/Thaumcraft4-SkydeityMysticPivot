@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "SBS",
+    " S "
+  ],
+  "key": {
+    "S": { "item": "skydeitymysticpivot:xuanshu_shard" },
+    "B": { "item": "minecraft:book" }
+  },
+  "result": {
+    "id": "skydeitymysticpivot:disenchant_book",
+    "count": 1
+  }
+}

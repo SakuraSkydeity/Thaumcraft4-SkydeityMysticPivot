@@ -1,161 +1,206 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""赤羽焚天瞬核心（focus_teleport）贴图重绘（第九十一批首绘，第九十七批重画「居中 + 闪烁」）。
+
+用户原话（第九十七批）：「focus_teleport 的贴图居中，然后带一点点闪烁的像素感觉」。
+
+两张一起重画（16×16 硬边）：
+  * {@code focus_teleport.png}（layer1，物品 / GUI 顶层）：**圆盘星辰核**——
+    外圈金环、内夜空紫盘、四臂星芒、四角小星、中心亮星；
+  * {@code focus_teleport_orn.png}（layer0 + focus 档案的 ornament_texture，
+    贴到法杖帽上的 focus 立方体上）：**圆盘章印**（圆轮廓 + 中心亮星 + 四向圆头星光），
+    任何角度贴上去都不会出现竖条观感。
+
+<h2>第九十七批改了两处</h2>
+<ol>
+  <li><b>居中</b>：上一版几何是绕「整数格 8」画的（{@code int(cx)} 起步、星芒 {@code 8±t}），
+      于是不透明像素的包围盒落在 x1~13 / y1~13，<b>中心是 7.0 而不是 7.5</b>
+      ——在 16×16 图标里就是整体偏左上半个像素，贴到法杖帽上最看得出来。
+      本版一律用<b>连续坐标 8.0</b> 作圆心（像素中心 x+0.5 关于 8.0 镜像 ⇒ 像素下标包围盒
+      中心恰为 7.5），四臂星芒也改成**成对**落点（7−t 与 8+t），画完再自检包围盒中心。</li>
+  <li><b>一点点闪烁的像素感</b>：静态贴图做「闪」的观感——盘里撒若干
+      **亮粒 + 相邻暗晕** 的小星（不对称分布），而不是均匀噪点。</li>
+</ol>
 """
-「法杖核心:传送」（focus_teleport）的图标与侧边装饰贴图（12.66 批再改：**整体以圆形为主**）。
-
-用户第 1 条：「核心：传送的模型没问题，贴图修改一下，整体还是圆形为主」。
-12.63 批把图标画成了「星盘 + 四角外挂十字星」，四枚角星露在圆外，整体读起来
-是「一朵尖角星」而不是「一颗珠子」——这一批把外面那些一律收回圆内：
-
-  * `focus_teleport.png`（layer1，物品图标主体）——**一颗圆宝珠**：
-    圆形轮廓（半径 6.2，落成一张规整的圆盘）+ 金圈；珠内是深紫星空，
-    中心亮、边缘深；正中一枚小十字星（臂长 2），另散三枚星点，圆周四斜位点青灵光。
-  * `focus_teleport_orn.png`（layer0 + 法杖上的模型轮廓）——
-    **一颗紧凑的十字星簇**：中央一枚大十字星（臂长 3）+ 四斜位四枚小十字星（臂长 2）。
-    整簇最大半径 5.15 < 宝珠半径 6.2 ⇒ 全部落在宝珠圆内：
-      - 当 layer0 用时被 layer1 的圆盘完全盖住 ⇒ 图标就是一颗干净的圆珠；
-      - 当法杖 ornament 用时，本体（`WandFocusRenderer.renderFocusOrnament`）照它的
-        alpha 轮廓挤出薄板 ⇒ 杖头仍浮着「几个十字星」，模型观感不变。
-
-★ 一条硬约束（上一批踩过）：图标里的十字星**臂长只能到 2**。臂长 ≥4 会顶到金圈上，
-  整颗珠子读成「一个加号」。ornament 里的大星臂长 3 是安全的——它不在图标里露面。
-"""
+import math
 import os
 
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ITEM_TEX = os.path.join(ROOT, "src/main/resources/assets/skydeitymysticpivot/textures/item")
+PREVIEW = os.path.join(ROOT, "tools/preview")
 
-# ---- 星辰调色板 ----
-SPACE_DEEP = (30, 22, 62)       # 珠缘内侧最深的星空紫
-SPACE = (48, 36, 96)            # 星空紫
-SPACE_HI = (78, 62, 140)        # 星空亮紫（左上受光侧）
-NEBULA = (116, 92, 186)         # 星云紫（珠心）
-GOLD = (232, 196, 108)          # 鎏金（星芒外段 / 金圈）
-GOLD_HI = (250, 232, 176)       # 金芒最亮（星芒内段 / 金圈高光）
-STAR = (246, 244, 255)          # 星心（近白）
-CYAN = (150, 226, 232)          # 青灵光（点缀）
+SIZE = 16
 
-CX, CY = 7.5, 7.5               # 贴图中心（像素坐标）
-RADIUS = 6.2                    # 宝珠半径
+# ★ 圆心用连续坐标 8.0：像素中心 (x+0.5) 关于 8.0 镜像 ⇒ 像素下标包围盒中心恰为 7.5。
+C = 8.0
 
-
-def orb_cells():
-    """半径 6.2 的实心圆盘：返回 {(x, y)}。"""
-    cells = set()
-    for y in range(16):
-        for x in range(16):
-            if ((x + 0.5 - CX) ** 2 + (y + 0.5 - CY) ** 2) <= RADIUS ** 2:
-                cells.add((x, y))
-    return cells
+# 星辰夜空调色板（硬边）
+P = {
+    ".": (0, 0, 0, 0),
+    "p": (58, 40, 96, 255),      # 夜空紫
+    "P": (96, 66, 150, 255),     # 亮紫（受光）
+    "g": (140, 108, 46, 255),    # 金 · 暗
+    "G": (238, 200, 96, 255),    # 金 · 中
+    "h": (255, 236, 160, 255),   # 金 · 亮
+    "w": (245, 248, 255, 255),   # 星白
+    "b": (150, 190, 255, 255),   # 星蓝
+}
 
 
-ORB = orb_cells()
-RIM = {c for c in ORB if any((c[0] + dx, c[1] + dy) not in ORB
-                             for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))}
-# 金圈上四点青灵光：取圆上四个斜位（左上一枚、右上两枚、左下一枚）
-RIM_GLINT = ((4, 3), (11, 3), (3, 4), (11, 12))
+def blank():
+    return [["." for _ in range(SIZE)] for _ in range(SIZE)]
 
 
-def dist(x, y):
-    return ((x + 0.5 - CX) ** 2 + (y + 0.5 - CY) ** 2) ** 0.5
+def put(g, x, y, c):
+    if 0 <= x < SIZE and 0 <= y < SIZE:
+        g[y][x] = c
 
 
-def star(px, cx, cy, arm, inner=GOLD_HI, outer=GOLD):
-    """四正十字星：臂长 arm，臂根 inner → 臂梢 outer，星心 STAR。"""
-    for d in range(1, arm + 1):
-        c = inner if d == 1 else outer
-        for (x, y) in ((cx, cy - d), (cx, cy + d), (cx - d, cy), (cx + d, cy)):
-            if 0 <= x < 16 and 0 <= y < 16:
-                px[x, y] = c + (255,)
-    if 0 <= cx < 16 and 0 <= cy < 16:
-        px[cx, cy] = STAR + (255,)
+def put_pair(g, x, y, c):
+    """关于 7.5 的镜像成对落点：一次画 (x, y) 与 (15-x, y)。"""
+    put(g, x, y, c)
+    put(g, SIZE - 1 - x, y, c)
 
 
-def build_focus():
-    """圆宝珠：圆形轮廓 + 金圈 + 珠内星空 + 正中一枚小十字星 + 散点。"""
-    im = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+def render(g):
+    im = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
     px = im.load()
-    for (x, y) in ORB:
-        d = dist(x, y)
-        if (x, y) in RIM:
-            c = CYAN if (x, y) in RIM_GLINT else GOLD
-        elif d <= 2.2:
-            c = NEBULA                       # 珠心星云
-        elif x < 7 and y < 7:
-            c = SPACE_HI                     # 左上受光侧
-        elif d >= RADIUS - 1.6:
-            c = SPACE_DEEP                   # 贴近珠缘压深，圆才「鼓」得起来
-        else:
-            c = SPACE
-        px[x, y] = c + (255,)
-
-    star(px, 7, 7, 2)                        # 正中一枚小十字星（整星 5px）
-    for (x, y) in ((11, 6), (4, 10), (10, 11)):   # 三枚散点（避开四正，免得和星芒撞）
-        if (x, y) in ORB and (x, y) not in RIM:
-            px[x, y] = STAR + (255,)
+    for y in range(SIZE):
+        for x in range(SIZE):
+            px[x, y] = P[g[y][x]]
     return im
 
 
-def build_ornament():
-    """紧凑十字星簇：中央一枚大十字星（臂 3）+ 四斜位四枚小十字星（臂 1）+ 斜向细芒。
+def disc(g, r, c):
+    for y in range(SIZE):
+        for x in range(SIZE):
+            if (x + 0.5 - C) ** 2 + (y + 0.5 - C) ** 2 <= r * r:
+                g[y][x] = c
 
-    ★ 位置全部按「伸出去的最外那一格也要落在宝珠半径 6.2 以内」反推：
-      中央星臂 3 ⇒ 尖端半径 3.5；四枚小星放斜位 (4,4)/(10,4)/(4,10)/(10,10)
-      （中心半径 4.24），臂 1 ⇒ 尖端半径 5.00。最大 5.00 < 6.2 ⇒ 圆内全部盖得住。
-    ★ 小星必须放**斜位**、臂长必须 ≤1：12.66 第一版放四正 (5,5)/(10,5)/(5,10)/(10,10)
-      臂 2，五枚星的横臂在 y=5/y=10 上首尾相连，竖臂在 x=5/x=10 上首尾相连，
-      整簇糊成一个「#」字。斜位 + 短臂就没有对齐问题。
-    """
-    im = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+
+def ring(g, r, c, w=1.0):
+    for y in range(SIZE):
+        for x in range(SIZE):
+            d = math.hypot(x + 0.5 - C, y + 0.5 - C)
+            if abs(d - r) < w:
+                g[y][x] = c
+
+
+def cross_rays(g, arm, c_arm, c_tip):
+    """四臂星芒：横臂占第 7/8 两行、竖臂占第 7/8 两列，**成对**向外（→ 居中）。"""
+    for t in range(1, arm + 1):
+        for row in (7, 8):
+            put_pair(g, 7 - t, row, c_arm)       # 左臂 7−t ↔ 右臂 8+t
+        for col in (7, 8):
+            put(g, col, 7 - t, c_arm)
+            put(g, col, 8 + t, c_arm)
+    t = arm + 1                                  # 尖端加亮：再往外一格
+    for row in (7, 8):
+        put_pair(g, 7 - t, row, c_tip)
+    for col in (7, 8):
+        put(g, col, 7 - t, c_tip)
+        put(g, col, 8 + t, c_tip)
+
+# ---- 闪烁像素：亮粒 + 相邻暗晕（不对称分布，做出「一点点闪」）----
+FLASH = [
+    (4, 6, "w"), (5, 6, "g"),
+    (11, 9, "w"), (10, 9, "g"),
+    (6, 11, "w"), (6, 10, "g"),
+    (9, 4, "b"), (9, 3, "g"),
+    (3, 9, "b"),
+    (12, 6, "w"),
+]
+
+
+def centre_report(name, im):
     px = im.load()
-
-    def put(x, y, c):
-        if 0 <= x < 16 and 0 <= y < 16:
-            px[x, y] = c + (255,)
-
-    # 细芒：星心 -> 四枚小星，1px 斜线（压在星下面，先画）
-    for (tx, ty) in ((4, 4), (10, 4), (4, 10), (10, 10)):
-        steps = max(abs(tx - 7), abs(ty - 7))
-        for s in range(2, steps):
-            x = round(7 + (tx - 7) * s / steps)
-            y = round(7 + (ty - 7) * s / steps)
-            put(x, y, SPACE_HI)
-
-    for (cx, cy) in ((4, 4), (10, 4), (4, 10), (10, 10)):
-        star(px, cx, cy, 1, inner=GOLD_HI, outer=GOLD)
-    star(px, 7, 7, 3)
-    return im
+    xs, ys = [], []
+    for y in range(SIZE):
+        for x in range(SIZE):
+            if px[x, y][3] > 0:
+                xs.append(x)
+                ys.append(y)
+    x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+    cx, cy = (x0 + x1) / 2.0, (y0 + y1) / 2.0
+    ok = (cx, cy) == (7.5, 7.5)
+    print("%-24s bbox x%d~%d y%d~%d  中心 (%.1f, %.1f)  %s"
+          % (name, x0, x1, y0, y1, cx, cy, "OK" if ok else "!! 未居中"))
+    return ok
 
 
 def main():
-    focus = build_focus()
-    focus.save(os.path.join(ITEM_TEX, "focus_teleport.png"))
-    print("item tex -> focus_teleport.png", focus.size, "| orb cells:", len(ORB))
+    os.makedirs(PREVIEW, exist_ok=True)
+    ok = True
 
-    orn = build_ornament()
-    orn.save(os.path.join(ITEM_TEX, "focus_teleport_orn.png"))
-    print("item tex -> focus_teleport_orn.png", orn.size)
+    # ---- focus_teleport：圆盘星辰核（盘占满 13px，居中）----
+    g = blank()
+    disc(g, 6.6, "p")                       # 夜空盘
+    disc(g, 6.6, "P")
+    ring(g, 6.2, "h", 0.9)                  # 外金环（亮）
+    ring(g, 5.2, "g", 0.9)                  # 内金环（暗）
+    # 盘内上半受光
+    for y in range(SIZE):
+        for x in range(SIZE):
+            if y + 0.5 < C - 0.5 and (x + 0.5 - C) ** 2 + (y + 0.5 - C) ** 2 <= 5.0 ** 2 \
+                    and g[y][x] in ("p", "P"):
+                g[y][x] = "P"
+    cross_rays(g, 3, "G", "w")              # 四臂星芒（中金臂、白尖；臂长 3 不压满盘）
+    for x, y in ((7, 7), (8, 7), (7, 8), (8, 8)):
+        g[y][x] = "w"                       # 中心亮星 2×2
+    # 四角小星（盘内 45° 方向的成对四粒，蓝）
+    for x, y in ((5, 5), (10, 5), (5, 10), (10, 10)):
+        if g[y][x] in ("p", "P"):
+            g[y][x] = "b"
+    # ★ 闪烁像素
+    for (x, y, c) in FLASH:
+        put(g, x, y, c)
+    im = render(g)
+    im.save(os.path.join(ITEM_TEX, "focus_teleport.png"))
+    ok &= centre_report("focus_teleport.png", im)
 
-    out = os.path.join(ROOT, "tools/preview")
-    for name, im in (("focus_teleport", focus), ("focus_teleport_orn", orn)):
-        im.resize((16 * 14, 16 * 14), Image.NEAREST).save(
-            os.path.join(out, "teleport_%s.png" % name))
+    # ---- focus_teleport_orn：圆盘章印（cap 上不卡模的关键：圆轮廓）----
+    g2 = blank()
+    disc(g2, 6.0, "G")                      # 金盘底
+    disc(g2, 4.8, "p")                      # 内夜空
+    disc(g2, 3.4, "P")
+    ring(g2, 5.4, "h", 1.0)                 # 盘缘亮金
+    # 四向探出的圆头星光（成对落点 → 居中）
+    for t in (5, 6):
+        for row in (7, 8):
+            put_pair(g2, 7 - t, row, "h")
+        for col in (7, 8):
+            put(g2, col, 7 - t, "h")
+            put(g2, col, 8 + t, "h")
+    for row in (7, 8):
+        put_pair(g2, 2, row, "w")
+    put(g2, 7, 2, "w")
+    put(g2, 8, 2, "w")
+    put(g2, 7, 13, "w")
+    put(g2, 8, 13, "w")
+    # 中心亮星
+    for x, y in ((7, 7), (8, 7), (7, 8), (8, 8),
+                 (6, 7), (9, 8), (7, 6), (8, 9)):
+        g2[y][x] = "w"
+    # ★ 闪烁像素（四粒对称，做出「一点点闪」）
+    for x, y in ((5, 5), (10, 10)):
+        g2[y][x] = "w"
+    for x, y in ((10, 5), (5, 10)):
+        g2[y][x] = "b"
+    im2 = render(g2)
+    im2.save(os.path.join(ITEM_TEX, "focus_teleport_orn.png"))
+    ok &= centre_report("focus_teleport_orn.png", im2)
 
-    # 合成图：ornament（layer0）在下、宝珠（layer1）在上 —— 就是物品图标实际长什么样
-    comp = Image.alpha_composite(orn, focus)
-    sheet = Image.new("RGBA", (16 * 3 + 2, 16), (24, 24, 30, 255))
-    for i, im2 in enumerate((focus, orn, comp)):
-        sheet.paste(im2, (i * 17, 0), im2)
-    sheet.resize((sheet.width * 12, sheet.height * 12), Image.NEAREST).save(
-        os.path.join(out, "teleport_composite.png"))
-    print("preview -> tools/preview/teleport_composite.png (圆形宝珠 | ornament | 合成)")
-
-    # 断言：ornament 的每个不透明像素都落在宝珠圆盘内（否则图标会露尖角）
-    leak = [(x, y) for y in range(16) for x in range(16)
-            if orn.getpixel((x, y))[3] > 0 and (x, y) not in ORB]
-    print("ornament 露在圆外的像素:", leak if leak else "无（图标一定是纯圆）")
+    # 双联预览
+    cell = SIZE * 20
+    canvas = Image.new("RGBA", (cell * 2 + 30, cell + 20), (30, 26, 44, 255))
+    canvas.paste(im.resize((cell, cell), Image.NEAREST), (10, 10))
+    canvas.paste(im2.resize((cell, cell), Image.NEAREST), (20 + cell, 10))
+    canvas.save(os.path.join(PREVIEW, "focus_teleport.png"))
+    print("preview -> tools/preview/focus_teleport.png")
+    if not ok:
+        raise SystemExit("居中的自检没过，别部署")
 
 
 if __name__ == "__main__":

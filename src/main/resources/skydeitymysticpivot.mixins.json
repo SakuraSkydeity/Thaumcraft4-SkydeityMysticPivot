@@ -4,11 +4,15 @@
   "package": "skydeity.mysticpivot.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "AuraNodeEnergizedMachineMixin",
     "InfusionMatrixAccelMixin",
     "InfusionMatrixBlockEntityAccessor",
     "InfusionMatrixCraftGateMixin",
     "ParentTaintAccessor",
     "ParentWarpAccessor"
+  ],
+  "client": [
+    "AuraNodeVisualScaleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

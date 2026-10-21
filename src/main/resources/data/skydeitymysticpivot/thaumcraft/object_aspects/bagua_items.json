@@ -104,6 +104,16 @@
       "skydeitymysticpivot:gen": 2,
       "skydeitymysticpivot:kun": 2
     },
+    "skydeitymysticpivot:bagua_pickaxe": {
+      "skydeitymysticpivot:qian": 2,
+      "skydeitymysticpivot:dui": 2,
+      "skydeitymysticpivot:li": 2,
+      "skydeitymysticpivot:zhen": 2,
+      "skydeitymysticpivot:xun": 2,
+      "skydeitymysticpivot:kan": 2,
+      "skydeitymysticpivot:gen": 2,
+      "skydeitymysticpivot:kun": 2
+    },
     "skydeitymysticpivot:xuanshu_pickaxe": {
       "skydeitymysticpivot:qian": 2,
       "skydeitymysticpivot:dui": 2,
@@ -113,6 +123,20 @@
       "skydeitymysticpivot:kan": 2,
       "skydeitymysticpivot:gen": 2,
       "skydeitymysticpivot:kun": 2
+    },
+    "skydeitymysticpivot:xuanshu_hoe": {
+      "skydeitymysticpivot:qian": 2,
+      "skydeitymysticpivot:dui": 2,
+      "skydeitymysticpivot:li": 2,
+      "skydeitymysticpivot:zhen": 2,
+      "skydeitymysticpivot:xun": 2,
+      "skydeitymysticpivot:kan": 2,
+      "skydeitymysticpivot:gen": 2,
+      "skydeitymysticpivot:kun": 2
+    },
+    "skydeitymysticpivot:xuanshu_charger": {
+      "skydeitymysticpivot:qian": 4,
+      "skydeitymysticpivot:kun": 4
     },
     "skydeitymysticpivot:azure_dragon_shard": {
       "skydeitymysticpivot:qian": 1,
@@ -153,6 +177,18 @@
       "skydeitymysticpivot:kan": 6,
       "skydeitymysticpivot:gen": 1,
       "skydeitymysticpivot:kun": 6
+    },
+    "skydeitymysticpivot:xuanshu_node_modifier": {
+      "skydeitymysticpivot:qian": 4,
+      "skydeitymysticpivot:kun": 4,
+      "skydeitymysticpivot:xun": 4,
+      "skydeitymysticpivot:kan": 4
+    },
+    "skydeitymysticpivot:xuanshu_arcane_table": {
+      "skydeitymysticpivot:qian": 4,
+      "skydeitymysticpivot:kan": 4,
+      "skydeitymysticpivot:zhen": 2,
+      "skydeitymysticpivot:xun": 2
     }
   }
 }

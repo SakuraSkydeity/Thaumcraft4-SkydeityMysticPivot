@@ -1,0 +1,20 @@
+{
+  "type": "skydeitymysticpivot:xuanshu_crucible",
+  "catalyst": {
+    "item": "skydeitymysticpivot:xuanshu_ingot_unfired"
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_ingot",
+    "count": 1
+  },
+  "aspects": {
+    "skydeitymysticpivot:qian": 4,
+    "skydeitymysticpivot:dui": 4,
+    "skydeitymysticpivot:li": 4,
+    "skydeitymysticpivot:zhen": 4,
+    "skydeitymysticpivot:xun": 4,
+    "skydeitymysticpivot:kan": 4,
+    "skydeitymysticpivot:gen": 4,
+    "skydeitymysticpivot:kun": 4
+  }
+}

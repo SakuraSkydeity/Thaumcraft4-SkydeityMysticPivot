@@ -1,36 +1,50 @@
 {
   "type": "thaumcraft:infusion",
   "central": {
-    "item": "thaumcraft:thaumium_pickaxe"
+    "item": "skydeitymysticpivot:bagua_pickaxe"
   },
   "components": [
     {
-      "item": "skydeitymysticpivot:bagua_shard"
+      "item": "skydeitymysticpivot:xuanshu_shard"
     },
     {
-      "item": "thaumcraft:thaumium_ingot"
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
-      "item": "skydeitymysticpivot:bagua_shard"
+      "item": "skydeitymysticpivot:xuanshu_shard"
     },
     {
-      "item": "thaumcraft:thaumium_ingot"
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
-      "item": "skydeitymysticpivot:bagua_shard"
+      "item": "skydeitymysticpivot:xuanshu_shard"
     },
     {
-      "item": "thaumcraft:thaumium_ingot"
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     }
   ],
-  "instability": 4,
+  "instability": 6,
   "aspects": {
-    "terra": 48,
-    "ordo": 48,
-    "ignis": 32,
-    "aer": 32,
-    "aqua": 32,
-    "perditio": 32
+    "terra": 64,
+    "ordo": 64,
+    "ignis": 48,
+    "aer": 48,
+    "aqua": 48,
+    "perditio": 48,
+    "skydeitymysticpivot:qian": 32,
+    "skydeitymysticpivot:dui": 32,
+    "skydeitymysticpivot:li": 32,
+    "skydeitymysticpivot:zhen": 32,
+    "skydeitymysticpivot:xun": 32,
+    "skydeitymysticpivot:kan": 32,
+    "skydeitymysticpivot:gen": 32,
+    "skydeitymysticpivot:kun": 32
   },
   "result": {
     "id": "skydeitymysticpivot:xuanshu_pickaxe"

@@ -1,0 +1,49 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "skydeitymysticpivot:bagua_pickaxe"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "minecraft:diamond_hoe"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    }
+  ],
+  "instability": 6,
+  "aspects": {
+    "terra": 64,
+    "aqua": 48,
+    "ordo": 48,
+    "aer": 32,
+    "ignis": 32,
+    "perditio": 32,
+    "skydeitymysticpivot:qian": 32,
+    "skydeitymysticpivot:dui": 32,
+    "skydeitymysticpivot:li": 32,
+    "skydeitymysticpivot:zhen": 32,
+    "skydeitymysticpivot:xun": 32,
+    "skydeitymysticpivot:kan": 32,
+    "skydeitymysticpivot:gen": 32,
+    "skydeitymysticpivot:kun": 32
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_hoe"
+  }
+}

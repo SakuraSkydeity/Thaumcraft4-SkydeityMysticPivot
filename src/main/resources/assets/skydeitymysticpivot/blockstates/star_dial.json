@@ -1,0 +1,238 @@
+{
+  "variants": {
+    "role=none,type=bottom,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_dial"
+    },
+    "role=r0c0,type=bottom,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r0c0"
+    },
+    "role=r0c1,type=bottom,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r0c1"
+    },
+    "role=r0c2,type=bottom,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r0c2"
+    },
+    "role=r1c0,type=bottom,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r1c0"
+    },
+    "role=r1c1,type=bottom,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r1c1"
+    },
+    "role=r1c2,type=bottom,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r1c2"
+    },
+    "role=r2c0,type=bottom,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r2c0"
+    },
+    "role=r2c1,type=bottom,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r2c1"
+    },
+    "role=r2c2,type=bottom,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r2c2"
+    },
+    "role=r3c0,type=bottom,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r3c0"
+    },
+    "role=r3c1,type=bottom,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r3c1"
+    },
+    "role=r3c2,type=bottom,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r3c2"
+    },
+    "role=none,type=bottom,chart=six": {
+      "model": "skydeitymysticpivot:block/star_dial"
+    },
+    "role=r0c0,type=bottom,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r0c0"
+    },
+    "role=r0c1,type=bottom,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r0c1"
+    },
+    "role=r0c2,type=bottom,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r0c2"
+    },
+    "role=r1c0,type=bottom,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r1c0"
+    },
+    "role=r1c1,type=bottom,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r1c1"
+    },
+    "role=r1c2,type=bottom,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r1c2"
+    },
+    "role=r2c0,type=bottom,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r2c0"
+    },
+    "role=r2c1,type=bottom,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r2c1"
+    },
+    "role=r2c2,type=bottom,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r2c2"
+    },
+    "role=r3c0,type=bottom,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r3c0"
+    },
+    "role=r3c1,type=bottom,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r3c1"
+    },
+    "role=r3c2,type=bottom,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r3c2"
+    },
+    "role=none,type=top,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_dial"
+    },
+    "role=r0c0,type=top,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r0c0"
+    },
+    "role=r0c1,type=top,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r0c1"
+    },
+    "role=r0c2,type=top,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r0c2"
+    },
+    "role=r1c0,type=top,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r1c0"
+    },
+    "role=r1c1,type=top,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r1c1"
+    },
+    "role=r1c2,type=top,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r1c2"
+    },
+    "role=r2c0,type=top,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r2c0"
+    },
+    "role=r2c1,type=top,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r2c1"
+    },
+    "role=r2c2,type=top,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r2c2"
+    },
+    "role=r3c0,type=top,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r3c0"
+    },
+    "role=r3c1,type=top,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r3c1"
+    },
+    "role=r3c2,type=top,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r3c2"
+    },
+    "role=none,type=top,chart=six": {
+      "model": "skydeitymysticpivot:block/star_dial"
+    },
+    "role=r0c0,type=top,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r0c0"
+    },
+    "role=r0c1,type=top,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r0c1"
+    },
+    "role=r0c2,type=top,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r0c2"
+    },
+    "role=r1c0,type=top,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r1c0"
+    },
+    "role=r1c1,type=top,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r1c1"
+    },
+    "role=r1c2,type=top,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r1c2"
+    },
+    "role=r2c0,type=top,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r2c0"
+    },
+    "role=r2c1,type=top,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r2c1"
+    },
+    "role=r2c2,type=top,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r2c2"
+    },
+    "role=r3c0,type=top,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r3c0"
+    },
+    "role=r3c1,type=top,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r3c1"
+    },
+    "role=r3c2,type=top,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r3c2"
+    },
+    "role=none,type=double,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_dial"
+    },
+    "role=r0c0,type=double,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r0c0"
+    },
+    "role=r0c1,type=double,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r0c1"
+    },
+    "role=r0c2,type=double,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r0c2"
+    },
+    "role=r1c0,type=double,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r1c0"
+    },
+    "role=r1c1,type=double,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r1c1"
+    },
+    "role=r1c2,type=double,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r1c2"
+    },
+    "role=r2c0,type=double,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r2c0"
+    },
+    "role=r2c1,type=double,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r2c1"
+    },
+    "role=r2c2,type=double,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r2c2"
+    },
+    "role=r3c0,type=double,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r3c0"
+    },
+    "role=r3c1,type=double,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r3c1"
+    },
+    "role=r3c2,type=double,chart=seven": {
+      "model": "skydeitymysticpivot:block/star_plate_r3c2"
+    },
+    "role=none,type=double,chart=six": {
+      "model": "skydeitymysticpivot:block/star_dial"
+    },
+    "role=r0c0,type=double,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r0c0"
+    },
+    "role=r0c1,type=double,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r0c1"
+    },
+    "role=r0c2,type=double,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r0c2"
+    },
+    "role=r1c0,type=double,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r1c0"
+    },
+    "role=r1c1,type=double,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r1c1"
+    },
+    "role=r1c2,type=double,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r1c2"
+    },
+    "role=r2c0,type=double,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r2c0"
+    },
+    "role=r2c1,type=double,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r2c1"
+    },
+    "role=r2c2,type=double,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r2c2"
+    },
+    "role=r3c0,type=double,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r3c0"
+    },
+    "role=r3c1,type=double,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r3c1"
+    },
+    "role=r3c2,type=double,chart=six": {
+      "model": "skydeitymysticpivot:block/star_six_r3c2"
+    }
+  }
+}

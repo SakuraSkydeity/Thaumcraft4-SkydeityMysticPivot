@@ -1,0 +1,59 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "skydeitymysticpivot:xuanshu_spirit_core"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:azure_dragon_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:disenchant_book"
+    },
+    {
+      "item": "skydeitymysticpivot:white_tiger_ingot"
+    },
+    {
+      "item": "thaumcraft:thaumic_charm"
+    },
+    {
+      "item": "skydeitymysticpivot:black_tortoise_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:disenchant_book"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "thaumcraft:thaumic_charm"
+    }
+  ],
+  "instability": 8,
+  "aspects": {
+    "aer": 32,
+    "aqua": 32,
+    "ignis": 32,
+    "ordo": 48,
+    "perditio": 32,
+    "terra": 48,
+    "skydeitymysticpivot:li": 24,
+    "skydeitymysticpivot:dui": 24,
+    "skydeitymysticpivot:qian": 24
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_arcane_table"
+  }
+}

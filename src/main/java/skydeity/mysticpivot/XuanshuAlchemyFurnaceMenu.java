@@ -216,12 +216,14 @@ public class XuanshuAlchemyFurnaceMenu extends AbstractContainerMenu {
     /**
      * 侧配面板标题。
      *
-     * <p>★ 这台机器<b>没有输出面可配</b>：烧出来的要素一律自动送往周围 5×5×3 里的管与罐
-     * （见方块实体里的 {@code inputFaceFor}），所以面板只管进料，标题也照实写清楚，
-     * 免得玩家去找「输出模式」。</p>
+     * <p>★ 与玄枢坩埚 / 玄枢炎炉<b>用的是同一个键</b>（{@code gui.config} = 「传输配置」）。
+     * 本机其实没有输出面可配——烧出来的要素一律自动送往周围 5×5×3 里的管与罐
+     * （见方块实体里的 {@code inputFaceFor}），所以早先的标题写作「输入配置（输出自动）」，
+     * 想替玩家省下找「输出模式」的功夫。<b>本批改回与另两台一致</b>：
+     * 三台机器的传输配置板看起来是同一块，差异只在「本机没有输出档」这一层。</p>
      */
     public static Component configTitle() {
-        return Component.translatable("skydeitymysticpivot.gui.config_output_auto");
+        return Component.translatable("skydeitymysticpivot.gui.config");
     }
 
     // ------------------------------------------------------------------

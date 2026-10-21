@@ -94,6 +94,9 @@ public final class XuanshuJeiPlugin implements IModPlugin {
         // 台座那一页不依赖世界（表是写死的常量），先加，免得 level 还没就绪时连它也没了。
         registration.addRecipes(XUANSHU_PEDESTAL, XuanshuPedestalBlockEntity.TRANSFORMATIONS);
 
+        // ★ 第一百四十八批：星象前置不再走 JEI「信息」条目——改挂到物品 lore 上
+        //   （与「所需卦石」同色的淡靛蓝一行，见 ModItems#starLore）。这里只留配方本身。
+
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) {
             return;

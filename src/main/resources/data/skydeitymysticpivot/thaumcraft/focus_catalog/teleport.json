@@ -3,7 +3,6 @@
     {
       "focus": "skydeitymysticpivot:teleport",
       "color": 8084694,
-      "per_tick": false,
       "base_cost": {
         "aer": 1000,
         "terra": 1000,
@@ -44,6 +43,50 @@
       },
       "client_presentation": {
         "ornament_texture": "skydeitymysticpivot:textures/item/focus_teleport_orn.png"
+      },
+      "pipeline": {
+        "modules": [
+          "thaumcraft:focus_actions"
+        ],
+        "bindings": [
+          {
+            "id": "skydeitymysticpivot:core/predict",
+            "stage": "thaumcraft:cast/predict",
+            "handler": "thaumcraft:prediction_air_cost",
+            "priority": 0
+          },
+          {
+            "id": "skydeitymysticpivot:actions/cast",
+            "stage": "thaumcraft:cast/step",
+            "handler": "thaumcraft:focus_actions",
+            "priority": -100
+          },
+          {
+            "id": "skydeitymysticpivot:actions/block",
+            "stage": "thaumcraft:use/before_formation",
+            "handler": "thaumcraft:focus_actions",
+            "priority": -100
+          },
+          {
+            "id": "skydeitymysticpivot:actions/input",
+            "stage": "thaumcraft:client/input_after_block",
+            "handler": "thaumcraft:focus_actions",
+            "priority": -100
+          },
+          {
+            "id": "skydeitymysticpivot:cost/label",
+            "stage": "thaumcraft:focus/cost_label",
+            "handler": "thaumcraft:cost/per_cast",
+            "priority": 0
+          }
+        ],
+        "casts": {
+          "secondary": [
+            {
+              "mode": "instant"
+            }
+          ]
+        }
       }
     }
   ]

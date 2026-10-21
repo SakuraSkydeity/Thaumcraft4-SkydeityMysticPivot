@@ -1,0 +1,59 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "minecraft:nether_star"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:azure_dragon_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "thaumcraft:thaumic_charm"
+    },
+    {
+      "item": "skydeitymysticpivot:white_tiger_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:black_tortoise_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "thaumcraft:thaumic_charm"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    }
+  ],
+  "instability": 8,
+  "aspects": {
+    "ordo": 64,
+    "perditio": 32,
+    "aer": 32,
+    "ignis": 24,
+    "aqua": 24,
+    "terra": 24,
+    "skydeitymysticpivot:qian": 24,
+    "skydeitymysticpivot:dui": 24,
+    "skydeitymysticpivot:li": 24
+  },
+  "result": {
+    "id": "skydeitymysticpivot:star_dial"
+  }
+}

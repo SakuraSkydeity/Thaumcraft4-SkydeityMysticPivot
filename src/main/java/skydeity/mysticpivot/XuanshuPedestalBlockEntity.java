@@ -1,5 +1,12 @@
 package skydeity.mysticpivot;
 
+import dev.tc4port.thaumcraft.api.aspect.AspectApi;
+import dev.tc4port.thaumcraft.api.aspect.AspectDefinition;
+import dev.tc4port.thaumcraft.api.aspect.AspectId;
+import dev.tc4port.thaumcraft.api.essentia.EssentiaApi;
+import dev.tc4port.thaumcraft.api.essentia.EssentiaSearch;
+import dev.tc4port.thaumcraft.api.essentia.EssentiaSourceRef;
+import dev.tc4port.thaumcraft.api.essentia.EssentiaTransferMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
@@ -18,7 +25,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 玄枢台座：皇宫鎏金橘黄的单格台座（底座四级收分 + 石英柱身 + 台面板，形制仿本体奥术基座），可置物其上。
@@ -27,14 +37,27 @@ import java.util.List;
  * 当地处「乾」之地气（开阔天空、头顶无遮挡）时，台面上的黑曜石会缓缓化为哭泣的黑曜石。
  * 可转化的物事集中在 {@link #TRANSFORMATIONS} 一张表里，JEI / EMI 也从这张表取。</p>
  *
+ * <p><b>吸纳要素</b>：成坛之后，台座会像<b>注魔矩阵</b>那样从<b>基座附近 5×5</b>
+ * 的「要素源」（原质罐、储液池、镜像……）里直接抽取<b>本地卦气对应的那一支</b>要素，
+ * 攒在台座里（{@link #bufferedAmount}）——不必先接管子、也不是非端点不可，
+ * 罐子摆在旁边就会自己吸。吸取时一条要素丝线从源一路牵进台座
+ * （{@link XuanshuPedestalEffects}，与注魔矩阵同款）；每周期只吸
+ * {@value #DRAW_PER_BATCH} 份，把八份拉成两秒上下的连续丝线——「看得见在被吸」。</p>
+ *
+ * <p>卦石就是这么来的：台面放石砖（<b>一次只纳一件</b>，见 {@link #items} 的槽上限）、
+ * 立于对应卦象的地气、罐子供着对应要素，攒够 {@value #ESSENTIA_PER_CRAFT} 份，
+ * 那件石砖便化为该卦之石（与旧坩埚配方同价：一件石砖 + 本卦要素 8 份）。</p>
+ *
  * <p>卦气呈现：台座上方悬着所在处的卦象单字（{@link XuanshuPedestalRenderer}），
- * 四周浮着一圈斜置椭圆的附魔粒子（{@link #clientTick}）——立在哪里、凝的哪一卦，一眼可辨。</p>
+ * 四隅各有一缕絮带搭上台座顶心，台口外圈盘着一道<b>金色丝带环</b>
+ * （同见渲染器）——立在哪里、凝的哪一卦，一眼可辨。</p>
  *
  * <p><b>客户端同步</b>（曾经漏掉、导致「放上去看不见、看着像拿不下来」）：台面上的物品由
  * {@link XuanshuPedestalRenderer} 在<b>客户端那台方块实体</b>上绘制，所以任何改动都必须下发——
  * 只调 {@code setChanged()} 只保证存档，客户端手里的 {@code items} 依旧是空的。
  * 这里三件事配齐：{@code getUpdateTag}（区块下发时带全量数据）、{@code getUpdatePacket}
- * （单点更新）、内容一变就 {@code sendBlockUpdated}（实时推送）。</p>
+ * （单点更新）、内容一变就 {@code sendBlockUpdated}（实时推送）。
+ * 至于吸纳进来的要素，纯服务端数据（客户端不画它），只存档、不下发。</p>
  */
 public class XuanshuPedestalBlockEntity extends BlockEntity {
 
@@ -45,13 +68,55 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
     public static final int TRANSFORM_TICKS = 60;
 
     /**
+     * 卦石转化<b>每件</b>要耗的要素份数。
+     *
+     * <p>与旧坩埚配方同价（{@code thaumcraft:crucible}：石砖 + 本卦要素 8 份 → 本卦之石）——
+     * 换的是合成途径，不是价钱。</p>
+     */
+    public static final int ESSENTIA_PER_CRAFT = 8;
+
+    /**
+     * 每个推进周期（10 tick）最多从罐子里抽多少份。
+     *
+     * <p>★ 第 84 批由 16 调到 2：一口气抽完只在屏幕上闪一下、玩家根本看不见；
+     * 每周期 2 份 → 一件卦石的 8 份要吸 4 个周期（约 2 秒），丝线便成一条
+     * <b>看得见的连续粒子流</b>，观感与注魔矩阵抽要素一致。</p>
+     */
+    private static final int DRAW_PER_BATCH = 2;
+
+    /**
+     * 旧存档兼容的抽吸上限：台面若还压着旧口径的「整堆」（见 {@link #items} 的槽上限），
+     * 走这条快车道——不然一整组 64 件按每周期 2 份要吸上两分钟。
+     */
+    private static final int DRAW_PER_BATCH_BULK = 16;
+
+    /**
+     * 抽要素的搜索范围：以台座为中心 ±{@value #SEARCH_RANGE}（水平 5×5、上下两格之内）。
+     *
+     * <p>★ 第 83 批改为与<b>注魔矩阵</b>同款——直接向范围内的「要素源」（原质罐、
+     * 储液池、镜像……）抽取，不再要求先接上管道、也不再是「端点专属」。</p>
+     */
+    private static final int SEARCH_RANGE = 2;
+
+    /** 吸取丝线的续描周期（tick）：吸着的时候每这么多 tick 把批号 +1 推一次。 */
+    private static final int TRAIL_INTERVAL = 5;
+
+    /** 吸取丝线的余晖（tick）：停吸超过这么久就停续并清表，客户端那条尾巴自然收掉。 */
+    private static final int TRAIL_LINGER = 10;
+
+    /** 吸取丝线最多记几条源。 */
+    private static final int MAX_TRAILS = 8;
+
+    /**
      * 一条「卦象转化」。
      *
-     * @param input  台面上要摆的东西（只认物品，件数随意）
-     * @param output 转化后的产物
-     * @param qi     必须凝着的卦气
+     * @param input        台面上要摆的东西（只认物品；第 84 批起台面一次只纳一件，
+     *                     旧存档里可能残留旧口径的整堆）
+     * @param output       转化后的产物
+     * @param qi           必须凝着的卦气
+     * @param essentiaCost <b>每件</b>要耗的要素份数（0 = 不要要素，光靠卦气）
      */
-    public record Transformation(ItemStack input, ItemStack output, Fengshui.Trigram qi) {
+    public record Transformation(ItemStack input, ItemStack output, Fengshui.Trigram qi, int essentiaCost) {
 
         /** 台面上这堆东西是不是本条要的物事。 */
         public boolean accepts(ItemStack stack) {
@@ -59,24 +124,51 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
         }
 
         /**
-         * 把台面上那堆整体换成产物。
+         * 把台面上的东西换成产物。
          *
          * <p>★ <b>件数照搬</b>——早先这里写死 {@code new ItemStack(Items.CRYING_OBSIDIAN)}，
-         * 于是放一组 64 个黑曜石也只拿回 1 个哭泣的黑曜石，其余的凭空没了。</p>
+         * 于是放一组 64 个黑曜石也只拿回 1 个哭泣的黑曜石，其余的凭空没了。
+         * 台面只纳一件之后件数恒为 1；照搬是为了兜住旧存档里可能残留的整堆。</p>
          */
         public ItemStack convert(ItemStack stack) {
             return new ItemStack(this.output.getItem(), stack.getCount());
+        }
+
+        /**
+         * 本条转化要的要素——就是<b>本卦那一支</b>（{@code skydeitymysticpivot:<卦名>}）。
+         *
+         * <p>cost 为 0 的转化（黑曜石 → 哭泣的黑曜石）不该问这个。</p>
+         */
+        public AspectId essentia() {
+            return ModAspectSources.aspectId(Fengshui.id(this.qi));
         }
     }
 
     /**
      * 台座可做的全部转化——<b>唯一的一处定义</b>，运行时与配方查看器（JEI / EMI）共用同一张表。
      *
-     * <p>乾为天，天光彻照则黑曜石泣。</p>
+     * <p>乾为天，天光彻照则黑曜石泣；八方石砖各承其卦——<b>立于对应卦象的地气、罐中供着
+     * 对应要素</b>，台面石砖便尽数化为该卦之石。</p>
      */
     public static final List<Transformation> TRANSFORMATIONS = List.of(
             new Transformation(new ItemStack(Items.OBSIDIAN), new ItemStack(Items.CRYING_OBSIDIAN),
-                    Fengshui.Trigram.QIAN));
+                    Fengshui.Trigram.QIAN, 0),
+            new Transformation(new ItemStack(Items.STONE_BRICKS), new ItemStack(ModItems.BAGUA_STONE_QIAN.get()),
+                    Fengshui.Trigram.QIAN, ESSENTIA_PER_CRAFT),
+            new Transformation(new ItemStack(Items.STONE_BRICKS), new ItemStack(ModItems.BAGUA_STONE_DUI.get()),
+                    Fengshui.Trigram.DUI, ESSENTIA_PER_CRAFT),
+            new Transformation(new ItemStack(Items.STONE_BRICKS), new ItemStack(ModItems.BAGUA_STONE_LI.get()),
+                    Fengshui.Trigram.LI, ESSENTIA_PER_CRAFT),
+            new Transformation(new ItemStack(Items.STONE_BRICKS), new ItemStack(ModItems.BAGUA_STONE_ZHEN.get()),
+                    Fengshui.Trigram.ZHEN, ESSENTIA_PER_CRAFT),
+            new Transformation(new ItemStack(Items.STONE_BRICKS), new ItemStack(ModItems.BAGUA_STONE_XUN.get()),
+                    Fengshui.Trigram.XUN, ESSENTIA_PER_CRAFT),
+            new Transformation(new ItemStack(Items.STONE_BRICKS), new ItemStack(ModItems.BAGUA_STONE_KAN.get()),
+                    Fengshui.Trigram.KAN, ESSENTIA_PER_CRAFT),
+            new Transformation(new ItemStack(Items.STONE_BRICKS), new ItemStack(ModItems.BAGUA_STONE_GEN.get()),
+                    Fengshui.Trigram.GEN, ESSENTIA_PER_CRAFT),
+            new Transformation(new ItemStack(Items.STONE_BRICKS), new ItemStack(ModItems.BAGUA_STONE_KUN.get()),
+                    Fengshui.Trigram.KUN, ESSENTIA_PER_CRAFT));
 
     /**
      * 台面上这堆东西、在当下这片卦气里，该走哪一条转化；无则回 {@code null}。
@@ -95,47 +187,23 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
 
 
     /**
-     * 卦气环：<b>绕 X 轴斜置 26° 的椭圆</b>，长轴 1.10 格、短轴 0.82 格。
+     * 单格台面；台面一有变动就存档并下发。
      *
-     * <p>短长轴之比固定在 0.82 / 1.10 ≈ 0.745（原 0.58 / 0.78 ≈ 0.744）——
-     * 放大时<b>只该整体推出去，不该顺手把形状压扁</b>，环的「扁」是它斜置 26° 之外的
-     * 第二重读法，动了比例就不再是同一枚环。</p>
-     *
-     * <p>0.78 → 1.10 的这一跳是「跨出方块本体」：台座自己是 1×1，长轴 1.10 时两端
-     * 会探到相邻那两格的上空，正好压在四象石砖的内台上方——环从「盘在柱头」
-     * 变成「笼住台口」，与砖唇那圈「包裹」是同一个动作的两处表现。</p>
+     * <p>★ 第 84 批起<b>每格只纳一件</b>（{@code getSlotLimit → 1}）：放置时
+     * {@code insertItem} 自动只收一件、余数留在玩家手里，以新换旧同此。
+     * 于是「整堆石砖一起变卦石」的旧口径不复存在——一件一件来，
+     * 每一件的吸纳过程都看得见。</p>
      */
-    private static final double RING_A = 1.10D;
-    private static final double RING_B = 0.82D;
-    /** 环面倾角：绕 X 轴 26°（斜着盘在台座顶上）。 */
-    private static final double RING_TILT = Math.toRadians(26.0D);
-    /** 环心高度（台座顶面在 1.0）。 */
-    private static final double RING_Y = 1.06D;
-    /**
-     * 整圈上均匀取几个点。
-     *
-     * <p>★ <b>环不转，那就得把整圈铺满</b>：以前靠「3 个点 + 旋转」用时间积出一圈，
-     * 现在要的是一枚<b>静止</b>的斜椭圆，于是取 22 个点把整条椭圆一次画全。</p>
-     *
-     * <p>★ <b>点数要跟着半径一起改</b>：16 点是按长轴 0.78 定的密度
-     * （周长约 4.2 格、点距约 0.26 格）。放大到 1.10 之后周长涨到约 5.9 格，
-     * 点数不动的话点距变成 0.37——环会从「一串符」散成「一堆点」。
-     * 22 点把点距拉回约 0.27 格，与旧观感一致。上限是 26：符文贴图一共 26 张，
-     * 点数超过 26 就一定有两枚重复，斜对着看会露怯。</p>
-     */
-    private static final int RING_DOTS = 22;
-
-    /** 开坛后那圈「已启」小符环：平铺的水平圆（不倾斜），贴着柱头。 */
-    private static final double INNER_R = 0.44D;
-    private static final double INNER_Y = 0.86D;
-    private static final int INNER_DOTS = 12;
-
-    /** 单格台面；台面一有变动就存档并下发。 */
     private final ItemStackHandler items = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
             syncToClient();
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return 1;
         }
     };
 
@@ -151,11 +219,35 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
     private boolean active;
 
     /**
-     * 卦气环现存的那一层还剩几 tick（0 = 该补了）。
+     * 从罐子里吸纳进来、攒在台座里的要素——<b>只可能是本地卦气对应的那一支</b>。
      *
-     * <p><b>只存在于客户端、不存档</b>：它管的是「什么时候再撒一层粒子」，与方块数据无关。</p>
+     * <p>收坛（四砖缺一块、或拆台座）即散：吸纳是「坛」的能耐，坛散了气也就散了。
+     * 卦气变了（地形被改造、台座迁到别处）同样留不住，一并清空。</p>
      */
-    private int ringCooldown;
+    private AspectId bufferedAspect;
+
+    /** 攒着的要素份数（与 {@link #bufferedAspect} 配套，无要素时为 0）。 */
+    private int bufferedAmount;
+
+    /**
+     * 吸取丝线的批号：服务端「刚吸到过要素」时每 {@value #TRAIL_INTERVAL} tick +1 并推一次
+     * 方块数据；客户端（{@link XuanshuPedestalEffects}）见了批号变化就把「源→台座」
+     * 那条吸取丝线的尾巴续满。
+     */
+    private int trailNonce;
+
+    /**
+     * 上次真的吸到要素的时刻（game tick）；没吸过时 -1。
+     *
+     * <p>轨迹续期只看它——停吸超过 {@link #TRAIL_LINGER} 就停续并清表。</p>
+     */
+    private long lastDrawTick = -1;
+
+    /** 最近吸到过要素的源（画吸取丝线用；客户端读，随方块数据下发）。 */
+    private final List<BlockPos> trailSources = new ArrayList<>(MAX_TRAILS);
+
+    /** 与 {@link #trailSources} 配对的要素色。 */
+    private final List<Integer> trailColors = new ArrayList<>(MAX_TRAILS);
 
     /** 自查周期（tick）：已开坛的台座每 20 tick 确认一次四砖还在不在。 */
     private static final int AUDIT_INTERVAL = 20;
@@ -280,89 +372,58 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
     }
 
     /**
-     * 客户端每 tick：台座处既凝着卦气，便沿一圈<b>斜置 26° 的椭圆</b>摆上附魔符文
-     * （长轴 0.78 / 短轴 0.58）——看着就是原版附魔台那种符文，只是不下落、不漂移。
+     * 客户端每 tick：把「吸取丝线」的尾巴续上（{@link XuanshuPedestalEffects}）。
      *
-     * <p>★ <b>用的是自建的零重力符文</b>（{@link ModParticles#QI_GLYPH}）而不是
-     * {@link ParticleTypes#ENCHANT}：原版那枚是 {@code FlyTowardsPositionParticle}，
-     * 它的 {@code tick()} 里写死了 {@code y = yStart + yd·f − f1⁴ × 1.2} ——
-     * <b>寿命末尾必沉 1.2 格，与 {@code yd} 传什么无关</b>，做不到用户要的「不下落」。
-     * 自建这枚除了变老什么都不做，贴图仍是原版那 26 张附魔符文（{@code sga_a … sga_z}）。</p>
-     *
-     * <p>★ <b>整环不转、且只维持一层</b>：{@link #RING_DOTS} 个点一次铺满整条椭圆、
-     * 相位固定，<b>等这一层全部灭掉（{@link ModParticles#RING_LIFETIME} tick）才补下一层</b>。
-     * 每个位置该显哪一号符文通过粒子参数里的 {@code zd} 传下去，所以同一个点上永远是同一个字。</p>
-     *
-     * <p>★★ <b>为什么不能「每几 tick 补一遍」</b>：粒子寿命比补描周期长十几倍时，同一个位置上
-     * 会叠着十几枚<b>年龄各不相同</b>的符文，而半透明贴图的透明度是相加的 —— 总亮度随各代
-     * 年龄此起彼伏，看着就是「一直在刷新、一直在闪」。一层就没有这个问题，整圈只随寿命
-     * 缓缓明灭一次。</p>
-     *
-     * <p>不走 {@code Block.animateTick}：那条路是「每 tick 随机抽 1334 个坐标」的稀疏散点，
-     * 单个方块几十 tick 才被抽中一次，凑不成一整圈。走方块实体的客户端 tick 才是每 tick 必到。</p>
-     *
-     * <p>★ <b>未成坛则一点都不起</b>：没开坛的台座（四象未立齐、或还没以法杖点过）
-     * 不测卦气，所以既没有外圈卦气环、也没有内圈「已启」符环——一眼就能分清
-     * 「这是一座台座」和「这是一座成了坛的台座」。</p>
+     * <p>★ 第 83 批：原「附魔符文粒子环」（沿斜置椭圆撒的一圈零重力符文）已删，
+     * 基座周围的环改为渲染器画的<b>金色丝带环</b>（{@link XuanshuPedestalRenderer}），
+     * 与四隅絮带同一套画法。这里只剩吸取丝线的续期（服务端每 {@value #TRAIL_INTERVAL} tick
+     * 把 {@link #trailNonce} +1 推下来，见了就把尾巴续满）。</p>
      */
     public static void clientTick(Level level, BlockPos pos, XuanshuPedestalBlockEntity be) {
-        // ★ 未成坛 = 不测卦气。卦象是「坛成之后才起」的东西：四象没立齐、没以法杖点过，
-        //   这座台座就是一块石头，头上不凝字、身边也不该浮粒子的环。
-        if (!be.active) {
-            be.ringCooldown = 0;
-            return;
-        }
-        boolean hasQi = !Fengshui.qiAll(level, pos).isEmpty();
-        if (be.ringCooldown > 0) {
-            // ★ 上一层还在，什么都不做 —— 这就是「只有一层」
-            be.ringCooldown--;
-            return;
-        }
-        // 补一层：寿命与补描间隔取同一个数，于是上一层刚灭、下一层就到
-        be.ringCooldown = ModParticles.RING_LIFETIME - 1;
-        double cx = pos.getX() + 0.5D;
-        double cy = pos.getY() + RING_Y;
-        double cz = pos.getZ() + 0.5D;
-        double sinTilt = Math.sin(RING_TILT);
-        double cosTilt = Math.cos(RING_TILT);
-        if (hasQi) {
-            for (int i = 0; i < RING_DOTS; i++) {
-                double angle = i * (Math.PI * 2.0D / RING_DOTS);
-                // 先在水平面上取椭圆，再整体绕 X 轴倾 26°：y 由短轴分量给出高度、z 被压短
-                double ex = Math.cos(angle) * RING_A;
-                double ez = Math.sin(angle) * RING_B;
-                // 三个速度全传 0（这枚粒子本来也不动）；zd 借来当「第几号符文」
-                level.addParticle(ModParticles.QI_GLYPH.get(),
-                        cx + ex, cy + ez * sinTilt, cz + ez * cosTilt,
-                        0.0D, 0.0D, i);
-            }
-        }
-        if (be.active) {
-            // 开坛之后多贴一圈小符环（平铺、不倾斜），压在柱头那一圈上——
-            // 与卦气环同生共灭，于是「这座台座是不是启过的」不必凑近看四砖也能认出来。
-            for (int i = 0; i < INNER_DOTS; i++) {
-                double angle = i * (Math.PI * 2.0D / INNER_DOTS);
-                level.addParticle(ModParticles.QI_GLYPH.get(),
-                        cx + Math.cos(angle) * INNER_R,
-                        pos.getY() + INNER_Y,
-                        cz + Math.sin(angle) * INNER_R,
-                        0.0D, 0.0D, (i + RING_DOTS) % 26);
-            }
-        }
+        XuanshuPedestalEffects.clientTick(level, pos, be);
     }
 
     /**
      * 每 10 tick 推进一次卦象转化；另外每 20 tick 自查一次四砖还在不在。
      *
-     * <p>★ <b>未成坛则不测卦气</b>：卦象转化（黑曜石 → 哭泣的黑曜石）只在台座「已启」
-     * 时进行。台座立对了地方却没开坛，台面上的东西就一直原样搁着——这与
-     * 「未开之坛不受外物」是同一条规矩的两面。</p>
+     * <h2>★ 这一趟的次序</h2>
+     * <ol>
+     *   <li><b>续丝</b>（每 tick，排在最前）：吸取丝线的续期 / 清表——★ 第 84 批
+     *       从末尾挪来；原先它排在多个 {@code return} 之后，正在吸要素的那些周期
+     *       （缓冲区未满、提前返回）根本走不到，批号推不出去、客户端一条丝线
+     *       也画不出来——「像没在吸」的根源就在这；</li>
+     *   <li><b>熄坛即散</b>：未成坛不测卦气、不转化，攒下的要素也一并散去（进度抹掉，
+     *       免得开坛瞬间「凭空推进」）；</li>
+     *   <li><b>对不上卦气就清零</b>：台面没东西、或这东西在当下这片卦气里没有对应转化，
+     *       进度归零，<b>也不去抽要素</b>——闲着也是空吸玩家的罐子，不干这事；</li>
+     *   <li><b>吸纳</b>：本条转化要要素时，从基座附近 5×5 的「要素源」里抽本地卦气那一支，
+     *       直到够这一件（每周期最多 {@value #DRAW_PER_BATCH} 份——慢慢吸，丝线才
+     *       看得清，见 {@link XuanshuPedestalEffects}）；</li>
+     *   <li><b>推进</b>：要素攒够才走 3 秒的转化，成时扣要素、换产物。</li>
+     * </ol>
      */
     public static void serverTick(Level level, BlockPos pos, BlockState state,
                                   XuanshuPedestalBlockEntity be) {
         if (level.isClientSide) {
             return;
         }
+        // 吸取丝线的续期：★ 第 84 批从函数末尾挪到这里——原来它排在多个 `return`
+        // 之后，正在吸要素的那几个周期（缓冲区未满、提前返回）根本走不到，批号
+        // 推不出去、客户端一条丝线也画不出来（「看着像没在吸」的根源）。
+        // 现在独立于下方的转化流程，每 tick 都续，与坩埚的写法对齐。
+        // （停续条件只看 lastDrawTick，别用 trailSources.isEmpty()——那张表只增不减。）
+        long now = level.getGameTime();
+        long sinceDraw = be.lastDrawTick < 0 ? Long.MAX_VALUE : now - be.lastDrawTick;
+        if (sinceDraw > TRAIL_LINGER) {
+            if (!be.trailSources.isEmpty()) {
+                be.trailSources.clear();
+                be.trailColors.clear();
+                be.syncToClient();
+            }
+        } else if (now % TRAIL_INTERVAL == 0) {
+            be.bumpTrail();
+        }
+
         if (level.getGameTime() % AUDIT_INTERVAL == 0) {
             if (be.active && !cornersIntact(level, pos)) {
                 // 四砖缺了一块：熄火（砖那边 onRemove 也会立刻招呼一次，这里是兜底）
@@ -374,18 +435,51 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
             }
         }
         if (!be.active) {
-            // ★ 未成坛：不测卦气、不转化（进度也一并抹掉，免得开坛瞬间「凭空推进」）
+            // ★ 未成坛：不测卦气、不转化（进度也一并抹掉，免得开坛瞬间「凭空推进」）；
+            //   吸纳来的要素是坛的能耐，坛散了气也就散了。
             be.progress = 0;
+            be.clearEssentia();
             return;
         }
         if (level.getGameTime() % 10 != 0) {
             return;
         }
+        Fengshui.Trigram qi = Fengshui.qiAt(level, pos);
+        // 一处不凝卦气，或卦气变了（地形被改造）：手里这份要素再也用不上，散去
+        AspectId want = qi == Fengshui.Trigram.NONE
+                ? null
+                : ModAspectSources.aspectId(Fengshui.id(qi));
+        if (want == null || !want.equals(be.bufferedAspect)) {
+            be.clearEssentia();
+        }
+
         ItemStack stack = be.items.getStackInSlot(SLOT);
-        Transformation transformation = findTransformation(stack, Fengshui.qiAt(level, pos));
+        Transformation transformation = findTransformation(stack, qi);
         if (transformation == null) {
             be.progress = 0;
             return;
+        }
+        int cost = transformation.essentiaCost() * stack.getCount();
+        if (cost > 0) {
+            // 吸纳：抽够这一件要的份数（每个推进周期限量）。
+            // ★ 第 84 批：槽上限 1 → 台面只有一件，每周期只吸 {@value #DRAW_PER_BATCH}
+            //   份，把八份拉成两秒上下的连续丝线（看得见的过程）；旧存档残留的
+            //   整堆走快车道，免得吸上两分钟。
+            int batch = stack.getCount() > 1 ? DRAW_PER_BATCH_BULK : DRAW_PER_BATCH;
+            int room = cost - be.bufferedAmount;
+            if (room > 0) {
+                int got = be.drawEssentia(want, Math.min(room, batch));
+                if (got > 0) {
+                    be.bufferedAspect = want;
+                    be.bufferedAmount += got;
+                    be.setChanged();
+                }
+            }
+            if (be.bufferedAmount < cost) {
+                // 要素还没攒够：等着（进度清零——「攒要素」不算在转化里）
+                be.progress = 0;
+                return;
+            }
         }
         be.progress += 10;
         if (be.progress % 20 == 0) {
@@ -395,13 +489,124 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
         }
         if (be.progress >= TRANSFORM_TICKS) {
             be.progress = 0;
+            if (cost > 0) {
+                be.bufferedAmount -= cost;
+                if (be.bufferedAmount <= 0) {
+                    be.clearEssentia();
+                }
+                be.setChanged();
+            }
             // setStackInSlot 会走 onContentsChanged，同步随之下发。
-            // ★ 件数照搬：转化的是「这一堆」，不是「一个」。
+            // ★ 件数照搬（台面只纳一件、通常恒为 1；照搬兜住旧存档里可能残留的整堆）。
             be.items.setStackInSlot(SLOT, transformation.convert(stack));
             level.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_CHIME,
                     SoundSource.BLOCKS, 0.8F, 0.7F);
         }
         be.setChanged();
+    }
+
+    /** 散去攒着的要素（收坛、换卦气、或刚好用干）。 */
+    private void clearEssentia() {
+        if (this.bufferedAspect != null || this.bufferedAmount != 0) {
+            this.bufferedAspect = null;
+            this.bufferedAmount = 0;
+            this.setChanged();
+        }
+    }
+
+    /**
+     * 读档时解析要素 ID——{@link AspectId#parse} 遇脏数据会抛，这里兜住回 {@code null}。
+     *
+     * <p>正常情况下这个字段只由 {@link #saveAdditional} 自己写，抛不起来；但手改过的存档、
+     * 或者将来某版改了拼写，都不该让整个区块加载跟着崩。</p>
+     */
+    @Nullable
+    private static AspectId parseAspect(String serialized) {
+        try {
+            return AspectId.parse(serialized);
+        } catch (RuntimeException exception) {
+            return null;
+        }
+    }
+
+    /**
+     * 从基座附近 5×5 内抽 {@code aspect} 最多 {@code want} 份，返回实际抽到的份数。
+     *
+     * <p>★ <b>与注魔矩阵同款</b>（{@code InfusionMatrixBlockEntity#drainOneEssentia}）：
+     * 不接管道、不认端点，直接 {@link EssentiaApi#extract} 向范围内的「要素源」
+     * （原质罐、储液池、镜像……）抽取——罐子摆在旁边就会自己吸。
+     * 先按「一次付清」问一遍（省事），付不满再逐份抽（罐里剩一两份也能吸干净）。
+     * 每抽到一次就 {@link #recordTrail 记一条源}，客户端据此画「源→台座」的丝线。</p>
+     */
+    private int drawEssentia(AspectId aspect, int want) {
+        Optional<EssentiaSourceRef> bulk = EssentiaApi.extract(this.level, this.worldPosition,
+                aspect, want, EssentiaSearch.nearby(SEARCH_RANGE), EssentiaTransferMode.EXECUTE);
+        if (bulk.isPresent()) {
+            this.recordTrail(bulk.orElseThrow().position(), aspect);
+            return want;
+        }
+        int drawn = 0;
+        while (drawn < want) {
+            Optional<EssentiaSourceRef> one = EssentiaApi.extract(this.level, this.worldPosition,
+                    aspect, 1, EssentiaSearch.nearby(SEARCH_RANGE), EssentiaTransferMode.EXECUTE);
+            if (one.isEmpty()) {
+                break;
+            }
+            this.recordTrail(one.orElseThrow().position(), aspect);
+            drawn++;
+        }
+        return drawn;
+    }
+
+    /**
+     * 记一条吸取丝线的源（同一格只留一条，色号取该要素的色），并记下「刚吸到东西」的时刻。
+     *
+     * <p>与坩埚的 {@code recordTrail} 同一套：源表只增不减，何时停看 {@link #lastDrawTick}；
+     * 换要素色不影响位置，只把那一格的色号改掉。</p>
+     */
+    private void recordTrail(BlockPos source, AspectId aspect) {
+        if (this.level != null) {
+            this.lastDrawTick = this.level.getGameTime();
+        }
+        BlockPos key = source.immutable();
+        AspectDefinition definition = AspectApi.get(aspect);
+        int color = definition == null ? 0xFFFFFF : definition.color();
+        for (int i = 0; i < this.trailSources.size(); i++) {
+            if (this.trailSources.get(i).equals(key)) {
+                this.trailColors.set(i, color);
+                return;
+            }
+        }
+        while (this.trailSources.size() >= MAX_TRAILS) {
+            this.trailSources.remove(0);
+            this.trailColors.remove(0);
+        }
+        this.trailSources.add(key);
+        this.trailColors.add(color);
+    }
+
+    /** 吸取丝线批号 +1（连同源表一起推给客户端）。 */
+    private void bumpTrail() {
+        this.trailNonce++;
+        this.setChanged();
+        this.syncToClient();
+    }
+
+    /** 吸取丝线批号（客户端 tick 见面即续期）。 */
+    public int trailNonce() {
+        return this.trailNonce;
+    }
+
+    public int trailCount() {
+        return this.trailSources.size();
+    }
+
+    public BlockPos trailSource(int index) {
+        return this.trailSources.get(index);
+    }
+
+    public int trailColor(int index) {
+        return this.trailColors.get(index);
     }
 
     @Override
@@ -410,6 +615,22 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
         tag.put("items", this.items.serializeNBT(registries));
         tag.putInt("progress", this.progress);
         tag.putBoolean("active", this.active);
+        if (this.bufferedAspect != null) {
+            tag.putString("essentia_aspect", this.bufferedAspect.serialized());
+            tag.putInt("essentia_amount", this.bufferedAmount);
+        }
+        // 吸取丝线：批号 + 源表 + 色表（与坩埚同款——顺带存档，重载后动画不突然断）
+        tag.putInt("TrailNonce", this.trailNonce);
+        long[] packed = new long[this.trailSources.size()];
+        for (int i = 0; i < packed.length; i++) {
+            packed[i] = this.trailSources.get(i).asLong();
+        }
+        tag.putLongArray("TrailSources", packed);
+        int[] colors = new int[this.trailColors.size()];
+        for (int i = 0; i < colors.length; i++) {
+            colors[i] = this.trailColors.get(i);
+        }
+        tag.putIntArray("TrailColors", colors);
     }
 
     @Override
@@ -418,6 +639,19 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
         this.items.deserializeNBT(registries, tag.getCompound("items"));
         this.progress = tag.getInt("progress");
         this.active = tag.getBoolean("active");
+        // 攒着的要素：只有「成坛 + 卦气没变」才留得住，serverTick 每个周期都会拿当下的
+        // 卦气对一遍，对不上就散——所以这里照原样读进来即可，不必在这里判。
+        if (tag.contains("essentia_aspect")) {
+            this.bufferedAspect = parseAspect(tag.getString("essentia_aspect"));
+            this.bufferedAmount = this.bufferedAspect == null ? 0 : tag.getInt("essentia_amount");
+        }
+        this.trailNonce = tag.getInt("TrailNonce");
+        long[] packed = tag.getLongArray("TrailSources");
+        int[] colors = tag.getIntArray("TrailColors");
+        for (int i = 0; i < packed.length && i < colors.length; i++) {
+            this.trailSources.add(BlockPos.of(packed[i]));
+            this.trailColors.add(colors[i]);
+        }
         // ★ 不在这里写方块：loadAdditional 是在区块反序列化途中调的，
         //   那会儿 setBlock 会把邻块更新插进一段还没搭好的区块里。四砖的对齐交给
         //   serverTick 的定期自查（最多 1 秒，肉眼无感）。

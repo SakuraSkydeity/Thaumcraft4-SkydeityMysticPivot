@@ -28,7 +28,7 @@ import net.minecraft.world.item.Rarity;
  * 只能通过本模组创造页签里现成的那把法杖取得。</p>
  *
  * <h2>二、玄枢法杖（常规）</h2>
- * <p>杖柄 {@code onyx}「玄枢银树包裹」容量 5200 Vis、可被任一要素通道被动充能（recharge = ANY），
+ * <p>杖柄 {@code onyx}「玄枢银树包裹」容量 2035 Vis、可被任一要素通道被动充能（recharge = ANY），
  * 杖端 {@code gilded}「玄枢」把魔力消耗压到 60%。两件部件各自注魔造出，再放进 3×3 奥术工作台自动装配。</p>
  *
  * <p><b>卦象门禁</b>：注魔<b>玄枢杖端</b>（龙蛋居中那条配方）须先在注魔祭坛所在区块内立起
@@ -38,7 +38,7 @@ import net.minecraft.world.item.Rarity;
  * 门禁只认「龙蛋居中」那一条，写在整个法杖上会连带把八卦四象杖也说得像有门禁。</p>
  *
  * <h2>三、八卦四象法杖（中高阶）</h2>
- * <p>杖柄 {@code sixiang}「四象黑曜图层」容量 1 500 Vis、可被任一要素通道被动充能，
+ * <p>杖柄 {@code sixiang}「四象黑曜图层」容量 1 949 Vis、可被任一要素通道被动充能，
  * 杖端 {@code bagua}「八卦」把魔力消耗压到 80%。两件部件都在注魔台打造
  * （见 {@code data/skydeitymysticpivot/recipe/}），成品名由三段拼成「八卦 + 四象 + 法杖」。</p>
  *
@@ -46,7 +46,7 @@ import net.minecraft.world.item.Rarity;
  * 数据映射（data map）与物品标签，主模组更新时不受影响。</p>
  *
  * <h2>四、朱雀蝶舞宏伟包裹法杖（入门档）</h2>
- * <p>杖柄 {@code zhuque.rod}「朱雀宏伟包裹」容量 600 Vis、可被任一要素通道被动充能，
+ * <p>杖柄 {@code zhuque.rod}「朱雀宏伟包裹」容量 918 Vis、可被任一要素通道被动充能，
  * 杖端 {@code zhuque.cap}「朱雀蝶舞」耗魔九折（减免 10%）。红金配色。
  * 两件部件都在注魔台打造（见 {@code data/skydeitymysticpivot/recipe/zhuque_wand_rod.json}
  * 与 {@code zhuque_wand_cap.json}），此为全模组<b>最易得</b>的一柄杖。</p>
@@ -91,7 +91,7 @@ public final class ModWandParts {
     public static final WandMaterialId GILDED_CAP = WandMaterialId.of(rl("gilded"));
 
     /** 玄枢银树包裹杖柄容量（整 Vis）。 */
-    public static final int GILDED_CAPACITY = 5_200;
+    public static final int GILDED_CAPACITY = 2_035;
 
     /** 玄枢杖端的魔力消耗倍率，0.6 即六折消耗。 */
     public static final float GILDED_COST_MODIFIER = 0.6F;
@@ -111,7 +111,7 @@ public final class ModWandParts {
     public static final WandMaterialId BAGUA_CAP = WandMaterialId.of(rl("bagua"));
 
     /** 四象杖柄容量（整 Vis）。 */
-    public static final int SIXIANG_CAPACITY = 1_500;
+    public static final int SIXIANG_CAPACITY = 1_949;
 
     /** 八卦杖端的魔力消耗倍率，0.8 即八折消耗。 */
     public static final float BAGUA_COST_MODIFIER = 0.8F;
@@ -131,7 +131,7 @@ public final class ModWandParts {
     public static final WandMaterialId ZHUQUE_CAP = WandMaterialId.of(rl("zhuque"));
 
     /** 朱雀宏伟包裹杖柄容量（整 Vis）。 */
-    public static final int ZHUQUE_CAPACITY = 600;
+    public static final int ZHUQUE_CAPACITY = 918;
 
     /** 朱雀蝶舞杖端的魔力消耗倍率，0.9 即九折消耗（减免 10%）。 */
     public static final float ZHUQUE_COST_MODIFIER = 0.9F;
@@ -190,7 +190,7 @@ public final class ModWandParts {
                 BAGUA_CAP_CRAFT_COST, ResearchRequirement.none(),
                 WandPartAssemblyMode.NORMAL, ORDER + 2));
 
-        // 朱雀杖：入门档 NORMAL —— 红金配色，容量 600、耗魔九折。
+        // 朱雀杖：入门档 NORMAL —— 红金配色，容量 918、耗魔九折。
         zhuqueRodRegistration = WandPartApi.registerRod(new WandRodSpec(
                 rl("zhuque_wand_rod"), ZHUQUE_ROD, ZHUQUE_CAPACITY, ZHUQUE_ROD_CRAFT_COST,
                 WandRechargeSpec.any(), ResearchRequirement.none(),

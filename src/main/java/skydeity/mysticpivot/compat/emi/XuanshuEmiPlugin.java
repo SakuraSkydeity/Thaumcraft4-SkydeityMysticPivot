@@ -19,6 +19,7 @@ import skydeity.mysticpivot.XuanshuCrucibleRecipe;
 import skydeity.mysticpivot.XuanshuPedestalBlockEntity;
 import skydeity.mysticpivot.XuanshuSmeltingRecipe;
 
+
 /**
  * EMI 适配（与 JEI 那侧同口径）。
  *
@@ -79,6 +80,9 @@ public final class XuanshuEmiPlugin implements EmiPlugin {
             registry.addRecipe(new XuanshuPedestalEmiRecipe(transformation));
         }
 
+        // ★ 第一百四十八批：星象前置不再走 EMI「信息」条目——改挂到物品 lore 上
+        //   （与「所需卦石」同色的淡靛蓝一行，见 ModItems#starLore）。这里只留配方本身。
+
         // register() 是在 EMI 的重载流程里调的，所以这里拿得到配方表（客户端）。
         for (RecipeHolder<XuanshuSmeltingRecipe> holder
                 : registry.getRecipeManager().getAllRecipesFor(ModRecipes.XUANSHU_SMELTING_TYPE.get())) {
@@ -98,9 +102,13 @@ public final class XuanshuEmiPlugin implements EmiPlugin {
         }
     }
 
-    /** EMI 的烹饪版式只差一个配方 id，补上它，方便 EMI 按 id 索引 / 显示。 */
+    /**
+     * EMI 的烹饪版式只差一个配方 id，补上它，方便 EMI 按 id 索引 / 显示。
+     *
+     * <p>★ 第一百四十八批：版式回到原版 {@link EmiCookingRecipe} 的 38 高——
+     * 星象「双倍产出」说明已改挂到炎炉物品 lore 上，不再在配方页加高加注。</p>
+     */
     private static final class XuanshuEmiSmeltingRecipe extends EmiCookingRecipe {
-
         private final ResourceLocation id;
 
         private XuanshuEmiSmeltingRecipe(RecipeHolder<XuanshuSmeltingRecipe> holder) {

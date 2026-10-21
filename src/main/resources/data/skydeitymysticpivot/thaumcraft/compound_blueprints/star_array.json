@@ -1,0 +1,27 @@
+{
+  "blueprints": [
+    {
+      "id": "skydeitymysticpivot:compound/star_array",
+      "research": "skydeitymysticpivot:STAR_CRAFT",
+      "aspects": {},
+      "width": 3,
+      "height": 1,
+      "depth": 4,
+      "cells": [
+        "skydeitymysticpivot:star_dial",
+        "skydeitymysticpivot:star_dial",
+        "skydeitymysticpivot:star_dial",
+        "skydeitymysticpivot:star_dial",
+        "skydeitymysticpivot:star_dial",
+        "skydeitymysticpivot:star_dial",
+        "skydeitymysticpivot:star_dial",
+        "skydeitymysticpivot:star_dial",
+        "skydeitymysticpivot:star_dial",
+        "skydeitymysticpivot:star_dial",
+        "skydeitymysticpivot:star_dial",
+        "skydeitymysticpivot:star_dial"
+      ],
+      "output": "skydeitymysticpivot:star_dial"
+    }
+  ]
+}

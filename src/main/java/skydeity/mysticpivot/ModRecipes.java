@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SimpleCookingSerializer;
+import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
@@ -68,6 +69,27 @@ public final class ModRecipes {
     /** 玄枢坩埚配方的序列化器（字段：catalyst / result / aspects，与本体坩埚一致）。 */
     public static final Supplier<RecipeSerializer<XuanshuCrucibleRecipe>> XUANSHU_CRUCIBLE_SERIALIZER =
             RECIPE_SERIALIZERS.register("xuanshu_crucible", XuanshuCrucibleRecipe.Serializer::new);
+
+    /**
+     * 玄枢祛魔书的合成序列化器（第一百零一批新增）。
+     *
+     * <p>「动态产物 + 动态余料」的配方只能用 {@link CustomRecipe} 这一支，
+     * 而它们的序列化器在原版是 {@code SimpleCraftingRecipeSerializer}——
+     * 原版的 {@code crafting_special_armordye} 等八条全是它。
+     * 它的 JSON 只有一个字段 {@code category}（缺省 {@code misc}），所以配方文件长这样：</p>
+     *
+     * <pre>{@code
+     * { "type": "skydeitymysticpivot:disenchant_book", "category": "misc" }
+     * }</pre>
+     *
+     * <p>注意 {@link RecipeSerializer} 注册表的 id 同时就是 JSON 里 {@code type} 的值；
+     * 本配方<b>不需要</b>另立 {@code RecipeType}——{@code CustomRecipe} 的 {@code getType()}
+     * 由 {@code CraftingRecipe} 默认给到 {@code RecipeType.CRAFTING}，
+     * 于是它照旧被合成台 / 配方书 / JEI 的「合成」一栏当成一条合成配方看待。</p>
+     */
+    public static final Supplier<RecipeSerializer<DisenchantBookRecipe>> DISENCHANT_BOOK_SERIALIZER =
+            RECIPE_SERIALIZERS.register("disenchant_book",
+                    () -> new SimpleCraftingRecipeSerializer<DisenchantBookRecipe>(DisenchantBookRecipe::new));
 
     private static ResourceLocation rl(String path) {
         return ResourceLocation.fromNamespaceAndPath(MysticPivot.MODID, path);

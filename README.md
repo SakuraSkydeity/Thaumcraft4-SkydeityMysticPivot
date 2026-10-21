@@ -23,7 +23,7 @@
 | JDK | 21（java-21.0.3-delta） |
 | Minecraft | 1.21.1 |
 | NeoForge | 21.1.248（`[21.1.248,)`） |
-| 本体 | `4.2.3.5-1.21.1-port.0.1.0-20733`（api jar 与运行时 jar 同版本） |
+| 本体 | `4.2.3.5-1.21.1-port.0.1.0-20746`（api jar 与运行时 jar 同版本） |
 | Gradle | 8.9（wrapper 自带） |
 | moddev 插件 | `net.neoforged.moddev` 1.0.17 |
 
@@ -35,9 +35,10 @@ SkydeityThaumcraft_1.21/            ← 项目根（Gradle 工程根）
 ├── gradlew.bat / gradle/wrapper/   Gradle 8.9 wrapper
 ├── .gitignore
 ├── README.md                       本文档
-├── 1.21.1-neoforge-20733-dev/      ← 本体参考料（只读）
-│   └── tc/*-api.jar                编译依赖（唯一）
-│       └── *-sources.jar           只读参考
+├── .none/1.21.1-neoforge-20746-dev/ ← 本体参考料（只读，不进 git）
+│   └── tc/*-api.jar                 编译依赖（唯一）
+│       ├── *-sources.jar            只读参考
+│       └── *-runtime.jar            仅编译 mixin 用（compileOnly，不打包）
 ├── TC4R-1.21.1-NeoForge-API.md   逐类型 API 符号参考
 ├── Avaritia-MC1.7.10-1.13.jar    Avaritia 参考料（只读，不依赖）
 └── src/main/

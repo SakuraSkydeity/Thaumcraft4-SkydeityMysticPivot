@@ -170,11 +170,10 @@ public class XuanshuCrucibleScreen extends AbstractContainerScreen<XuanshuCrucib
         }
     }
 
-    /** 面板上的信息全在格子与色例里，不再画任何说明文字、也不挂悬停提示。 */
-    @Override
-    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-        super.renderLabels(graphics, mouseX, mouseY);
-    }
+    // ★ 第七十七批清理：这里原本有一个 {@code renderLabels} 覆写，方法体只有一行
+    //   {@code super.renderLabels(graphics, mouseX, mouseY);} —— 与不覆写完全等价，纯属残留。
+    //   标题与「物品栏」两行文字照常由父类默认绘制（{@code init()} 里设的
+    //   {@code titleLabelX} / {@code inventoryLabelY} 就是在给它们定位）。
 
     /** 一块 AE2 风的面板（画法在 {@link XuanshuGui#panel}）。 */
     private static void drawPanel(GuiGraphics graphics, int x, int y, int w, int h) {

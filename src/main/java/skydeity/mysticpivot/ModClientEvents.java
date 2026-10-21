@@ -6,18 +6,20 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterRecipeBookCategoriesEvent;
 
-/** 客户端注册：菜单屏幕、方块实体渲染器、粒子与配方书分类。 */
+/** 客户端注册：菜单屏幕、方块实体渲染器与配方书分类。 */
 @EventBusSubscriber(modid = MysticPivot.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public final class ModClientEvents {
 
     @SubscribeEvent
     public static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenus.XUANSHU_INFERNAL_FURNACE.get(), XuanshuInfernalFurnaceScreen::new);
+        event.register(ModMenus.XUANSHU_REPLICATOR.get(), XuanshuReplicatorScreen::new);
         event.register(ModMenus.XUANSHU_CRUCIBLE.get(), XuanshuCrucibleScreen::new);
         event.register(ModMenus.XUANSHU_ALCHEMY_FURNACE.get(), XuanshuAlchemyFurnaceScreen::new);
+        event.register(ModMenus.XUANSHU_NODE_MODIFIER.get(), XuanshuNodeModifierScreen::new);
+        event.register(ModMenus.XUANSHU_ARCANE_TABLE.get(), XuanshuArcaneTableScreen::new);
     }
 
     /**
@@ -43,11 +45,14 @@ public final class ModClientEvents {
     public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.XUANSHU_PEDESTAL.get(),
                 XuanshuPedestalRenderer::new);
-    }
-
-    @SubscribeEvent
-    public static void onRegisterParticleProviders(RegisterParticleProvidersEvent event) {
-        event.registerSpriteSet(ModParticles.QI_GLYPH.get(), QiGlyphParticle.Provider::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.STAR_DIAL.get(),
+                StarDialRenderer::new);
+        // 奥术台顶那枚会自转的辰星（第一百四十四批）
+        event.registerBlockEntityRenderer(ModBlockEntities.XUANSHU_ARCANE_TABLE.get(),
+                XuanshuArcaneTableRenderer::new);
+        // 复刻台顶那枚反向自转的青色辰星（第一百四十五批）
+        event.registerBlockEntityRenderer(ModBlockEntities.XUANSHU_REPLICATOR.get(),
+                XuanshuReplicatorRenderer::new);
     }
 
     private ModClientEvents() {

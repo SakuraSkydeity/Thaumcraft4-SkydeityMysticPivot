@@ -36,7 +36,7 @@ import java.util.Map;
  */
 public final class XuanshuCrucibleJeiCategory implements IRecipeCategory<RecipeHolder<XuanshuCrucibleRecipe>> {
 
-    /** 版式尺寸。 */
+    /** 版式尺寸。（★ 第一百四十四批撤掉版式底部的星象行：坩埚的星象前置查坩埚自己的信息页即可，版式回 72。） */
     public static final int WIDTH = 108;
     public static final int HEIGHT = 72;
 
