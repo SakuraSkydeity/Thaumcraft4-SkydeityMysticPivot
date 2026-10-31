@@ -28,7 +28,8 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 /**
- * 玄枢注灵台（第八十九批<b>方块版</b>）的容器菜单：左**华槽** + 右**锭槽** + 玩家背包。
+ * 玄枢注灵香炉台（第一百六十三批由「玄枢注灵台」改名；第八十九批<b>方块版</b>）的容器菜单：
+ * 左**华槽** + 右**锭槽** + 玩家背包。
  *
  * <h2>界面与运转怎么分工</h2>
  * <ul>
@@ -55,11 +56,30 @@ import net.neoforged.neoforge.items.SlotItemHandler;
  * 天域之华<b>不是安瓿</b>：它是一件封好的成品、没有「空瓶」这种中间状态，
  * 所以这里既不读内容也不判剩余量，运转一次整件吃掉一件。</p>
  *
- * <h2>第九十九批：加哪一门改成「先基础、后抽奖」</h2>
- * <p>用户原话：「效果改为添加的先是 6 种基础，然后再添加其他随机的一种 一直抽奖就行」。
- * 抽签逻辑集中在 {@link #nextAspect}：先按 风→地→火→水→序→灭 补齐六门基础
- * （缺哪门补哪门，不赌运气），六门齐了之后从<b>非基础要素</b>里等概率一直抽。
- * 每抽中一门涨 {@value #ASPECT_AMOUNT}。</p>
+ * <h2>第一百六十二批 → 第二百一十四批：华槽曾判「类型」，现在完全不判</h2>
+ * <p>第一百六十二批曾按用户口径「天域之华和上一个要不同类型」读一次天华封着哪几门要素，
+ * 与方块实体记住的「上一瓶类型串」对串、一样就拒收。第二百一十四批用户改口径：
+ * 「注灵台改为只要是天域之华，不需要检测是否相同，把没用的代码删干净」——
+ * 于是 {@code bloomTypeKey}、方块实体里的 {@code lastBloomType} 字段与那段判定**整组删除**，
+ * 华槽只判「这一格是不是天域之华」，加哪一门仍由 {@link #nextAspect} 说了算。</p>
+ *
+ * <h2>第九十九批 → 第一百六十三批 → 第二百零九批：加哪一门，两段 → 三段 → 加权三段</h2>
+ * <p>第九十九批用户原话：「效果改为添加的先是 6 种基础，然后再添加其他随机的一种 一直抽奖就行」
+ * ——先补六门基础、之后从复合要素里一直抽。第一百六十三批用户改成：</p>
+ * <pre>
+ * 和原先一样现在六种基础要素中抽取添加 然后后面部分修改
+ * 80%概率增加原先六种要素的量 20%添加一种新的，
+ * 然后六种基础上限后 再20%随机添加新的 80%随机添加现有的要素最大量
+ * </pre>
+ * <p>第二百零九批把「上限」定回 <b>256</b>，并给第三段的八成分了权重：</p>
+ * <pre>
+ * 先检测 6 种基础的是否到 256 如果到了，则按之前的概率加其他新的要素，
+ * 然后还是添加 6 种基础元素概率大一点为基础
+ * </pre>
+ * <p>于是 {@link #nextAspect} 三段：① 六门缺哪门补哪门；② 六门齐而没满 256：八成加六门
+ * （未满的等概率）、两成添新；③ 六门各满 256：两成添新、八成里六门合计
+ * {@value #BASIC_SHARE_PERCENT}%（每门 8 个百分点）、其余现有复合要素合计 32%。
+ * 每抽中一门涨 {@value #ASPECT_AMOUNT}。同一份概率表在魔导书功能页里逐条写明。</p>
  *
  * <h2>情报同步</h2>
  * <p>{@link #DATA_TYPE}:节点类型序 / {@link #DATA_KINDS}:要素种类数 /
@@ -208,31 +228,155 @@ public class XuanshuNodeModifierMenu extends AbstractContainerMenu {
     }
 
     /**
-     * 这一抽加哪一门（第九十八批「随机抽一门」→ 第九十九批「先基础、后抽奖」两段式）。
+     * 六门基础各自的「满」值（第一百六十三批定 100、第二百零七批 2048、
+     * <b>第二百零九批按用户口径落回 256</b>）：每门基础要素涨到 {@value #BASIC_CAP}
+     * 才算毕业，此后加要素的规矩换第三段（见 {@link #nextAspect}）。
      *
-     * <p>用户原话：「效果改为添加的先是 6 种基础，然后再添加其他随机的一种 一直抽奖就行」。
-     * 于是分两段：</p>
+     * <p>这个数<b>不是硬顶</b>：{@link #addAspects} 只加不判顶，节点单门涨到多少由本体
+     * （{@code NodeVis}，只限制种类数 ≤256、单门无数值硬顶）说了算。它是<b>分段阈值</b> ——
+     * 到顶之前，八成那票只喂六门基础；到顶之后才转成「喂现有要素（六门仍加权）」。</p>
      *
-     * <ol>
-     *   <li><b>先补六基元</b>：节点的 {@code baseVis} 里还缺哪一门就补哪一门
-     *       （按 风→地→火→水→序→灭 找第一个 {@code <= 0} 的），
-     *       于是连着六次运转必然把六门基础补齐——不用赌；</li>
-     *   <li><b>六门齐了就一直抽奖</b>：从要素注册表里的<b>非基础要素</b>
-     *       （{@code AspectApi.registry().compounds()}，含本 mod 的八卦）等概率抽一门往上加；
-     *       注册表里一门复合要素都没有时，退回六基元里抽。</li>
-     * </ol>
+     * <p>256 是一整组「六门 × 256 = 1536」的整数档：一次运转加 {@value #ASPECT_AMOUNT} 点，
+     * 从 12 喂到 256 约 <b>21 次</b>（21 瓶天华 + 21 枚玄枢锭）—— 一个能让玩家在两三场
+     * 下界/末地探索之内把节点喂毕业的量级。嫌慢就改这一个数；改完记得同步语言文件里
+     * 那两行「六门各满 X」（魔导书功能页与物品 lore）。</p>
+     */
+    public static final int BASIC_CAP = 256;
+
+    /**
+     * 「添一门新要素」的概率：百分之 {@value #NEW_ASPECT_PERCENT}。
+     *
+     * <p>第二段（六门未满）与第三段（六门已满）都是「先掷这一票」；没中才走八成那一票。</p>
+     */
+    public static final int NEW_ASPECT_PERCENT = 20;
+
+    /**
+     * 第三段里「八成」中<b>六门基础合计占的份额</b>：百分之 {@value #BASIC_SHARE_PERCENT}。
+     *
+     * <p>六门各满 {@link #BASIC_CAP} 之后并不是「六门与复合要素一视同仁」——用户口径
+     * 「还是添加六种基础元素概率大一点为基础」。于是把八成那一票再切成两块：</p>
+     *
+     * <ul>
+     *   <li>六门基础合计 {@value #BASIC_SHARE_PERCENT}%（即全局 80×60% = <b>48 个百分点</b>），
+     *       六门等概率，每门 8 个百分点；</li>
+     *   <li>其余现有复合要素合计剩下那四成（全局 <b>32 个百分点</b>），在节点现有的
+     *       非基础要素里等概率。</li>
+     * </ul>
+     *
+     * <p>合起来：添新 20% / 六门 48% / 其余现有 32% —— 六门仍然是最大的一块，
+     * 但复合要素也真的会涨，不再像「等概率」那样把票摊薄到几十门上去。</p>
+     */
+    public static final int BASIC_SHARE_PERCENT = 60;
+
+    /**
+     * 这一抽加哪一门（第一百六十三批定「三段式」，<b>第二百零九批按用户口径改判据与第三段配比</b>）。
+     *
+     * <p>第二百零九批用户原话：「注灵台改为先检测 6 种基础的是否到 256，如果到了，则按之前的概率
+     * 加其他新的要素，然后还是添加 6 种基础元素概率大一点为基础」。于是：</p>
+     *
+     * <table border="1">
+     *   <caption>三段判据与配比（每抽中一门涨 {@value #ASPECT_AMOUNT}）</caption>
+     *   <tr><th>段</th><th>判据</th><th>抽法</th><th>全局概率</th></tr>
+     *   <tr><td>①</td><td>六门基础有哪门 {@code <= 0}</td>
+     *       <td>补那一门（按 风→地→火→水→序→灭 取第一个缺的）</td><td>100%</td></tr>
+     *   <tr><td>②</td><td>六门齐、但有门 &lt; {@value #BASIC_CAP}</td>
+     *       <td>掷 {@value #NEW_ASPECT_PERCENT}% 添一门新要素；否则在<b>未满的六门</b>里等概率</td>
+     *       <td>添新 20% ／ 六门 80%（每门 80/k%，k = 未满门数）</td></tr>
+     *   <tr><td>③</td><td>六门各 &gt;= {@value #BASIC_CAP}</td>
+     *       <td>掷 {@value #NEW_ASPECT_PERCENT}% 添一门新要素；否则八成那票再按
+     *           {@value #BASIC_SHARE_PERCENT}:{@code 100-BASIC_SHARE_PERCENT} 切给
+     *           「六门」与「其余现有复合要素」</td>
+     *       <td>添新 20% ／ 六门合计 48%（每门 8%）／ 其余现有要素合计 32%</td></tr>
+     * </table>
+     *
+     * <p>第三段是这一批的重点：旧版六门满后「六门与复合要素一视同仁」等概率，节点上有几十门复合
+     * 要素时六门就被摊薄了；现在六门合计固定拿 48 个百分点，仍是最大的一块，但复合要素也真的会涨。</p>
      *
      * <p>NodeVis 的零值条目会保留（TC4 的侵蚀生命周期要用），所以判「缺不缺」必须看
-     * {@code amount <= 0} 而不是 {@code containsKey}。</p>
+     * {@code amount <= 0} 而不是 {@code containsKey}；「现有的要素」同样只看
+     * {@code > 0} 的（{@link NodeVis#positiveAmounts()}）。</p>
      */
     public static AspectId nextAspect(AuraNodeState state, net.minecraft.util.RandomSource random) {
         Map<AspectId, Integer> base = state.baseVis().amounts();
+
+        // 第一段：六门基础缺哪门补哪门（风→地→火→水→序→灭，不赌运气）
         for (AspectId primal : PRIMAL_ASPECTS) {
             if (base.getOrDefault(primal, 0) <= 0) {
                 return primal;
             }
         }
+
+        // 第二、第三段共用：先掷两成「添一门新要素」
+        int roll = random.nextInt(100);
+        if (roll < NEW_ASPECT_PERCENT) {
+            return newAspect(state, random);
+        }
+
+        // 第二段：六门还有没满 256 的 ⇒ 那八成全喂六门（未满的里面等概率）
+        List<AspectId> growing = new ArrayList<>();
+        for (AspectId primal : PRIMAL_ASPECTS) {
+            if (base.getOrDefault(primal, 0) < BASIC_CAP) {
+                growing.add(primal);
+            }
+        }
+        if (!growing.isEmpty()) {
+            return growing.get(random.nextInt(growing.size()));
+        }
+
+        // 第三段：六门都毕业了 —— 八成那票里六门合计占 BASIC_SHARE_PERCENT%，其余给现有复合要素
+        int basicLine = NEW_ASPECT_PERCENT + (100 - NEW_ASPECT_PERCENT) * BASIC_SHARE_PERCENT / 100;
+        List<AspectId> compounds = existingCompounds(state);
+        if (roll < basicLine || compounds.isEmpty()) {
+            return PRIMAL_ASPECTS[random.nextInt(PRIMAL_ASPECTS.length)];
+        }
+        return compounds.get(random.nextInt(compounds.size()));
+    }
+
+    /**
+     * 节点现有的<b>非基础</b>要素（{@code baseVis} 里 {@code > 0} 且不在六门里的那些）。
+     *
+     * <p>排一次序再返回：{@code amounts()} 是 {@code LinkedHashMap}，顺序随写入历史变，
+     * 不排序会让「同一份存档、同一串随机数」抽出不同结果，不好复现。</p>
+     */
+    private static List<AspectId> existingCompounds(AuraNodeState state) {
+        List<AspectId> compounds = new ArrayList<>();
+        for (Map.Entry<AspectId, Integer> entry : state.baseVis().positiveAmounts().amounts().entrySet()) {
+            if (entry.getValue() > 0 && !isPrimal(entry.getKey())) {
+                compounds.add(entry.getKey());
+            }
+        }
+        compounds.sort(null);
+        return compounds;
+    }
+
+    /** 是不是六门基础之一。 */
+    private static boolean isPrimal(AspectId id) {
+        for (AspectId primal : PRIMAL_ASPECTS) {
+            if (primal.equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 「添一门新要素」：从注册表的非基础要素里挑一门<b>节点还没有的</b>。
+     *
+     * <p>节点已有的（含被侵蚀成 0 的）都排除，保证抽出来的是「新」的那一门；
+     * 万一复合要素全加过了（节点最多 256 门，实际达不到），退回全池等概率抽；
+     * 注册表里一门复合要素都没有时，退回六基元里抽。</p>
+     */
+    private static AspectId newAspect(AuraNodeState state, net.minecraft.util.RandomSource random) {
         List<AspectId> pool = lotteryPool();
+        List<AspectId> fresh = new ArrayList<>();
+        for (AspectId id : pool) {
+            if (state.baseVis().amounts().getOrDefault(id, 0) <= 0) {
+                fresh.add(id);
+            }
+        }
+        if (!fresh.isEmpty()) {
+            return fresh.get(random.nextInt(fresh.size()));
+        }
         if (!pool.isEmpty()) {
             return pool.get(random.nextInt(pool.size()));
         }

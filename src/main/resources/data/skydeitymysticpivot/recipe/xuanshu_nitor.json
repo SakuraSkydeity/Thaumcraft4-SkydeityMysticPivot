@@ -1,0 +1,34 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "pattern": [
+    "DAD",
+    "ABA",
+    "DCD"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "B": {
+      "item": "thaumcraft:nitor"
+    },
+    "C": {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    "D": {
+      "item": "thaumcraft:thaumium_ingot"
+    }
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_nitor",
+    "count": 2
+  },
+  "vis": {
+    "aer": 77,
+    "terra": 77,
+    "ignis": 77,
+    "aqua": 77,
+    "ordo": 77,
+    "perditio": 77
+  }
+}

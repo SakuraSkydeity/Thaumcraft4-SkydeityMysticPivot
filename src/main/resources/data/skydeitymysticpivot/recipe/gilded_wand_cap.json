@@ -5,7 +5,16 @@
   },
   "components": [
     {
+      "item": "minecraft:nether_star"
+    },
+    {
       "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
       "item": "skydeitymysticpivot:xuanshu_ingot"
@@ -14,31 +23,22 @@
       "item": "skydeitymysticpivot:xuanshu_bagua_salt"
     },
     {
-      "item": "skydeitymysticpivot:xuanshu_shard"
-    },
-    {
-      "item": "skydeitymysticpivot:xuanshu_ingot"
-    },
-    {
       "item": "minecraft:nether_star"
-    },
-    {
-      "item": "skydeitymysticpivot:xuanshu_shard"
-    },
-    {
-      "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
       "item": "skydeitymysticpivot:xuanshu_bagua_salt"
     },
     {
-      "item": "skydeitymysticpivot:xuanshu_shard"
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
       "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
-      "item": "minecraft:nether_star"
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
     }
   ],
   "instability": 8,

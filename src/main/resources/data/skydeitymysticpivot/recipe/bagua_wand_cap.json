@@ -5,16 +5,16 @@
   },
   "components": [
     {
-      "item": "skydeitymysticpivot:bagua_shard"
-    },
-    {
       "item": "skydeitymysticpivot:azure_dragon_ingot"
     },
     {
-      "item": "skydeitymysticpivot:vermilion_bird_ingot"
+      "item": "skydeitymysticpivot:bagua_shard"
     },
     {
       "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_ingot"
     },
     {
       "item": "skydeitymysticpivot:white_tiger_ingot"
@@ -23,10 +23,13 @@
       "item": "skydeitymysticpivot:black_tortoise_ingot"
     },
     {
-      "item": "skydeitymysticpivot:bagua_shard"
+      "item": "skydeitymysticpivot:azure_dragon_ingot"
     },
     {
-      "item": "skydeitymysticpivot:azure_dragon_ingot"
+      "item": "skydeitymysticpivot:black_tortoise_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:white_tiger_ingot"
     },
     {
       "item": "skydeitymysticpivot:vermilion_bird_ingot"
@@ -35,10 +38,7 @@
       "item": "skydeitymysticpivot:bagua_shard"
     },
     {
-      "item": "skydeitymysticpivot:white_tiger_ingot"
-    },
-    {
-      "item": "skydeitymysticpivot:black_tortoise_ingot"
+      "item": "skydeitymysticpivot:bagua_shard"
     }
   ],
   "instability": 6,

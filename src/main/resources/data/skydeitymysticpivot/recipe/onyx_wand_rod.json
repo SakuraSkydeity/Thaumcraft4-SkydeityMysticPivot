@@ -5,24 +5,6 @@
   },
   "components": [
     {
-      "item": "minecraft:nether_star"
-    },
-    {
-      "item": "skydeitymysticpivot:xuanshu_cloth"
-    },
-    {
-      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
-    },
-    {
-      "item": "skydeitymysticpivot:xuanshu_shard"
-    },
-    {
-      "item": "skydeitymysticpivot:xuanshu_ingot"
-    },
-    {
-      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
-    },
-    {
       "item": "minecraft:dragon_egg"
     },
     {
@@ -32,13 +14,31 @@
       "item": "skydeitymysticpivot:xuanshu_bagua_salt"
     },
     {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
       "item": "skydeitymysticpivot:xuanshu_shard"
     },
     {
       "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
       "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_cloth"
     }
   ],
   "instability": 8,

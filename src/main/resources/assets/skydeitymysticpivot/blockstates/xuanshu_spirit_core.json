@@ -1,7 +1,5 @@
 {
   "variants": {
-    "": {
-      "model": "skydeitymysticpivot:block/xuanshu_spirit_core"
-    }
+    "": { "model": "skydeitymysticpivot:block/xuanshu_spirit_core" }
   }
 }

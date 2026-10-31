@@ -19,7 +19,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -28,9 +30,10 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import dev.tc4port.thaumcraft.api.wand.WandApi;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -210,7 +213,7 @@ public final class ModBlocks {
                             .lightLevel(state -> state.getValue(XuanshuChargerBlock.ACTIVE) ? 8 : 0));
 
     /**
-     * 玄枢注灵台（{@code xuanshu_node_modifier}，第八十八批新增、第八十九批改<b>方块</b>）：
+     * 玄枢注灵香炉台（{@code xuanshu_node_modifier}，第八十八批新增、第八十九批改<b>方块</b>）：
      * 一尊<b>方块</b>（第九十八批：用户「灵气节点转化改为方块吧 不要模型了 删掉」——
      * OBJ 整套退役，改成本 mod 三台机器同款的 {@code cube_bottom_top} 立方体，
      * 贴图 {@code textures/block/xuanshu_node_modifier[_top|_bottom].png}）。
@@ -324,16 +327,25 @@ public final class ModBlocks {
     }
 
     /**
-     * 玄枢注灵台（原名「玄枢灵气节点修改器」，{@code xuanshu_node_modifier}）方块：
+     * 玄枢注灵香炉台（原名「玄枢灵气节点修改器」，{@code xuanshu_node_modifier}）方块：
      * 右键（空手 / 持非法杖）开界面；<b>持法杖右键 = 运转</b>。
      *
      * <p>「持法杖右键」之所以单独一路：TC4 的语义一直是「法杖 = 施术媒介」，
      * 用 {@code WandApi.isBuiltinWand} 判定（本体全部等级的法杖都算，
-     * 与 {@code WandAutoRefill} 同一口径），不写死 {@code thaumcraft:wand}。</p>
+     * 与玄枢奥术台同一口径），不写死 {@code thaumcraft:wand}。</p>
      *
      * <p>★ 第一百批：形制改仿原版附魔台——只有 12/16 高（{@link #SHAPE}），
-     * 台面上再坐一尊小香炉（模型里 y=12 以上那段）。碰撞箱随之收到 12，
-     * 于是玩家能踩上台面、炉身可穿（与附魔台上那本书同理）。</p>
+     * 碰撞箱随之收到 12，于是玩家能踩上台面（与附魔台上那本书同理）。</p>
+     *
+     * <p>★ 第一百五十七批：模型（JSON）与 {@link #SHAPE} <b>逐块对齐</b>——
+     * 形制是「底板 + 四角立柱 + 顶部方框，中间完全镂空」。此前 JSON 里还留着一整块
+     * 实心台身（`body`），碰撞箱却是镂空的，于是贴图看着像贴在一个不存在的方块上。
+     * 现在九个盒子两边一模一样，贴图也按九个盒子分区重画
+     * （见 {@code tools/gen_node_modifier.py}）。</p>
+     *
+     * <p>★ 第一百五十八批：四角柱<b>往里收 1 像素</b>（第 12.153.5 批「柱往里收、
+     * 檐在外」）：柱子退到 1~4 / 12~15，顶环与底板仍占满 0~16，四角各留一道挑檐；
+     * 柱顶补 {@code up} 柱帽面（按俯视平面图 1:1 取图），内收后角上不再漏光。</p>
      */
     public static class XuanshuNodeModifierBlock extends BaseEntityBlock {
 
@@ -342,17 +354,32 @@ public final class ModBlocks {
          * 中间与四侧完全镂空，缸中节点从顶环正上方读作「坐进环里」。
          * ★ 非整块方块必须配 {@code noOcclusion()}（注册处已加），否则所在格存不住光照
          * （台座踩过的坑，见 {@code XuanshuPedestalBlock} 注释）。
+         *
+         * <p>★ 第一百五十八批：四角柱<b>往里收 1 像素</b>（0/13→1/12，3/16→4/15）——
+         * 第 12.153.5 批「柱往里收、檐在外」的层次：柱子退到 1~4 / 12~15，
+         * 顶环（挑檐）与底板仍占满 0~16，四角各留一道挑檐。
+         * 模型（JSON）与贴图同步内收，见 {@code tools/gen_node_modifier.py}。</p>
+         *
+         * <p>★ 第一百六十批：顶框中间的方口加一圈 1px 宽、比梁面低 1px 的<b>「井沿」</b>
+         * （贴着洞口内沿的一圈退台，y=10~11）——用户原话「空心正方形太突兀」。
+         * 直角方口从此读作凿出来的井口：井沿带在贴图里描金 + 联珠，洞底仍是灵光托盘。
+         * 模型 JSON 同步长出了 {@code lip_north/south/west/east} 四块，
+         * 对账见 {@code tools/check_node_modifier_shape.py}。</p>
          */
         private static final VoxelShape SHAPE = Shapes.or(
                 Block.box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0),
-                Block.box(0.0, 2.0, 0.0, 3.0, 10.0, 3.0),
-                Block.box(13.0, 2.0, 0.0, 16.0, 10.0, 3.0),
-                Block.box(0.0, 2.0, 13.0, 3.0, 10.0, 16.0),
-                Block.box(13.0, 2.0, 13.0, 16.0, 10.0, 16.0),
+                Block.box(1.0, 2.0, 1.0, 4.0, 10.0, 4.0),
+                Block.box(12.0, 2.0, 1.0, 15.0, 10.0, 4.0),
+                Block.box(1.0, 2.0, 12.0, 4.0, 10.0, 15.0),
+                Block.box(12.0, 2.0, 12.0, 15.0, 10.0, 15.0),
                 Block.box(0.0, 10.0, 0.0, 16.0, 12.0, 3.0),
                 Block.box(0.0, 10.0, 13.0, 16.0, 12.0, 16.0),
                 Block.box(0.0, 10.0, 3.0, 3.0, 12.0, 13.0),
-                Block.box(13.0, 10.0, 3.0, 16.0, 12.0, 13.0));
+                Block.box(13.0, 10.0, 3.0, 16.0, 12.0, 13.0),
+                Block.box(3.0, 10.0, 3.0, 13.0, 11.0, 4.0),
+                Block.box(3.0, 10.0, 12.0, 13.0, 11.0, 13.0),
+                Block.box(3.0, 10.0, 4.0, 4.0, 11.0, 12.0),
+                Block.box(12.0, 10.0, 4.0, 13.0, 11.0, 12.0));
 
         public XuanshuNodeModifierBlock(Properties properties) {
             super(properties);
@@ -441,9 +468,10 @@ public final class ModBlocks {
      * <p>模型第九十七批改过：**中间那根五棱晶柱删掉**，台顶悬一枚<b>漂浮的四芒星</b>
      * （三张零厚度星面 + {@code render_type: cutout}，见 {@code gen_arcane_table_star.py}）。</p>
      *
-     * <p>右键开界面放入要升附魔的物品与玄枢锭；<b>持法杖右键本台</b>运转——
-     * 消耗玄枢锭 1 枚 + 法杖六种要素各 {@link XuanshuArcaneTableBlockEntity#VIS_PER_CHANNEL} 点（整 Vis），
-     * 使物品所有附魔 +1（单条封顶 {@link XuanshuArcaneTableBlockEntity#MAX_ENCHANT_LEVEL}）。
+     * <p>右键开界面放入要升附魔的物品（书槽可选放一本附魔书）；<b>持法杖右键本台</b>运转——
+     * 消耗法杖六种要素各 {@link XuanshuArcaneTableBlockEntity#VIS_PER_CHANNEL} 点（整 Vis），
+     * 使物品所有附魔 +1（单条封顶 {@link XuanshuArcaneTableBlockEntity#MAX_ENCHANT_LEVEL}）；
+     * 书槽有附魔书时把书上所有附魔一并加上、书消耗一本（第二百一十四批）。
      * 逻辑见 {@link XuanshuArcaneTableBlockEntity#applyWithWand}。</p>
      */
     public static final DeferredBlock<Block> XUANSHU_ARCANE_TABLE =
@@ -457,7 +485,7 @@ public final class ModBlocks {
                             .noOcclusion());
 
     /**
-     * 玄枢奥术台：右键开界面；持法杖右键 = 运转（520 魔力换一级附魔）。
+     * 玄枢奥术台：右键开界面；持法杖右键 = 运转（法杖六元各 77 点换一级附魔）。
      * ★ 第一百四十四批：台顶的辰星由 {@code XuanshuArcaneTableRenderer} 自转渲染，
      *   模型只剩附魔台样的台座；碰撞收到台座 12 像素 + {@code noOcclusion()}。
      */
@@ -1068,21 +1096,20 @@ public final class ModBlocks {
     }
 
     /**
-     * 四象石砖：玄枢台座「开坛」所需的多方块构件。
+     * 四象石砖：玄枢台座「开坛」所需的多方块构件——**台座的整片 3×3 底座**。
      *
-     * <p>台座本体只是一个座子；要在上面摆东西，得先在<b>台座四角（3×3 的四个对角）</b>
-     * 各砌一块四象石砖，再<b>手持法杖右键台座</b>开坛。开坛之后四块砖一齐换形：
-     * 由青灰平砖变作<b>金色的斜面阶梯</b>——内侧（贴台座那两边）的退台量<b>逐级照抄台座自己的
-     * 退台量</b>（1 / 2 / 4 像素），外侧则一边退一边往下落，四块砖的顶面于是都停在 y6，
-     * 正好和台座的肩台同高，连成一条横线（见 {@code models/block/sixiang_stone_brick_active.json}）。
-     * 四块砖各自朝哪边升，由
-     * {@link SixiangStoneBrickBlock#CORNER} 记着，台座开坛时一并写下去。</p>
+     * <p>第二百零二批起结构从「台座坐地、四角立砖」改成「**3×3 砖底座 +
+     * 台座站在中心砖上**」：在地上平铺九块四象石砖，把台座摆在正中间那块上面，
+     * 再手持法杖右键台座开坛。开坛之后九块砖一齐换形，由青灰平砖变作
+     * <b>一座鎏金楼台</b>（第二百一十一批：八角的须弥座五段 + 中心方台身，
+     * 整座 3×3 只出一件 {@code models/terrace.obj}，见 {@code tools/gen_terrace_obj.py}）
+     * ——台明托着台座，人也能踩上那块半格高的台面。</p>
      *
      * <p>未启的平砖四面各刻一道印：青龙（东·木）、朱雀（南·火）、白虎（西·金）、玄武（北·水）。
-     * 开坛后整块砖染成玄枢金，印文隐去——所以「这块砖在不在坛上」远远就能认出来。</p>
+     * 开坛后整块砖染成鎏金，印文隐去——所以「这块砖在不在坛上」远远就能认出来。</p>
      *
-     * <p>与三器、台座、卦位石一样<b>必须用镐子挖</b>。挖掉四块中的任意一块，台座即刻熄火、
-     * 其余三块一并落回平砖（见 {@link XuanshuPedestalBlockEntity#deactivate}）。</p>
+     * <p>与三器、台座、卦位石一样<b>必须用镐子挖</b>。挖掉九块中的任意一块，台座即刻熄火、
+     * 其余八块一并落回平砖（见 {@link XuanshuPedestalBlockEntity#deactivate}）。</p>
      */
     public static final DeferredBlock<SixiangStoneBrickBlock> SIXIANG_STONE_BRICK =
             BLOCKS.registerBlock("sixiang_stone_brick",
@@ -1095,78 +1122,54 @@ public final class ModBlocks {
                             .lightLevel(state -> state.getValue(SixiangStoneBrickBlock.ACTIVE) ? 9 : 0));
 
     /**
-     * 四象石砖方块：{@code active} 布尔状态（未启 / 已启）决定模型与贴图换不换，
-     * {@link Corner corner} 决定「已启」那套阶梯朝向哪一边。
+     * 四象石砖方块：两个布尔状态 —— {@code active}（未启 = 青灰平砖 / 已启 = 鎏金楼台）
+     * 与 {@code center}（这一格是不是 3×3 的正中，即台座脚下那一格）。都由台座开坛时写下来，
+     * 玩家自己点不出来。
      *
-     * <p><b>为什么要朝向</b>：开坛后四砖各自朝台座那一侧退台、往外的方向落坡，
-     * 内侧那几级退台量是<b>照着台座自己的退台量抄的</b>（1 / 2 / 4 像素），所以两块石头贴缝
-     * 那条竖棱上不会错台、四块砖的顶面也和台座肩台齐平（见
-     * {@code models/block/sixiang_stone_brick_active.json}）。四块砖分散在 3×3 的四个对角上，
-     * 各自要「贴台座的那一角」正对台座，所以模型必须能转——方块模型只认 BlockState，
-     * 于是把朝向做成状态属性，由台座在开坛时连 {@code active} 一起写下去
-     * （见 {@code XuanshuPedestalBlockEntity#lightBricks}）。</p>
+     * <p>★ 第二百一十八批把第二百一十六批临时加的 {@code CORNER} 又删了：那一版是「三层
+     * 地坛」（角格 3px / 边格 8px），需要区分角格与边格的层高。现在整座台子回到
+     * 一件八段楼台，台面一整圈都是 8px，两格状态就够了。</p>
      *
-     * <p>「已启」与「朝向」都是<b>台座写上去的</b>，不是玩家自己点砖点出来的——
+     * <p><b>第二百一十一批：九根承柱改成一件连贯的楼台</b>（用户「我希望是一格整体，
+     * 类似楼台托举上面的基座」）。第 202 批那套是<b>一格一根柱</b>：九根各带柱础、
+     * 各立各的，从外面看是九个小台子拼在一起，接缝一圈一圈都在。现在整座 3×3 只出
+     * <b>一个</b> {@code terrace.obj}（八段须弥座 + 中心方台身，跨 −1..2 格），由
+     * <b>正中那一格</b>独家渲染（{@code center=true}），另外八格换成
+     * {@code sixiang_brick_empty}（只有 particle、没有 elements）——
+     * 于是台沿绕着整座台子转一圈，中间再没有格界。</p>
+     *
+     * <p>因为楼台顶面只有 <b>8px</b>（半格）高，外圈八格的碰撞箱也一并收到 8px
+     * （正中那格仍是整格：那里是台身）。玩家能踩着台沿走上去，不会悬在半空。</p>
+     *
+     * <p>「已启」是<b>台座写上去的</b>，不是玩家自己点砖点出来的——
      * 所以它也不该、也不会被玩家手动改：这块砖自己没有 {@code useItemOn}，
      * 右键只会走到「放方块 / 用手里那件东西」的默认逻辑上去。</p>
      */
     public static class SixiangStoneBrickBlock extends Block {
 
-        /** 是否已被台座点亮（换成「四象拱卫」造型、泛金光并发光）。 */
+        /** 是否已被台座点亮（换成「鎏金楼台」造型、泛金光并发光）。 */
         public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-        /**
-         * 「台座在我这一侧的哪个对角」——也就是这块砖的台阶要朝哪边退。
-         *
-         * <p>取值即方位名：{@code nw} 西北、{@code ne} 东北、{@code se} 东南、{@code sw} 西南。
-         * 模型本体是照 <b>{@code nw}</b> 造的（贴台座那一角在 x=0、z=0——那两边的退台退得最狠），
-         * 其余三个方向靠 blockstate 里的 {@code y} 旋转 90° 得到；MC 的 {@code y} 旋转是
-         * <b>俯视顺时针</b>（+X → +Z），所以四个方位恰好彼此相差 90°。</p>
-         */
-        public static final EnumProperty<Corner> CORNER =
-                EnumProperty.create("corner", Corner.class);
+        /** 是不是 3×3 底座的正中那一格（整座台身的模型挂在它身上）。 */
+        public static final BooleanProperty CENTER = BooleanProperty.create("center");
 
-        /** 阶梯抬起的那一角朝向（相对方块自身）。 */
-        public enum Corner implements StringRepresentable {
-            NW("nw"), NE("ne"), SE("se"), SW("sw");
+        /** 外圈八格的台面高度（16px 制）：整圈楼台台面都是半格高。 */
+        public static final double DECK_HEIGHT = 8.0D;
 
-            private final String name;
-
-            Corner(String name) {
-                this.name = name;
-            }
-
-            @Override
-            public String getSerializedName() {
-                return this.name;
-            }
-        }
+        /** 外圈八格的碰撞箱：半格高的台面。 */
+        private static final VoxelShape DECK = Shapes.box(0.0D, 0.0D, 0.0D,
+                1.0D, DECK_HEIGHT / 16.0D, 1.0D);
 
         public SixiangStoneBrickBlock(Properties properties) {
             super(properties);
             registerDefaultState(this.stateDefinition.any()
                     .setValue(ACTIVE, false)
-                    .setValue(CORNER, Corner.NW));
-        }
-
-        /**
-         * 由「石砖相对台座的水平偏移」求朝向：台座在哪一侧的对角，退台与坡就朝哪边。
-         *
-         * <p>偏移 {@code (-1,-1)} 意味着台座在此砖的 <b>东南</b>（+X+Z）方向，
-         * 于是东南那一角退台（贴台座）、西北那一头落坡（朝外）。</p>
-         */
-        public static Corner cornerFacing(int dx, int dz) {
-            int tx = -dx;
-            int tz = -dz;
-            if (tx > 0) {
-                return tz > 0 ? Corner.SE : Corner.NE;
-            }
-            return tz > 0 ? Corner.SW : Corner.NW;
+                    .setValue(CENTER, false));
         }
 
         @Override
         protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-            builder.add(ACTIVE, CORNER);
+            builder.add(ACTIVE, CENTER);
         }
 
         @Override
@@ -1175,18 +1178,33 @@ public final class ModBlocks {
         }
 
         /**
-         * 砖被挖掉时<b>立刻</b>招呼对角线那台台座熄火。
+         * 开了坛的外圈八格按层高收碰撞：整圈台面都是半格，正中那格照旧整格。
          *
-         * <p>台座与四砖的关系是「斜对角」——砖在 3×3 的角上，台座在那 3×3 的心里，
-         * 所以从砖出发要找的正是四个对角方向。台座自己每 20 tick 也会自查一遍，
-         * 这里只是把那最多一秒的延迟抹掉。</p>
+         * <p>不这么改的话，看不见的方块仍然是整格碰撞——玩家会「浮在台面上方走路」。
+         * 覆盖 {@code getShape} 一处即可：原版 {@code getCollisionShape} 默认就取它。</p>
+         */
+        @Override
+        protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos,
+                                      CollisionContext context) {
+            if (state.getValue(ACTIVE) && !state.getValue(CENTER)) {
+                return DECK;
+            }
+            return Shapes.block();
+        }
+
+        /**
+         * 砖被挖掉时<b>立刻</b>招呼压在上面那台台座熄火。
+         *
+         * <p>第二百零二批起砖在台座<b>下面一层</b>（3×3 底座），所以从砖出发要找的是
+         * 「上一层的 3×3」——正上方那一格立着台座（这块砖若是底座九块之一）。
+         * 台座自己每 20 tick 也会自查一遍，这里只是把那最多一秒的延迟抹掉。</p>
          */
         @Override
         protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
             if (!state.is(newState.getBlock()) && !level.isClientSide) {
-                for (int dx = -1; dx <= 1; dx += 2) {
-                    for (int dz = -1; dz <= 1; dz += 2) {
-                        BlockPos p = pos.offset(dx, 0, dz);
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        BlockPos p = pos.offset(dx, 1, dz);
                         if (level.getBlockEntity(p) instanceof XuanshuPedestalBlockEntity pedestal) {
                             pedestal.deactivate(level, p);
                         }
@@ -1201,7 +1219,7 @@ public final class ModBlocks {
     /**
      * 玄枢沟灵核心（第一百零二批新增）：一块**白玉鎏金**的祭炼核心，无 BE、无状态、整格立方体。
      *
-     * <p>它是本 mod 两件「台」的注魔之基——<b>玄枢奥术台</b>与<b>玄枢注灵台</b>的注魔配方
+     * <p>它是本 mod 两件「台」的注魔之基——<b>玄枢奥术台</b>与<b>玄枢注灵香炉台</b>的注魔配方
      * 都以它为中心（{@code central}），见 {@code recipe/xuanshu_arcane_table.json} 与
      * {@code recipe/xuanshu_node_modifier.json}；它自身则由玄枢锭等注魔而成
      * （{@code recipe/xuanshu_spirit_core.json}）。</p>
@@ -1210,8 +1228,38 @@ public final class ModBlocks {
      * 模型是 {@code cube_bottom_top}。轻微自发光（{@code lightLevel 6}）——
      * 一颗「心」总该有点光。</p>
      */
+    /**
+     * 玄枢虚空采矿方块（第一百七十四批新增；第一百八十六批推倒重来）：虚空采矿机的本体
+     * （见 {@link XuanshuVoidMiningBlock}——激活、产出与界面在那边，结构在
+     * {@link VoidMiningStructure}）。
+     *
+     * <p>光坛齐（{@code formed=true}）时亮度 12，未激活 6 —— 玩家一眼看得出是不是通了。</p>
+     */
+    public static final DeferredBlock<XuanshuVoidMiningBlock> XUANSHU_VOID_MINING =
+            BLOCKS.registerBlock("xuanshu_void_mining", XuanshuVoidMiningBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.METAL)
+                            .strength(3.5F, 12.0F)
+                            .sound(SoundType.METAL)
+                            .requiresCorrectToolForDrops()
+                            .lightLevel(state -> state.getValue(XuanshuVoidMiningBlock.FORMED) ? 12 : 6));
+
+    /**
+     * 玄枢沟灵核心（第一百零二批新增）：一块**白玉鎏金**的祭炼核心，无 BE、无状态、整格立方体。
+     *
+     * <p>它是本 mod 两件「台」的注魔之基——<b>玄枢奥术台</b>与<b>玄枢注灵香炉台</b>的注魔配方
+     * 都以它为中心（{@code central}），见 {@code recipe/xuanshu_arcane_table.json} 与
+     * {@code recipe/xuanshu_node_modifier.json}；它自身则由玄枢锭等注魔而成
+     * （{@code recipe/xuanshu_spirit_core.json}）。</p>
+     *
+     * <p><b>第一百八十六批退回纯装饰</b>：它一度是虚空采矿机的「结构之心」（第 174~185 批），
+     * 用户要求矿机多方块整个重做后，这套关系全删了——现在它只是个好看的祭炼核心方块，
+     * 不再有任何成型态、不再响应法杖。贴图走 {@code tools/gen_spirit_core.py}，
+     * 模型是 {@code cube_bottom_top}，亮度 6。</p>
+     */
     public static final DeferredBlock<Block> XUANSHU_SPIRIT_CORE =
-            BLOCKS.registerBlock("xuanshu_spirit_core", Block::new,
+            BLOCKS.registerBlock("xuanshu_spirit_core",
+                    props -> new Block(props),
                     BlockBehaviour.Properties.of()
                             .mapColor(MapColor.COLOR_LIGHT_GREEN)
                             .strength(3.0F, 10.0F)
@@ -1240,6 +1288,25 @@ public final class ModBlocks {
                             .requiresCorrectToolForDrops()
                             .lightLevel(state -> state.getValue(StarDialBlock.ROLE).formed() ? 12 : 7));
 
+    /**
+     * 星象仪（第一百八十六批新增）：一台**白瓷鎏金的悬球台**。
+     *
+     * <p>形制搬自虚空采矿机第 182~185 批的成型模型（主台 + 莲瓣托座 + 悬浮八卦白瓷球
+     * + 相轮刹）。第一百八十七批把须弥座收成「薄底盘 + 细柱」，第一百八十九批更进一步：
+     * 用户框掉「鎏金底盘以下」整段，<b>细柱与底盘全没了</b>，剩下的一整套缩到
+     * <b>一格之内</b>（原来 3.34 格高）—— 模型见 `tools/gen_astrolabe_obj.py`。
+     * 方块本身<b>还没有任何功能</b>（先注册，功能后议）。</p>
+     */
+    public static final DeferredBlock<AstrolabeBlock> ASTROLABE =
+            BLOCKS.registerBlock("astrolabe", AstrolabeBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.TERRACOTTA_WHITE)
+                            .strength(2.5F, 8.0F)
+                            .sound(SoundType.LANTERN)
+                            .requiresCorrectToolForDrops()
+                            .noOcclusion()
+                            .lightLevel(state -> 10));
+
     public static DeferredBlock<Block> stoneForItem(String name) {
         return switch (name) {
             case "bagua_stone_qian" -> BAGUA_STONE_QIAN;
@@ -1255,31 +1322,11 @@ public final class ModBlocks {
     }
 
     /**
-     * 卦 → 卦位石方块；{@link Fengshui.Trigram#NONE}（没凝卦气）给 {@code null}。
+     * 方块 → 卦；不是卦位石就给 {@link Fengshui.Trigram#NONE}。
      *
-     * <p>与 {@link #trigramOf(Block)} 一起构成「卦 ↔ 方块」的<b>唯一</b>映射，
-     * 方块世界的八卦检测（{@link Fengshui#countTrigramStones}）只认这两个方法，
-     * 以后加卦位石也只需改这两处。</p>
-     *
-     * <p>★ 刻意<b>不建静态 Map</b>：地图要在类初始化时读 {@code BAGUA_STONE_*.get()}，
-     * 而 {@code DeferredBlock#get()} 在登记完成前是空的，静态表会把顺序问题引进来。
-     * 写成 switch 就只在调用那一刻才取值，天然安全。</p>
+     * <p>方块世界的八卦检测（{@link Fengshui#countTrigramStones} 与
+     * {@link Fengshui#countDistinctTrigrams}）只认这一个方法，以后加卦位石只需改这里。</p>
      */
-    public static Block stoneOf(Fengshui.Trigram trigram) {
-        return switch (trigram) {
-            case QIAN -> BAGUA_STONE_QIAN.get();
-            case DUI -> BAGUA_STONE_DUI.get();
-            case LI -> BAGUA_STONE_LI.get();
-            case ZHEN -> BAGUA_STONE_ZHEN.get();
-            case XUN -> BAGUA_STONE_XUN.get();
-            case KAN -> BAGUA_STONE_KAN.get();
-            case GEN -> BAGUA_STONE_GEN.get();
-            case KUN -> BAGUA_STONE_KUN.get();
-            default -> null;
-        };
-    }
-
-    /** 方块 → 卦；不是卦位石就给 {@link Fengshui.Trigram#NONE}。见 {@link #stoneOf}。 */
     public static Fengshui.Trigram trigramOf(Block block) {
         if (block == BAGUA_STONE_QIAN.get()) {
             return Fengshui.Trigram.QIAN;
@@ -1314,10 +1361,11 @@ public final class ModBlocks {
      * <b>一次只纳一件</b>——整组放上去也只收一个，余数留在手里），
      * 物品由方块实体存储、由渲染器摆到台面上。
      *
-     * <p><b>光摆一座台座是不能用的</b>：须先在它的四角（3×3 的四个对角）各砌一块
-     * {@link #SIXIANG_STONE_BRICK 四象石砖}，再手持法杖右键台座「开坛」；
-     * 未开坛的台座不纳物（见 {@link #useItemOn}）。开坛后四砖换形并发光，
-     * 潜行 + 法杖右键可收坛。砖被挖掉、或台座被拆，都会立刻熄火。</p>
+     * <p><b>光摆一座台座是不能用的</b>（第二百零二批起）：须先在地上平铺
+     * <b>3×3 九块</b>{@link #SIXIANG_STONE_BRICK 四象石砖}当底座，把台座摆在正中间
+     * 那块上面，再手持法杖右键台座「开坛」；未开坛的台座不纳物（见 {@link #useItemOn}）。
+     * 开坛后九砖一齐换形，从青灰平砖变成九根鎏金承柱把台座托起来；潜行 + 法杖右键可收坛。
+     * 砖被挖掉、或台座被拆，都会立刻熄火。</p>
      */
     public static class XuanshuPedestalBlock extends BaseEntityBlock {
 
@@ -1378,7 +1426,7 @@ public final class ModBlocks {
          *
          * <ol>
          *   <li><b>手持法杖</b> → 开坛 / 收坛（潜行右键 = 收坛）。
-         *       开坛须四隅立齐四象石砖，否则点一下只有一团烟。
+         *       开坛须脚下 3×3 底座立齐九块四象石砖，否则点一下只有一团烟。
          *       ★ 判据用 {@code instanceof WandCarrierItem}（本体 API 里的法杖基类，
          *       {@code WandItem} 与 {@code CustomWandItem} 都继承它），
          *       <b>不调 {@code WandApi.view}</b>——后者要读堆叠上的法杖数据，
@@ -1767,6 +1815,120 @@ public final class ModBlocks {
             }
         }
     }
+
+    /**
+     * 枫树三件套（第一百六十七批新增，第一百六十九批贴图重做为银树形制深色化）——
+     * 用户原话：
+     * <blockquote>我想添加一个树类似原版大型的橡树，树叶和原木和树苗重新根据原版橡木树设计，
+     * 我希望是枫树，树叶红色偏橘色。</blockquote>
+     * <blockquote>枫叶原木贴图改画银树原木，整体深一点。</blockquote>
+     *
+     * <p>三件方块全部照原版橡木的规矩（木 = {@link RotatedPillarBlock} 带 AXIS；
+     * 叶 = {@link LeavesBlock} 带 DISTANCE / PERSISTENT / WATERLOGGED，随机 tick 枯萎、
+     * 剪刀可采；苗 = {@link MapleSaplingBlock} 两段式 stage + 骨粉），
+     * 参数逐项抄原版 {@code Blocks.OAK_LOG / OAK_LEAVES / OAK_SAPLING}，
+     * 只换命名空间与皮色（第 169 批：原木改画本体银树形制并整体压深，
+     * 地图色随之换成深陶灰 {@link MapColor#TERRACOTTA_GRAY}；枫叶偏橘红，
+     * 地图色取 {@link MapColor#COLOR_ORANGE}）。
+     * 树形（大型橡树那套侧枝 + 宽冠）见 {@link MapleTreeGrower}。</p>
+     */
+    public static final DeferredBlock<RotatedPillarBlock> MAPLE_LOG =
+            BLOCKS.registerBlock("maple_log", RotatedPillarBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y
+                                    ? MapColor.COLOR_BROWN : MapColor.TERRACOTTA_BROWN)
+                            .instrument(NoteBlockInstrument.BASS)
+                            .strength(2.0F)
+                            .sound(SoundType.WOOD)
+                            .ignitedByLava());
+
+    public static final DeferredBlock<LeavesBlock> MAPLE_LEAVES =
+            BLOCKS.registerBlock("maple_leaves", LeavesBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_ORANGE)
+                            .strength(0.2F)
+                            .randomTicks()
+                            .sound(SoundType.GRASS)
+                            .noOcclusion()
+                            .isValidSpawn(Blocks::ocelotOrParrot)
+                            // 原版树叶那三个 StatePredicate 判 false（不闷人、不挡视线、
+                            // 不导红石）——原版走的是 Blocks 里私有的三参 never，
+                            // 附属摸不到，照抄语义写成 lambda
+                            .isSuffocating((state, level, pos) -> false)
+                            .isViewBlocking((state, level, pos) -> false)
+                            .ignitedByLava()
+                            .pushReaction(PushReaction.DESTROY)
+                            .isRedstoneConductor((state, level, pos) -> false));
+
+    public static final DeferredBlock<MapleSaplingBlock> MAPLE_SAPLING =
+            BLOCKS.registerBlock("maple_sapling", MapleSaplingBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.PLANT)
+                            .noCollission()
+                            .randomTicks()
+                            .instabreak()
+                            .sound(SoundType.GRASS)
+                            .pushReaction(PushReaction.DESTROY));
+
+    /**
+     * 枫木木板（第一百六十八批）：枫木原木的锯料——1 块原木无序合成出 4 块
+     * （{@code data/skydeitymysticpivot/recipe/maple_planks.json}），
+     * 参数逐项抄原版 {@code Blocks.OAK_PLANKS}（强度 2.0/3.0、木料音、岩浆点燃）。
+     *
+     * <p>进 {@code #minecraft:planks}（方块与物品双侧）→ 顺带 {@code #minecraft:mineable/axe}
+     * 与熔炉燃料 300 tick。创造栏里排在枫木原木之后、枫树叶之前（用户第 168 批口径：
+     * 原木和树叶在卦石前面；树苗另挪到戒指后）。</p>
+     */
+    public static final DeferredBlock<Block> MAPLE_PLANKS =
+            BLOCKS.registerBlock("maple_planks", Block::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.TERRACOTTA_BROWN)
+                            .instrument(NoteBlockInstrument.BASS)
+                            .strength(2.0F, 3.0F)
+                            .sound(SoundType.WOOD)
+                            .ignitedByLava());
+
+    /**
+     * 玄枢源质罐（第一百九十三批新增）：一只装得下所有要素的罐子。
+     *
+     * <p>模型与贴图<b>直接用本体防护罐那套</b>（{@code thaumcraft:block/warded_jar}：
+     * 10 格宽的玻璃罐 + 罐口），方块状态只有一个变体、没有朝向；罐里的液体由
+     * {@link XuanshuEssentiaJarRenderer} 画成鎏金渐变。玩法与容量见
+     * {@link XuanshuEssentiaJarBlockEntity}：每种要素各 2048 份、一罐最多 32 种。</p>
+     *
+     * <p>参数照本体防护罐那一套（脆、玻璃音、非整块、自发光），只把强度从 0.3 抬到 0.4：
+     * 玄枢的东西总该比一只陶罐结实一点。</p>
+     */
+    public static final DeferredBlock<XuanshuEssentiaJarBlock> XUANSHU_ESSENTIA_JAR =
+            BLOCKS.registerBlock("xuanshu_essentia_jar", XuanshuEssentiaJarBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.NONE)
+                            .strength(0.4F, 1.5F)
+                            .sound(SoundType.GLASS)
+                            .noOcclusion()
+                            .lightLevel(state -> 10));
+
+    /**
+     * 玄枢传送门（第一百九十七批新增；<b>第一百九十八批从「纯装饰」变成一台机器</b>）。
+     *
+     * <p>外形是《星际争霸 2》神族折跃门（Warp Gate）那套识别特征：向内弯的双角、悬在角间的
+     * 青蓝能量核、深蓝紫金属配鎏金饰条 —— 全压在
+     * {@code textures/block/xuanshu_portal_*} 三张 16×16 贴图里（门面 / 侧面 / 顶盖，底面借用顶盖），
+     * 模型只有一句 {@code minecraft:block/cube}。</p>
+     *
+     * <p>第一百九十八批给它接上了方块实体与界面（见 {@link XuanshuPortalBlock}）：
+     * 空手右键开界面，背后一键搭起 {@link PortalGateStructure 那座 1099 格的折跃门广场}。
+     * 因此多了 {@code facing}（放置时正面朝玩家，广场长在背面）与 {@code formed}
+     * （广场齐不齐），亮度也随之从 7 抬到 12 —— 和塔一样，一眼看得出是不是通了。</p>
+     */
+    public static final DeferredBlock<XuanshuPortalBlock> XUANSHU_PORTAL =
+            BLOCKS.registerBlock("xuanshu_portal", XuanshuPortalBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_BLUE)
+                            .strength(3.0F, 6.0F)
+                            .sound(SoundType.METAL)
+                            .lightLevel(state -> state.getValue(XuanshuPortalBlock.FORMED) ? 12 : 7)
+                            .requiresCorrectToolForDrops());
 
     private ModBlocks() {
     }

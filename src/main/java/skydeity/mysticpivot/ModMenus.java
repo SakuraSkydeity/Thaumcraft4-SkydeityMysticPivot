@@ -36,6 +36,14 @@ public final class ModMenus {
             MENUS.register("xuanshu_arcane_table",
                     () -> new MenuType<>(XuanshuArcaneTableMenu::new, FeatureFlags.VANILLA_SET));
 
+    public static final DeferredHolder<MenuType<?>, MenuType<XuanshuVoidMiningMenu>> XUANSHU_VOID_MINING =
+            MENUS.register("xuanshu_void_mining",
+                    () -> new MenuType<>(XuanshuVoidMiningMenu::new, FeatureFlags.VANILLA_SET));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<XuanshuPortalMenu>> XUANSHU_PORTAL =
+            MENUS.register("xuanshu_portal",
+                    () -> new MenuType<>(XuanshuPortalMenu::new, FeatureFlags.VANILLA_SET));
+
     private ModMenus() {
     }
 }

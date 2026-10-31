@@ -82,14 +82,5 @@ tasks.named('processResources', ProcessResources).configure {
     }
 }
 
-// ★ 第 143 批：build 完成后自动把 jar 复制进本机客户端 mods 目录（目录不存在就跳过，不报错）。
-def modsDir = file('D:/Minecraft/M-luomuq/.minecraft/versions/1.21.1-NeoForge_21.1.248/mods')
-tasks.register('copyToMods', Copy) {
-    dependsOn tasks.named('jar')
-    onlyIf { modsDir.exists() }
-    from tasks.named('jar')
-    into modsDir
-}
-tasks.named('build') {
-    dependsOn tasks.named('copyToMods')
-}
+// ★ 第 143 批曾在这里挂一个 copyToMods 任务，把 build 产物自动复制进本机客户端的 mods 目录。
+//   第 220 批按用户要求整段移除：build 只产出 build/libs/ 下的 jar，不再写入任何游戏目录。

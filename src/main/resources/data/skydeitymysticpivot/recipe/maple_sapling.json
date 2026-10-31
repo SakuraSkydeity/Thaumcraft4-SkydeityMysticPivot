@@ -1,0 +1,27 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "pattern": [
+    " C ",
+    "CAC",
+    " C "
+  ],
+  "key": {
+    "A": {
+      "item": "thaumcraft:greatwood_sapling"
+    },
+    "C": {
+      "item": "minecraft:cherry_leaves"
+    }
+  },
+  "result": {
+    "id": "skydeitymysticpivot:maple_sapling"
+  },
+  "vis": {
+    "aer": 6,
+    "terra": 6,
+    "ignis": 6,
+    "aqua": 6,
+    "ordo": 6,
+    "perditio": 6
+  }
+}

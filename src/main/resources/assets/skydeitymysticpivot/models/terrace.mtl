@@ -1,0 +1,5 @@
+# SkydeityMysticPivot - material for the stepped eight-tier terrace (batch 219)
+# Kd 纯白，明暗全交给贴图；材质名必须与 OBJ 的 usemtl 一字不差
+newmtl terrace
+Kd 1.000000 1.000000 1.000000
+map_Kd skydeitymysticpivot:block/sixiang_terrace

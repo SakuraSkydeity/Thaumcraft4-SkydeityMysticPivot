@@ -5,22 +5,10 @@
   },
   "components": [
     {
-      "item": "minecraft:blaze_powder"
-    },
-    {
-      "item": "skydeitymysticpivot:vermilion_bird_shard"
-    },
-    {
-      "item": "skydeitymysticpivot:vermilion_bird_ingot"
-    },
-    {
-      "item": "minecraft:blaze_powder"
-    },
-    {
-      "item": "skydeitymysticpivot:bagua_shard"
-    },
-    {
       "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:blaze_powder"
     },
     {
       "item": "minecraft:blaze_powder"
@@ -32,13 +20,25 @@
       "item": "skydeitymysticpivot:vermilion_bird_ingot"
     },
     {
-      "item": "minecraft:blaze_powder"
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "minecraft:gold_ingot"
     },
     {
       "item": "skydeitymysticpivot:bagua_shard"
     },
     {
-      "item": "minecraft:gold_ingot"
+      "item": "skydeitymysticpivot:vermilion_bird_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_shard"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:blaze_powder"
     }
   ],
   "instability": 3,

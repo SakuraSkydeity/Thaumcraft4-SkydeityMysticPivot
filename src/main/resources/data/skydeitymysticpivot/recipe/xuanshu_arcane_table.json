@@ -43,15 +43,14 @@
   ],
   "instability": 8,
   "aspects": {
-    "aer": 32,
-    "aqua": 32,
-    "ignis": 32,
-    "ordo": 48,
-    "perditio": 32,
-    "terra": 48,
-    "skydeitymysticpivot:li": 24,
-    "skydeitymysticpivot:dui": 24,
-    "skydeitymysticpivot:qian": 24
+    "skydeitymysticpivot:qian": 48,
+    "skydeitymysticpivot:dui": 48,
+    "skydeitymysticpivot:li": 48,
+    "skydeitymysticpivot:zhen": 48,
+    "skydeitymysticpivot:xun": 48,
+    "skydeitymysticpivot:kan": 48,
+    "skydeitymysticpivot:gen": 48,
+    "skydeitymysticpivot:kun": 48
   },
   "result": {
     "id": "skydeitymysticpivot:xuanshu_arcane_table"

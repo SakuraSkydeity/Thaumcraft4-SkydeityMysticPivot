@@ -5,6 +5,12 @@
   },
   "components": [
     {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
       "item": "skydeitymysticpivot:xuanshu_shard"
     },
     {
@@ -15,27 +21,21 @@
     },
     {
       "item": "thaumcraft:thaumium_ingot"
-    },
-    {
-      "item": "skydeitymysticpivot:xuanshu_shard"
     },
     {
       "item": "thaumcraft:focus_primal"
     },
     {
-      "item": "minecraft:glass"
-    },
-    {
       "item": "thaumcraft:thaumium_ingot"
     },
     {
-      "item": "skydeitymysticpivot:xuanshu_shard"
-    },
-    {
-      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+      "item": "minecraft:glass"
     },
     {
       "item": "thaumcraft:thaumic_charm"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
     },
     {
       "item": "skydeitymysticpivot:xuanshu_shard"
@@ -43,14 +43,14 @@
   ],
   "instability": 8,
   "aspects": {
-    "ordo": 48,
-    "aer": 32,
-    "ignis": 24,
-    "aqua": 24,
-    "terra": 24,
-    "perditio": 32,
-    "skydeitymysticpivot:kan": 24,
-    "skydeitymysticpivot:xun": 24
+    "skydeitymysticpivot:qian": 32,
+    "skydeitymysticpivot:dui": 32,
+    "skydeitymysticpivot:li": 32,
+    "skydeitymysticpivot:zhen": 32,
+    "skydeitymysticpivot:xun": 32,
+    "skydeitymysticpivot:kan": 32,
+    "skydeitymysticpivot:gen": 32,
+    "skydeitymysticpivot:kun": 32
   },
   "result": {
     "id": "skydeitymysticpivot:xuanshu_replicator"

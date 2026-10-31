@@ -1,0 +1,44 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "thaumcraft:arcane_bellows"
+  },
+  "components": [
+    {
+      "item": "minecraft:nether_bricks"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "thaumcraft:thaumium_ingot"
+    },
+    {
+      "item": "minecraft:nether_bricks"
+    },
+    {
+      "item": "thaumcraft:thaumium_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    }
+  ],
+  "instability": 6,
+  "aspects": {
+    "ignis": 48,
+    "aer": 24,
+    "aqua": 24,
+    "terra": 24,
+    "ordo": 24,
+    "perditio": 24
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_infernal_furnace"
+  }
+}

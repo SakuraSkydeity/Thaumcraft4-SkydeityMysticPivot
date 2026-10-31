@@ -20,6 +20,8 @@ public final class ModClientEvents {
         event.register(ModMenus.XUANSHU_ALCHEMY_FURNACE.get(), XuanshuAlchemyFurnaceScreen::new);
         event.register(ModMenus.XUANSHU_NODE_MODIFIER.get(), XuanshuNodeModifierScreen::new);
         event.register(ModMenus.XUANSHU_ARCANE_TABLE.get(), XuanshuArcaneTableScreen::new);
+        event.register(ModMenus.XUANSHU_VOID_MINING.get(), XuanshuVoidMiningScreen::new);
+        event.register(ModMenus.XUANSHU_PORTAL.get(), XuanshuPortalScreen::new);
     }
 
     /**
@@ -53,6 +55,12 @@ public final class ModClientEvents {
         // 复刻台顶那枚反向自转的青色辰星（第一百四十五批）
         event.registerBlockEntityRenderer(ModBlockEntities.XUANSHU_REPLICATOR.get(),
                 XuanshuReplicatorRenderer::new);
+        // 采矿机结构外缘那几根往上爬的蓝色竖光（第一百九十一批，替代原来的一套粒子）
+        event.registerBlockEntityRenderer(ModBlockEntities.XUANSHU_VOID_MINING.get(),
+                XuanshuVoidMiningRenderer::new);
+        // 源质罐里的鎏金液面（第一百九十三批）
+        event.registerBlockEntityRenderer(ModBlockEntities.XUANSHU_ESSENTIA_JAR.get(),
+                XuanshuEssentiaJarRenderer::new);
     }
 
     private ModClientEvents() {

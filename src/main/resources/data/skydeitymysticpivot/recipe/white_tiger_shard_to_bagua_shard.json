@@ -1,0 +1,19 @@
+{
+  "type": "thaumcraft:crucible",
+  "catalyst": {
+    "item": "skydeitymysticpivot:white_tiger_shard"
+  },
+  "result": {
+    "id": "skydeitymysticpivot:bagua_shard"
+  },
+  "aspects": {
+    "skydeitymysticpivot:qian": 4,
+    "skydeitymysticpivot:dui": 4,
+    "skydeitymysticpivot:li": 4,
+    "skydeitymysticpivot:zhen": 4,
+    "skydeitymysticpivot:xun": 4,
+    "skydeitymysticpivot:kan": 4,
+    "skydeitymysticpivot:gen": 4,
+    "skydeitymysticpivot:kun": 4
+  }
+}

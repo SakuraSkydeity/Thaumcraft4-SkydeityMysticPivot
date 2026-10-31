@@ -91,6 +91,24 @@ public final class ModRecipes {
             RECIPE_SERIALIZERS.register("disenchant_book",
                     () -> new SimpleCraftingRecipeSerializer<DisenchantBookRecipe>(DisenchantBookRecipe::new));
 
+    /**
+     * 玄枢双生书的合成序列化器（第二百零五批新增）。
+     *
+     * <p>与上面那条同路：{@link TwinBookRecipe} 也是「产物由输入算出来」的
+     * {@link net.minecraft.world.item.crafting.CustomRecipe}，序列化器照旧借原版
+     * {@code SimpleCraftingRecipeSerializer}，JSON 只有一个 {@code category} 字段：</p>
+     *
+     * <pre>{@code
+     * { "type": "skydeitymysticpivot:twin_book", "category": "misc" }
+     * }</pre>
+     *
+     * <p>它同样被当成一条<b>合成</b>配方（{@code RecipeType.CRAFTING}），配方书与 JEI
+     * 都会把它列在合成一栏，并显示产物 ×2。</p>
+     */
+    public static final Supplier<RecipeSerializer<TwinBookRecipe>> TWIN_BOOK_SERIALIZER =
+            RECIPE_SERIALIZERS.register("twin_book",
+                    () -> new SimpleCraftingRecipeSerializer<TwinBookRecipe>(TwinBookRecipe::new));
+
     private static ResourceLocation rl(String path) {
         return ResourceLocation.fromNamespaceAndPath(MysticPivot.MODID, path);
     }

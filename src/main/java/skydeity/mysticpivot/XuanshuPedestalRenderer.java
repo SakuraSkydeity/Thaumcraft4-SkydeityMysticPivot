@@ -128,8 +128,17 @@ public class XuanshuPedestalRenderer implements BlockEntityRenderer<XuanshuPedes
      */
     private static final float RIBBON_UV_SCALE = 0.45F;
 
-    /** 丝带起点高度：四象石砖的顶面（砖顶在 1.0，抬两分不穿进砖里）。 */
-    private static final double RIBBON_FROM_Y = 1.02D;
+    /**
+     * 丝带起点高度：四象石砖那一层<b>楼台台面</b>的顶。
+     *
+     * <p>第二百一十一批底座从九根满高承柱改成半格高的楼台台明；第二百一十六批改三层地坛，
+     * 丝带是从<b>四个对角格</b>牵出来的，而角格是最低那层 {@code 3px}，
+     * 也就是台座那一格原点往下 {@code 0.8125}；抬两分不让带子陷进石头里。</p>
+     *
+     * <p>第二百一十八批台子回到一整圈 8px 的八段楼台，四个对角格的台面也是 8px：
+     * 从台座原点往下 {@code 0.5}，再抬两分。</p>
+     */
+    private static final double RIBBON_FROM_Y = -0.48D;
     /** 丝带终点高度：台座顶心（台面物品浮在 1.2，絮带就搭在它脚下）。 */
     private static final double RIBBON_TO_Y = 1.12D;
 
@@ -242,7 +251,8 @@ public class XuanshuPedestalRenderer implements BlockEntityRenderer<XuanshuPedes
                 ThaumcraftClientRenderApi.legacyLinearAdditiveBillboard(WISPY));
         PoseStack.Pose pose = poseStack.last();
         for (int[] corner : XuanshuPedestalBlockEntity.CORNERS) {
-            BlockPos brick = pos.offset(corner[0], 0, corner[1]);
+            // 第二百零二批起砖在台座下一层（3×3 底座），絮带从砖顶往上搭到台座顶心
+            BlockPos brick = pos.offset(corner[0], -1, corner[1]);
             if (!level.getBlockState(brick).is(ModBlocks.SIXIANG_STONE_BRICK.get())) {
                 continue;
             }

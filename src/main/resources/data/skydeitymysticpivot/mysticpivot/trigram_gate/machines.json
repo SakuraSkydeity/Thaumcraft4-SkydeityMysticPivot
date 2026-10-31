@@ -27,9 +27,17 @@
     "relief_max": 3
   },
   "skydeitymysticpivot:xuanshu_replicator": {
-    "trigram": "xun",
-    "mode": "count",
-    "min": 1,
+    "trigram": [
+      "qian",
+      "dui",
+      "li",
+      "zhen",
+      "xun",
+      "kan",
+      "gen",
+      "kun"
+    ],
+    "mode": "all",
     "radius": 2,
     "height": 1,
     "relief": 2,
@@ -101,7 +109,8 @@
     "trigram": [
       "kan",
       "xun",
-      "gen"
+      "gen",
+      "li"
     ],
     "mode": "all",
     "radius": 2,
@@ -122,27 +131,33 @@
     "relief_max": 3
   },
   "skydeitymysticpivot:focus_guardian": {
-    "trigram": "gen",
-    "mode": "count",
-    "min": 1,
+    "trigram": [
+      "kan",
+      "gen"
+    ],
+    "mode": "all",
     "radius": 2,
     "height": 1,
     "relief": 2,
     "relief_max": 3
   },
   "skydeitymysticpivot:focus_teleport": {
-    "trigram": "gen",
-    "mode": "count",
-    "min": 1,
+    "trigram": [
+      "li",
+      "gen"
+    ],
+    "mode": "all",
     "radius": 2,
     "height": 1,
     "relief": 2,
     "relief_max": 3
   },
   "skydeitymysticpivot:focus_cosmos": {
-    "trigram": "gen",
-    "mode": "count",
-    "min": 1,
+    "trigram": [
+      "qian",
+      "dui"
+    ],
+    "mode": "all",
     "radius": 2,
     "height": 1,
     "relief": 2,
@@ -153,6 +168,66 @@
       "kan",
       "xun",
       "gen"
+    ],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:focus_chrono": {
+    "trigram": [
+      "qian",
+      "dui",
+      "li",
+      "zhen",
+      "xun",
+      "kan",
+      "gen",
+      "kun"
+    ],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_void_eye": {
+    "trigram": [
+      "qian",
+      "dui",
+      "li",
+      "zhen",
+      "xun",
+      "kan",
+      "gen",
+      "kun"
+    ],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:star_dial": {
+    "trigram": [
+      "li",
+      "zhen",
+      "qian",
+      "kan"
+    ],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_crystal_cluster": {
+    "trigram": [
+      "li",
+      "zhen",
+      "qian",
+      "kan"
     ],
     "mode": "all",
     "radius": 2,

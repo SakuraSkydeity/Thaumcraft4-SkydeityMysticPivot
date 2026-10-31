@@ -1,0 +1,30 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "pattern": [
+    " C ",
+    " I ",
+    " S "
+  ],
+  "key": {
+    "C": {
+      "item": "skydeitymysticpivot:xuanshu_crystal_cluster"
+    },
+    "I": {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    "S": {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    }
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_void_mining"
+  },
+  "vis": {
+    "aer": 12,
+    "terra": 12,
+    "ignis": 12,
+    "aqua": 12,
+    "ordo": 12,
+    "perditio": 12
+  }
+}

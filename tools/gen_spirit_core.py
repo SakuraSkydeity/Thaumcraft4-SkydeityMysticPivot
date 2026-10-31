@@ -165,6 +165,11 @@ def main():
         fh.write("\n")
     print("->", os.path.relpath(path, ROOT))
 
+    # ★ blockstate 不归本脚本管：第一百八十四批曾在这里写成裸 {"model": …}，
+    #   结果游戏里整块变缺失模型（乱码）——原版所有 blockstate 都包在 "variants"
+    #   里，裸形式没有定义可加载。现在两个 blockstate 由 gen_astrolabe_obj.py 用
+    #   variants 显式列全状态生成（核心 formed=true 时渲染整座祭坛）。
+
     cell = S * 18
     canvas = Image.new("RGBA", (cell * 3 + 40, cell + 20), (24, 20, 32, 255))
     for i, (name, _) in enumerate(jobs):

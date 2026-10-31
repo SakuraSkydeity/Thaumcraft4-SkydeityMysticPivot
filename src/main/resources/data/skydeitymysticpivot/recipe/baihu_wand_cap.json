@@ -1,0 +1,58 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "thaumcraft:order_shard"
+  },
+  "components": [
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:white_tiger_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:white_tiger_shard"
+    },
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "skydeitymysticpivot:white_tiger_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:white_tiger_shard"
+    }
+  ],
+  "instability": 3,
+  "aspects": {
+    "skydeitymysticpivot:qian": 6,
+    "skydeitymysticpivot:dui": 6,
+    "skydeitymysticpivot:li": 6,
+    "skydeitymysticpivot:zhen": 6,
+    "skydeitymysticpivot:xun": 6,
+    "skydeitymysticpivot:kan": 6,
+    "skydeitymysticpivot:gen": 6,
+    "skydeitymysticpivot:kun": 6
+  },
+  "result": {
+    "id": "skydeitymysticpivot:baihu_wand_cap"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "skydeitymysticpivot:block/xuanshu_void_mining_top",
+    "bottom": "skydeitymysticpivot:block/xuanshu_void_mining_bottom",
+    "side": "skydeitymysticpivot:block/xuanshu_void_mining_side"
+  }
+}

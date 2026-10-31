@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "skydeitymysticpivot:block/xuanshu_portal_side",
+    "north": "skydeitymysticpivot:block/xuanshu_portal_front",
+    "south": "skydeitymysticpivot:block/xuanshu_portal_front",
+    "east": "skydeitymysticpivot:block/xuanshu_portal_side",
+    "west": "skydeitymysticpivot:block/xuanshu_portal_side",
+    "up": "skydeitymysticpivot:block/xuanshu_portal_top",
+    "down": "skydeitymysticpivot:block/xuanshu_portal_top"
+  }
+}

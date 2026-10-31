@@ -16,8 +16,8 @@ import net.neoforged.neoforge.items.SlotItemHandler;
  * 玄枢奥术台（第八十九批新增）的容器菜单：中央一格<b>受附物品</b> + 玩家背包。
  *
  * <p>界面不带按钮——运转是<b>手持法杖右键方块</b>（见
- * {@link XuanshuArcaneTableBlockEntity#applyWithWand}，吸 520 魔力、附魔全 +1）。
- * 这里只把物品放进去、拿回来。</p>
+ * {@link XuanshuArcaneTableBlockEntity#applyWithWand}：法杖六元各 77 点，
+ * 令原有附魔各 +1，书槽有附魔书时把书上所有附魔一并加上）。这里只把东西放进去、拿回来。</p>
  *
  * <p>情报同步：{@link #DATA_KINDS}（附魔条数）/ {@link #DATA_MAXLV}（最高附魔等级），
  * 由 {@link ContainerData} 每 tick 现读。</p>
@@ -34,8 +34,8 @@ public class XuanshuArcaneTableMenu extends AbstractContainerMenu {
     /** 物品槽（要加附魔的物品）。 */
     public static final int SLOT_ITEM = 0;
 
-    /** 染灵槽（放玄枢锭，每运转一次消耗一枚）。 */
-    public static final int SLOT_DYE = 1;
+    /** 书槽（可选）：放一本附魔书，运转时把书上所有附魔并进物品。 */
+    public static final int SLOT_BOOK = 1;
 
     private static final int SLOT_COUNT = 2;
 
@@ -46,7 +46,7 @@ public class XuanshuArcaneTableMenu extends AbstractContainerMenu {
 
     /** 界面坐标（Screen 同款）：第九十七批起<b>两格左右并排</b>（原先是上下两行，提示字被挤到背包上）。 */
     public static final int TARGET_X = 44, TARGET_Y = 44;
-    public static final int DYE_X = 116, DYE_Y = 44;
+    public static final int BOOK_X = 116, BOOK_Y = 44;
 
     @Nullable
     private final XuanshuArcaneTableBlockEntity blockEntity;
@@ -68,9 +68,9 @@ public class XuanshuArcaneTableMenu extends AbstractContainerMenu {
 
         // 两格都不设放置门槛（第九十六批：用户反馈「两个都放不了」——旧的 mayPlace
         // 过滤在客户端就把点击拦了，玩家拿错物料连放都放不进；现在什么都让进，
-        // 运转时再按内容识别：物品槽吃附魔物、染灵槽只扣玄枢锭）。
+        // 运转时再按内容识别：物品槽吃受附之物、书槽只认附魔书，放错的原样留着不用）。
         this.addSlot(new SlotItemHandler(this.handler, SLOT_ITEM, TARGET_X + 1, TARGET_Y + 1));
-        this.addSlot(new SlotItemHandler(this.handler, SLOT_DYE, DYE_X + 1, DYE_Y + 1));
+        this.addSlot(new SlotItemHandler(this.handler, SLOT_BOOK, BOOK_X + 1, BOOK_Y + 1));
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
@@ -134,9 +134,12 @@ public class XuanshuArcaneTableMenu extends AbstractContainerMenu {
                 return ItemStack.EMPTY;
             }
         } else {
-            // 背包 → 先试物品槽，再试染灵槽
-            if (!this.moveItemStackTo(stack, SLOT_ITEM, SLOT_ITEM + 1, false)
-                    && !this.moveItemStackTo(stack, SLOT_DYE, SLOT_DYE + 1, false)) {
+            // 背包 → 附魔书优先落书槽，其余先试物品槽、再试书槽
+            boolean toBook = stack.is(net.minecraft.world.item.Items.ENCHANTED_BOOK)
+                    && this.moveItemStackTo(stack, SLOT_BOOK, SLOT_BOOK + 1, false);
+            if (!toBook
+                    && !this.moveItemStackTo(stack, SLOT_ITEM, SLOT_ITEM + 1, false)
+                    && !this.moveItemStackTo(stack, SLOT_BOOK, SLOT_BOOK + 1, false)) {
                 return ItemStack.EMPTY;
             }
         }

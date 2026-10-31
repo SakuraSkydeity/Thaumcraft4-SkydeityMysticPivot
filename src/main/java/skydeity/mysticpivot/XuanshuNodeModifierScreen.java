@@ -9,7 +9,7 @@ import net.minecraft.world.inventory.Slot;
 import static skydeity.mysticpivot.XuanshuGui.*;
 
 /**
- * 玄枢注灵台（香炉台）的界面——骨架与三台机器同款：
+ * 玄枢注灵香炉台的界面——骨架与三台机器同款：
  * {@link XuanshuGui#panel} 画面板、{@link XuanshuGui#slot} 遍历 {@code menu.slots}
  * 画全部格框（玩家背包 27+9 也覆盖），标题在 {@link #init()} 里居中。
  *

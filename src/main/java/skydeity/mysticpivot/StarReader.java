@@ -23,7 +23,7 @@ public interface StarReader {
      *   <li>玄枢炎炉（赤）：斗口四星各供玄枢锭（翻倍成立）；</li>
      *   <li>玄枢坩埚（绿）：北斗七座各供玄枢碎片；</li>
      *   <li>玄枢复刻台（蓝绿）：南斗六星各供龙蛋；</li>
-     *   <li>玄枢奥术台 / 玄枢注灵台（金）：南斗五星各供<b>玄枢锭</b>。</li>
+     *   <li>玄枢奥术台 / 玄枢注灵香炉台（金）：南斗五星各供<b>玄枢锭</b>。</li>
      * </ul>
      */
     boolean guideActive(Constellation constellation);

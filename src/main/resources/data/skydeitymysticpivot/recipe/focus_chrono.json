@@ -1,0 +1,52 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "minecraft:clock"
+  },
+  "components": [
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "thaumcraft:quicksilver"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_nitor"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_nitor"
+    },
+    {
+      "item": "thaumcraft:quicksilver"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    }
+  ],
+  "instability": 6,
+  "aspects": {
+    "skydeitymysticpivot:qian": 32,
+    "skydeitymysticpivot:dui": 32,
+    "skydeitymysticpivot:li": 32,
+    "skydeitymysticpivot:zhen": 32,
+    "skydeitymysticpivot:xun": 32,
+    "skydeitymysticpivot:kan": 32,
+    "skydeitymysticpivot:gen": 32,
+    "skydeitymysticpivot:kun": 32
+  },
+  "result": {
+    "id": "skydeitymysticpivot:focus_chrono"
+  }
+}

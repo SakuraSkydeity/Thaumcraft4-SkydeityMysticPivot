@@ -1,0 +1,52 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "thaumcraft:goggles_of_revealing"
+  },
+  "components": [
+    {
+      "item": "minecraft:dragon_egg"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_cloth"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:maple_crystal"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "skydeitymysticpivot:maple_crystal"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_cloth"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    }
+  ],
+  "instability": 25,
+  "aspects": {
+    "skydeitymysticpivot:qian": 64,
+    "skydeitymysticpivot:dui": 64,
+    "skydeitymysticpivot:li": 64,
+    "skydeitymysticpivot:zhen": 64,
+    "skydeitymysticpivot:xun": 64,
+    "skydeitymysticpivot:kan": 64,
+    "skydeitymysticpivot:gen": 64,
+    "skydeitymysticpivot:kun": 64
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_void_eye"
+  }
+}

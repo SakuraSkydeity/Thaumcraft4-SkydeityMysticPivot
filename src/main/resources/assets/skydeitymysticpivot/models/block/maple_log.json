@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "skydeitymysticpivot:block/maple_log_top",
+    "side": "skydeitymysticpivot:block/maple_log_side"
+  }
+}

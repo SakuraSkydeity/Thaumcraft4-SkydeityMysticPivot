@@ -127,7 +127,7 @@ public class XuanshuCrucibleBlockEntity extends BlockEntity implements MenuProvi
      * 抽运动画的「余晖」（tick）：<b>最后一次真正吸到要素之后</b>，轨迹再续这么久就收摊。
      *
      * <p>★ <b>这里踩过的坑（第 35 批）</b>：原来的续期条件是
-     * 「{@code !trailSources.isEmpty() || isAnyWorking()}」——而 {@code trailSources}
+     * 「轨迹源非空 || 还有工作面在忙」——而 {@code trailSources}
      * 是<b>只增不减</b>的（只有换存档才清），于是哪怕锅里早就不吸了，
      * 这个条件<b>恒为真</b>：服务端每 5 tick 永远把批号 +1，客户端于是永远把 15 tick
      * 的轨迹表续满 —— 表现就是<b>一条吸收动画挂在那儿没完没了</b>。</p>
@@ -554,16 +554,6 @@ public class XuanshuCrucibleBlockEntity extends BlockEntity implements MenuProvi
     /** 第 {@code lane} 个工作面的进度（tick）。 */
     public int getProgress(int lane) {
         return lanes[lane].progress;
-    }
-
-    /** 有没有任何一个工作面在忙（撒轨迹时用）。 */
-    public boolean isAnyWorking() {
-        for (Lane lane : lanes) {
-            if (lane.working) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /** 第 {@code lane} 个工作面需要的要素（界面画那一行图标用；读的是同步下来的快照）。 */

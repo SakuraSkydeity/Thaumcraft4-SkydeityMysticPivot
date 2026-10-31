@@ -5,7 +5,13 @@
   },
   "components": [
     {
-      "item": "skydeitymysticpivot:bagua_shard"
+      "item": "minecraft:nether_bricks"
+    },
+    {
+      "item": "skydeitymysticpivot:sixiang_stone_brick"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_shard"
     },
     {
       "item": "thaumcraft:thaumium_ingot"
@@ -14,19 +20,13 @@
       "item": "minecraft:nether_bricks"
     },
     {
-      "item": "skydeitymysticpivot:bagua_shard"
-    },
-    {
-      "item": "skydeitymysticpivot:bagua_shard"
-    },
-    {
-      "item": "minecraft:nether_bricks"
-    },
-    {
       "item": "thaumcraft:thaumium_ingot"
     },
     {
-      "item": "skydeitymysticpivot:bagua_shard"
+      "item": "skydeitymysticpivot:vermilion_bird_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:sixiang_stone_brick"
     }
   ],
   "instability": 6,

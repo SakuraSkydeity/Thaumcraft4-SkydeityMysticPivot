@@ -9,6 +9,14 @@
   models/item/<n>.json    → 物品 <n> 已注册 或 被文本引用 "item/<n>"
   models/block/<n>.json   → 被文本引用 "block/<n>"
   blockstates/<n>.json    → 方块 <n> 已注册
+
+第一百八十四批补三类「视野外引用」（工程坑 #54 的收编 —— 以前每次都要人工复核）：
+  * textures/models/<n>.png 法杖杆 / 杖帽：本体渲染器按约定名取图，Java 侧只有
+    `wandPart("<n>", …)` / `new WandPreset("<n>", …)`，没有 "models/" 前缀；
+  * textures/item/focus_*_orn.png：被 focus_catalog/*.json 的 `ornament_texture`
+    以全路径 "skydeitymysticpivot:textures/item/<n>.png" 引用；
+  * models/_ 前缀的临时文件：等距预览工具现场生成的预览 OBJ（生成它的
+    `preview_void_machine.py` 第 185 批已删，现存的是历史残留），只在 tools/ 里被引用。
 """
 import os
 import re
@@ -59,12 +67,17 @@ for dirpath, _, files in os.walk(os.path.join(ASSETS, "textures")):
         ok = False
         if sub == "item":
             ok = ("skydeitymysticpivot:item/" + n) in ALL_TEXT or n in items
+            # focus_catalog 的 ornament_texture 走全路径（坑 #54）
+            ok = ok or ("textures/item/" + n + ".png") in ALL_TEXT
         elif sub == "block":
             ok = ("block/" + n) in ALL_TEXT or n in blocks
         elif sub == "aspects":
             ok = os.path.exists(os.path.join(DATA, "skydeitymysticpivot/thaumcraft/aspects", n + ".json"))
         elif sub in ("gui", "misc", "models", "particle", "particles"):
             ok = ("%s/%s" % (sub, n)) in ALL_TEXT or (f in ALL_TEXT)
+            # 法杖杆 / 杖帽：本体渲染器按约定名取图，Java 侧只有 wandPart / WandPreset
+            # 的字符串参数（杆是第一个、帽是第二个），没有 "models/" 前缀（坑 #54）
+            ok = ok or ('wandPart("%s"' % n) in ALL_TEXT or ('"%s"' % n) in ALL_TEXT
         else:
             ok = (n in ALL_TEXT)
         if not ok:
@@ -93,6 +106,8 @@ for dirpath, _, files in os.walk(os.path.join(ASSETS, "models")):
                 n_orphan += 1
                 print("  %s" % rel)
         elif rel.endswith((".obj", ".mtl")):
+            if f.startswith("_"):
+                continue        # 预览工具现场生成的临时件，只在 tools/ 里被引用
             ok = rel.replace("models/", "") in ALL_TEXT or f in ALL_TEXT
             if not ok:
                 n_orphan += 1

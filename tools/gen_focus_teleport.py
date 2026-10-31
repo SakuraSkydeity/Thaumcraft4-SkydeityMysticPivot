@@ -8,8 +8,7 @@
   * {@code focus_teleport.png}（layer1，物品 / GUI 顶层）：**圆盘星辰核**——
     外圈金环、内夜空紫盘、四臂星芒、四角小星、中心亮星；
   * {@code focus_teleport_orn.png}（layer0 + focus 档案的 ornament_texture，
-    贴到法杖帽上的 focus 立方体上）：**圆盘章印**（圆轮廓 + 中心亮星 + 四向圆头星光），
-    任何角度贴上去都不会出现竖条观感。
+    贴到法杖帽上的 focus 立方体上）：**几个十字星**（第一百六十六批改，见下）。
 
 <h2>第九十七批改了两处</h2>
 <ol>
@@ -103,6 +102,16 @@ def cross_rays(g, arm, c_arm, c_tip):
         put(g, col, 7 - t, c_tip)
         put(g, col, 8 + t, c_tip)
 
+
+def cross_star(g, cx, cy, arm, color):
+    """十字星：芯一格 + 四向各 {@code arm} 格（plus 形四角星，1px 宽臂）。"""
+    put(g, cx, cy, color)
+    for t in range(1, arm + 1):
+        put(g, cx - t, cy, color)
+        put(g, cx + t, cy, color)
+        put(g, cx, cy - t, color)
+        put(g, cx, cy + t, color)
+
 # ---- 闪烁像素：亮粒 + 相邻暗晕（不对称分布，做出「一点点闪」）----
 FLASH = [
     (4, 6, "w"), (5, 6, "g"),
@@ -160,34 +169,27 @@ def main():
     im.save(os.path.join(ITEM_TEX, "focus_teleport.png"))
     ok &= centre_report("focus_teleport.png", im)
 
-    # ---- focus_teleport_orn：圆盘章印（cap 上不卡模的关键：圆轮廓）----
+    # ---- focus_teleport_orn：几个十字星（第一百六十六批重画）----
+    # ★ 用户第一百六十六批的原话：「teleport 我想让你修改的是模型，法杖上的模型
+    #   是几个十字星再上面，不是现在的贴图一样的」——要改的是**杖上那一面**，
+    #   且**不能和物品图标一个样**。上一版（第一百六十五批）把 orn 也画成
+    #   「圆盘 + 中心大十字星 + 四角小十字星」，和图标几乎同构，被退。
+    #   本版：构图换成**三颗大十字星摆成三角 + 两颗小十字星压在下角**，
+    #   没有中心星、没有图标那两道亮金双环；底盘只用夜空紫 + 一圈**暗金细边**
+    #   （圆轮廓是 cap 上不卡模的关键，必须留着，但不能抢戏）。
     g2 = blank()
-    disc(g2, 6.0, "G")                      # 金盘底
-    disc(g2, 4.8, "p")                      # 内夜空
-    disc(g2, 3.4, "P")
-    ring(g2, 5.4, "h", 1.0)                 # 盘缘亮金
-    # 四向探出的圆头星光（成对落点 → 居中）
-    for t in (5, 6):
-        for row in (7, 8):
-            put_pair(g2, 7 - t, row, "h")
-        for col in (7, 8):
-            put(g2, col, 7 - t, "h")
-            put(g2, col, 8 + t, "h")
-    for row in (7, 8):
-        put_pair(g2, 2, row, "w")
-    put(g2, 7, 2, "w")
-    put(g2, 8, 2, "w")
-    put(g2, 7, 13, "w")
-    put(g2, 8, 13, "w")
-    # 中心亮星
-    for x, y in ((7, 7), (8, 7), (7, 8), (8, 8),
-                 (6, 7), (9, 8), (7, 6), (8, 9)):
-        g2[y][x] = "w"
-    # ★ 闪烁像素（四粒对称，做出「一点点闪」）
-    for x, y in ((5, 5), (10, 10)):
-        g2[y][x] = "w"
-    for x, y in ((10, 5), (5, 10)):
-        g2[y][x] = "b"
+    disc(g2, 6.3, "p")                      # 夜空紫底盘
+    for y in range(SIZE):                   # 上半受光
+        for x in range(SIZE):
+            if y + 0.5 < C - 0.5 and (x + 0.5 - C) ** 2 + (y + 0.5 - C) ** 2 <= 4.6 ** 2 \
+                    and g2[y][x] in ("p", "P"):
+                g2[y][x] = "P"
+    ring(g2, 5.9, "g", 0.6)                 # 暗金细边（细到只勾一圈轮廓）
+    # ★ 摆位要留边：星臂一旦压到暗金细边（d≈5.9），就会把边框啃出豁口
+    #   （第一版把两颗星放在 y=4 就啃了）——三颗都收在 d≤4.7 的内盘里。
+    cross_star(g2, 5, 5, 1, "h")            # 小十字星 · 亮金（左上）
+    cross_star(g2, 10, 5, 1, "w")           # 小十字星 · 星白（右上）
+    cross_star(g2, 7, 10, 2, "G")           # 大十字星 · 金（正下方）
     im2 = render(g2)
     im2.save(os.path.join(ITEM_TEX, "focus_teleport_orn.png"))
     ok &= centre_report("focus_teleport_orn.png", im2)

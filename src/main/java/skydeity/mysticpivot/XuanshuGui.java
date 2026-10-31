@@ -302,4 +302,26 @@ public final class XuanshuGui {
         graphics.fill(x, y + 1, x + 1, y + h - 1, color);
         graphics.fill(x + w - 1, y + 1, x + w, y + h - 1, color);
     }
+
+    /**
+     * 页签上的「传输配置」图标：三条滑杆 + 三粒错开滑钮（第二百一十五批）。
+     *
+     * <p>四台带六面配的机器（炎炉 / 坩埚 / 炼金炉 / 复刻台）共用这一枚 14×16 页签，
+     * 图标<b>必须四台都有</b>。复刻台一直画着，另外三台在第一百九十几批重排界面时
+     * 只留了空白的页签壳 —— 用户口径：「之前给……自动输入输出按钮添加过图标，
+     * 为什么现在没了」。抽到这里之后，四台只需各调一句，不会再有人漏画。</p>
+     *
+     * @param tx 页签内面的左上角 x（页签 14×16）
+     * @param ty 页签内面的左上角 y
+     */
+    public static void tabIcon(GuiGraphics graphics, int tx, int ty, int color) {
+        // 三条滑杆（横线，宽 9）
+        graphics.fill(tx + 3, ty + 4, tx + 12, ty + 5, color);
+        graphics.fill(tx + 3, ty + 8, tx + 12, ty + 9, color);
+        graphics.fill(tx + 3, ty + 12, tx + 12, ty + 13, color);
+        // 三粒滑钮，上下错开（读作「可调」而不是「三」）
+        graphics.fill(tx + 5, ty + 3, tx + 7, ty + 6, color);
+        graphics.fill(tx + 9, ty + 7, tx + 11, ty + 10, color);
+        graphics.fill(tx + 4, ty + 11, tx + 6, ty + 14, color);
+    }
 }

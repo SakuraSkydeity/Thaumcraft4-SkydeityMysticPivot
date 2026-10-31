@@ -5,7 +5,7 @@
   },
   "components": [
     {
-      "item": "skydeitymysticpivot:bagua_shard"
+      "item": "skydeitymysticpivot:sixiang_stone_brick"
     },
     {
       "item": "thaumcraft:thaumium_ingot"
@@ -14,7 +14,7 @@
       "item": "thaumcraft:quicksilver"
     },
     {
-      "item": "skydeitymysticpivot:bagua_shard"
+      "item": "skydeitymysticpivot:sixiang_stone_brick"
     },
     {
       "item": "thaumcraft:quicksilver"
@@ -23,7 +23,7 @@
       "item": "thaumcraft:thaumium_ingot"
     },
     {
-      "item": "skydeitymysticpivot:bagua_shard"
+      "item": "skydeitymysticpivot:sixiang_stone_brick"
     }
   ],
   "instability": 6,

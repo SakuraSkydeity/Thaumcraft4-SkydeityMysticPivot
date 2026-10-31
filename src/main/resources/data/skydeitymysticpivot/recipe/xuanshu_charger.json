@@ -5,6 +5,9 @@
   },
   "components": [
     {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
       "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
@@ -14,16 +17,13 @@
       "item": "skydeitymysticpivot:xuanshu_shard"
     },
     {
-      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
-    },
-    {
-      "item": "thaumcraft:nitor"
-    },
-    {
-      "item": "thaumcraft:nitor"
+      "item": "skydeitymysticpivot:xuanshu_nitor"
     },
     {
       "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_nitor"
     },
     {
       "item": "skydeitymysticpivot:xuanshu_shard"
@@ -37,15 +37,14 @@
   ],
   "instability": 8,
   "aspects": {
-    "aer": 32,
-    "aqua": 32,
-    "ignis": 32,
-    "ordo": 32,
-    "perditio": 32,
-    "terra": 32,
-    "skydeitymysticpivot:kan": 20,
-    "skydeitymysticpivot:qian": 20,
-    "skydeitymysticpivot:xun": 20
+    "skydeitymysticpivot:qian": 24,
+    "skydeitymysticpivot:dui": 24,
+    "skydeitymysticpivot:li": 24,
+    "skydeitymysticpivot:zhen": 24,
+    "skydeitymysticpivot:xun": 24,
+    "skydeitymysticpivot:kan": 24,
+    "skydeitymysticpivot:gen": 24,
+    "skydeitymysticpivot:kun": 24
   },
   "result": {
     "id": "skydeitymysticpivot:xuanshu_charger"

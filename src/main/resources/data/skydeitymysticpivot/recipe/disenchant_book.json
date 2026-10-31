@@ -1,16 +1,27 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "thaumcraft:arcane_shaped",
   "pattern": [
-    " S ",
-    "SBS",
-    " S "
+    "ABA",
+    "CDC",
+    "EFE"
   ],
   "key": {
-    "S": { "item": "skydeitymysticpivot:xuanshu_shard" },
-    "B": { "item": "minecraft:book" }
+    "A": { "item": "minecraft:amethyst_shard" },
+    "B": { "item": "minecraft:netherite_ingot" },
+    "C": { "item": "skydeitymysticpivot:xuanshu_bagua_salt" },
+    "D": { "item": "minecraft:book" },
+    "E": { "item": "skydeitymysticpivot:maple_leaves" },
+    "F": { "item": "skydeitymysticpivot:xuanshu_cloth" }
   },
   "result": {
-    "id": "skydeitymysticpivot:disenchant_book",
-    "count": 1
+    "id": "skydeitymysticpivot:disenchant_book"
+  },
+  "vis": {
+    "aer": 815,
+    "terra": 815,
+    "ignis": 815,
+    "aqua": 815,
+    "ordo": 815,
+    "perditio": 815
   }
 }

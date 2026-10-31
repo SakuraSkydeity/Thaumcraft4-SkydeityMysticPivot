@@ -1,0 +1,58 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "thaumcraft:greatwood_wand_rod"
+  },
+  "components": [
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:azure_dragon_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:azure_dragon_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:azure_dragon_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:azure_dragon_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    }
+  ],
+  "instability": 3,
+  "aspects": {
+    "skydeitymysticpivot:qian": 8,
+    "skydeitymysticpivot:dui": 8,
+    "skydeitymysticpivot:li": 8,
+    "skydeitymysticpivot:zhen": 8,
+    "skydeitymysticpivot:xun": 8,
+    "skydeitymysticpivot:kan": 8,
+    "skydeitymysticpivot:gen": 8,
+    "skydeitymysticpivot:kun": 8
+  },
+  "result": {
+    "id": "skydeitymysticpivot:qinglong_wand_rod"
+  }
+}

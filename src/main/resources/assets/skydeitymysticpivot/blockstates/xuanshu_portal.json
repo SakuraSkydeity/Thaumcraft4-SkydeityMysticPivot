@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,formed=false": { "model": "skydeitymysticpivot:block/xuanshu_portal" },
+    "facing=north,formed=true": { "model": "skydeitymysticpivot:block/xuanshu_portal" },
+    "facing=east,formed=false": { "model": "skydeitymysticpivot:block/xuanshu_portal", "y": 90 },
+    "facing=east,formed=true": { "model": "skydeitymysticpivot:block/xuanshu_portal", "y": 90 },
+    "facing=south,formed=false": { "model": "skydeitymysticpivot:block/xuanshu_portal", "y": 180 },
+    "facing=south,formed=true": { "model": "skydeitymysticpivot:block/xuanshu_portal", "y": 180 },
+    "facing=west,formed=false": { "model": "skydeitymysticpivot:block/xuanshu_portal", "y": 270 },
+    "facing=west,formed=true": { "model": "skydeitymysticpivot:block/xuanshu_portal", "y": 270 }
+  }
+}

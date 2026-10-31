@@ -1,11 +1,14 @@
 package skydeity.mysticpivot;
 
+import dev.tc4port.thaumcraft.api.essentia.EssentiaCapabilities;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
@@ -55,6 +58,39 @@ public final class ModEvents {
         }
     }
 
+    /**
+     * 玄枢洞虚灵目的「削峰」：戴着它的人，<b>单次受伤不超过自身最大生命的
+     * {@link XuanshuVoidEyeItem#DAMAGE_CAP_RATIO}</b>。
+     *
+     * <p>选这个事件而不是 {@code LivingDamageEvent} 的原因：{@code LivingIncomingDamageEvent}
+     * 在 {@code LivingEntity#hurt} 里、<b>护甲与附魔结算之前</b>触发，
+     * 改的是「这次想打多少」，所以最终伤害仍然会走一遍正常的减伤流程 ——
+     * 穿重甲的人被削到 6 点后还有护甲再挡，不会出现「护甲形同虚设」的观感。</p>
+     *
+     * <p>两处刻意放过：</p>
+     * <ul>
+     *   <li>{@code /kill} 走的是 {@code DamageTypes.GENERIC_KILL}（数额为 {@code Float.MAX_VALUE}），
+     *       给它设上限等于让玩家杀不死，故直接放行；</li>
+     *   <li>数额本来就小的伤害（{@code amount <= cap}）一律不动，等于零开销。</li>
+     * </ul>
+     */
+    public static void onLivingIncomingDamage(LivingIncomingDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player)) {
+            return;
+        }
+        float amount = event.getAmount();
+        if (amount <= 0.0F || event.getSource().is(DamageTypes.GENERIC_KILL)) {
+            return;
+        }
+        if (!XuanshuVoidEyeItem.isWornBy(player)) {
+            return;
+        }
+        float cap = player.getMaxHealth() * XuanshuVoidEyeItem.DAMAGE_CAP_RATIO;
+        if (cap > 0.0F && amount > cap) {
+            event.setAmount(cap);
+        }
+    }
+
     public static void onServerAboutToStart(ServerAboutToStartEvent event) {
         ModAspectSources.install();
     }
@@ -99,6 +135,20 @@ public final class ModEvents {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.XUANSHU_REPLICATOR.get(),
                 (be, side) -> be.getExternalItems(side));
+        // 玄枢虚空采矿机（第一百八十七批：机器只剩一格、光坛退到背后）：四面直接接容器，
+        // 进出都走这一份 9 格产出表（光坛最近一圈也在背后第 3 格，贴着的四面永远是空的）。
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.XUANSHU_VOID_MINING.get(),
+                (be, side) -> be.getExternalItems(side));
+        // 玄枢源质罐（第一百九十三批）：两样本体能力都要显式登记。
+        //   ★ 本体的 EssentiaCapabilities 只给它自己的方块实体登记 TRANSPORT / SOURCE，
+        //     别家的 BE 即使 implements 了那两个接口也拿不到（能力查询走注册表，不看接口）。
+        //     TRANSPORT = 管子 / 炼金炉往罐里灌；SOURCE = 注魔矩阵与玄枢基座的
+        //     EssentiaApi.extract 只认这条，少一个就抽不出来、丝线动画也不会出现。
+        event.registerBlockEntity(EssentiaCapabilities.TRANSPORT,
+                ModBlockEntities.XUANSHU_ESSENTIA_JAR.get(), (be, side) -> be);
+        event.registerBlockEntity(EssentiaCapabilities.SOURCE,
+                ModBlockEntities.XUANSHU_ESSENTIA_JAR.get(), (be, side) -> be);
     }
 
     /**

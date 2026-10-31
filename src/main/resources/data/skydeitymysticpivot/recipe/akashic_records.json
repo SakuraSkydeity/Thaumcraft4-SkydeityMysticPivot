@@ -1,32 +1,44 @@
 {
   "type": "thaumcraft:infusion",
   "central": {
-    "item": "skydeitymysticpivot:bagua_shard"
+    "item": "minecraft:dragon_egg"
   },
   "components": [
     {
-      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
-      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
-      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
-      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
-      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
-      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
-      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
-      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     }
   ],
   "instability": 8,

@@ -3,6 +3,7 @@ package skydeity.mysticpivot;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
@@ -15,8 +16,8 @@ import static skydeity.mysticpivot.XuanshuGui.*;
  *
  * <h2>本批两处改动（用户原话：「里面的ui改为左右 上下会超出框」）</h2>
  * <ul>
- *   <li><b>左右</b>：物品槽 / 染灵槽由「上下两行」改成<b>同一行左右相对</b>
- *       （{@link XuanshuArcaneTableMenu#TARGET_X} 44 / {@link XuanshuArcaneTableMenu#DYE_X} 116，
+ *   <li><b>左右</b>：物品槽 / 书槽由「上下两行」改成<b>同一行左右相对</b>
+ *       （{@link XuanshuArcaneTableMenu#TARGET_X} 44 / {@link XuanshuArcaneTableMenu#BOOK_X} 116，
  *       中间画一个「+」），提示小字各贴在自己槽下，不再占纵向空间；</li>
  *   <li><b>上下会超出框</b>：面板 {@code imageHeight} 一直是 166，而玩家背包三行与快捷栏
  *       落在 112 / 130 / 148 / 170 —— <b>快捷栏整条都在面板外面</b>（§12.94.3 那句
@@ -32,6 +33,16 @@ public class XuanshuArcaneTableScreen extends AbstractContainerScreen<XuanshuArc
 
     /** 面板总高：背包 112 / 130 / 148 + 快捷栏 170，加 18 高与 2 边距 = 190。 */
     private static final int PANEL_H = 190;
+
+    /**
+     * 书槽里的「附魔书描边」底图（第二百一十四批）。
+     *
+     * <p>16×16，取 `disenchant_book.png` 的 alpha 剪影（= 原版附魔书的形状）：
+     * 只描一圈轮廓 + 极淡的填充，空槽自己说明「这里放书」，又不会像真放了一本。
+     * 由 {@code tools/gen_arcane_table_gui.py} 生成；锭那枚同步改淡到同一浓度。</p>
+     */
+    private static final ResourceLocation BOOK_GHOST =
+            ResourceLocation.fromNamespaceAndPath(MysticPivot.MODID, "textures/gui/book_ghost.png");
 
     public XuanshuArcaneTableScreen(XuanshuArcaneTableMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
@@ -54,8 +65,9 @@ public class XuanshuArcaneTableScreen extends AbstractContainerScreen<XuanshuArc
             slot(g, x + slot.x - 1, y + slot.y - 1);
         }
         drawInfo(g, x + INFO_X, y + INFO_Y);
+        drawBookGhost(g, x, y);
 
-        // 两槽之间的「+」：一眼看出「物品 + 染灵 → 附魔 +1」
+        // 两槽之间的「+」：一眼看出「物品 + 附魔书（可选）→ 附魔更上一层」
         centerText(g, this.font, Component.literal("+"),
                 x + this.imageWidth / 2, y + XuanshuArcaneTableMenu.TARGET_Y + 5, TEXT_ACCENT);
 
@@ -65,11 +77,27 @@ public class XuanshuArcaneTableScreen extends AbstractContainerScreen<XuanshuArc
                 Component.translatable("gui.skydeitymysticpivot.arcane_table.hint_item"),
                 x + XuanshuArcaneTableMenu.TARGET_X + 9, hintY, TEXT_SOFT);
         centerText(g, this.font,
-                Component.translatable("gui.skydeitymysticpivot.arcane_table.hint_dye"),
-                x + XuanshuArcaneTableMenu.DYE_X + 9, hintY, TEXT_SOFT);
+                Component.translatable("gui.skydeitymysticpivot.arcane_table.hint_book"),
+                x + XuanshuArcaneTableMenu.BOOK_X + 9, hintY, TEXT_SOFT);
         centerText(g, this.font,
                 Component.translatable("gui.skydeitymysticpivot.arcane_table.hint"),
                 x + this.imageWidth / 2, hintY + 16, TEXT_ACCENT);
+    }
+
+    /**
+     * 书槽空着时，在槽底画一本**很淡的附魔书轮廓**（第二百一十四批）。
+     *
+     * <p>贴图是 16×16、与槽内格同尺寸，直接对齐槽位内框（槽框本身比格子大 1 像素，
+     * 所以这里从 {@code slot.x}/{@code slot.y} 起画，与物品图标落点一致）。
+     * 有书时由原版渲染叠加，不再画 —— 免得影子透到真书下面。</p>
+     */
+    private void drawBookGhost(GuiGraphics g, int left, int top) {
+        Slot bookSlot = this.menu.slots.get(XuanshuArcaneTableMenu.SLOT_BOOK);
+        if (bookSlot.hasItem()) {
+            return;
+        }
+        g.blit(BOOK_GHOST, left + bookSlot.x, top + bookSlot.y, 16, 16,
+                0.0F, 0.0F, 16, 16, 16, 16);
     }
 
     /**

@@ -261,6 +261,8 @@ public class XuanshuCrucibleScreen extends AbstractContainerScreen<XuanshuCrucib
         graphics.fill(tx, ty + 1, tx + 1, ty + TAB_H - 1, COL_HI);
         graphics.fill(tx + 1, ty + TAB_H - 1, tx + TAB_W - 1, ty + TAB_H, COL_LO);
         graphics.fill(tx + TAB_W - 1, ty + 1, tx + TAB_W, ty + TAB_H - 1, COL_LO);
+        // 第二百一十五批：页签上的「传输配置」图标（三条滑杆）补回来
+        XuanshuGui.tabIcon(graphics, tx, ty, COL_TITLE);
     }
 
     /** 圆角 1 像素的实心矩形：四角各缺一格。 */

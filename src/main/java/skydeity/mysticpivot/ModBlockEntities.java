@@ -74,7 +74,7 @@ public final class ModBlockEntities {
                     () -> BlockEntityType.Builder.of(XuanshuChargerBlockEntity::new,
                             ModBlocks.XUANSHU_CHARGER.get()).build(null));
 
-    /** 玄枢注灵台：台座 + 台上香炉，华槽 / 锭槽两格；持法杖右键正上方立着的缸中节点即运转。 */
+    /** 玄枢注灵香炉台：台座 + 台上香炉，华槽 / 锭槽两格；持法杖右键正上方立着的缸中节点即运转。 */
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<XuanshuNodeModifierBlockEntity>> XUANSHU_NODE_MODIFIER =
             BE_TYPES.register("xuanshu_node_modifier",
                     () -> BlockEntityType.Builder.of(XuanshuNodeModifierBlockEntity::new,
@@ -122,6 +122,24 @@ public final class ModBlockEntities {
             BE_TYPES.register("xuanshu_alchemy_furnace",
                     () -> BlockEntityType.Builder.of(XuanshuAlchemyFurnaceBlockEntity::new,
                             ModBlocks.XUANSHU_ALCHEMY_FURNACE.get()).build(null));
+
+    /** 玄枢虚空水晶塔：一格机器 + 背后一座塔，每 5 秒从 {@code #c:ores} 随机产出一组矿。 */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<XuanshuVoidMiningBlockEntity>> XUANSHU_VOID_MINING =
+            BE_TYPES.register("xuanshu_void_mining",
+                    () -> BlockEntityType.Builder.of(XuanshuVoidMiningBlockEntity::new,
+                            ModBlocks.XUANSHU_VOID_MINING.get()).build(null));
+
+    /** 玄枢传送门：不管传送（还没做），只管背后那座 1099 格的广场齐不齐 + 开界面。 */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<XuanshuPortalBlockEntity>> XUANSHU_PORTAL =
+            BE_TYPES.register("xuanshu_portal",
+                    () -> BlockEntityType.Builder.of(XuanshuPortalBlockEntity::new,
+                            ModBlocks.XUANSHU_PORTAL.get()).build(null));
+
+    /** 玄枢源质罐：一只罐子按要素分别计数（每种 2048），可被管子灌、可被注魔与基座抽。 */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<XuanshuEssentiaJarBlockEntity>> XUANSHU_ESSENTIA_JAR =
+            BE_TYPES.register("xuanshu_essentia_jar",
+                    () -> BlockEntityType.Builder.of(XuanshuEssentiaJarBlockEntity::new,
+                            ModBlocks.XUANSHU_ESSENTIA_JAR.get()).build(null));
 
     /** 玄枢魔晶方块实体：不存数据，只承担安全场的周期扫描。 */
     public static class XuanshuCrystalBlockEntity extends BlockEntity {
@@ -496,8 +514,8 @@ public final class ModBlockEntities {
     }
 
     /**
-     * 玄枢注灵台方块实体（第八十八批新增、第八十九批改<b>方块</b>版）：
-     * <b>香炉</b>台 + 两格暂存（华槽 / 锭槽）——运转逻辑全在 {@link #applyWithWand}。
+     * 玄枢注灵香炉台方块实体（第一百六十三批由「玄枢注灵台」改名；第八十八批新增、
+     * 第八十九批改<b>方块</b>版）：<b>香炉</b>台 + 两格暂存（华槽 / 锭槽）——运转逻辑全在 {@link #applyWithWand}。
      *
      * <p>「正上方立着缸中节点」是运转的前提：玩家把 {@code thaumcraft:node_jar}
      * 摆在方块上面，GUI（{@link XuanshuNodeModifierMenu}）两槽填好，再<b>持法杖右键
@@ -521,10 +539,12 @@ public final class ModBlockEntities {
      *       所以既不读瓶里封了哪几门、也不判剩余量，运转一次整件吃掉一件。</li>
      * </ul>
      *
-     * <h2>第九十九批：涨哪一门 = 「先六门基础，之后一直抽奖」</h2>
-     * <p>用户原话：「效果改为添加的先是 6 种基础，然后再添加其他随机的一种 一直抽奖就行」。
-     * 抽签集中在 {@code XuanshuNodeModifierMenu#nextAspect}：先按 风→地→火→水→序→灭
-     * 补齐六门基础（缺哪门补哪门），六门齐了之后从<b>非基础要素</b>（复合要素）里等概率一直抽。
+     * <h2>第九十九批 → 第一百六十三批：涨哪一门 = 「先补基础，再三段抽」</h2>
+     * <p>第九十九批用户原话：「效果改为添加的先是 6 种基础，然后再添加其他随机的一种 一直抽奖就行」；
+     * 第一百六十三批改成三段式（用户原话见 {@code XuanshuNodeModifierMenu#nextAspect} 的注释）：
+     * ① 六门基础缺哪门补哪门；② 六门齐了而每门不足 {@value XuanshuNodeModifierMenu#BASIC_CAP}：
+     * 八成加在六门基础上、两成添一门新要素；③ 六门各满 {@value XuanshuNodeModifierMenu#BASIC_CAP}：
+     * 两成添新要素、八成加在节点现有要素上。
      * 每次抽中一门 +{@value #ASPECT_AMOUNT}。</p>
      *
      * <h2>两槽的存放</h2>
@@ -587,7 +607,8 @@ public final class ModBlockEntities {
          *
          * <p>第一百批用户：「这个法杖激活也需要 要素 各129」——与玄枢奥术台同一档价码、
          * 同一套写法（{@code consumeExactVisFromWand} 收的是**厘**，所以送进去的是
-         * {@link #VIS_PER_CHANNEL_CENTIVIS}）。四把玄枢杖容量 918 / 1949 / 2035 都付得起。</p>
+         * {@link #VIS_PER_CHANNEL_CENTIVIS}）。各档法杖容量（四圣兽 918、四象 1949、
+         * 玄枢 2060、寰宇 99 999）都付得起这笔六元各 129 的价。</p>
          */
         public static final int VIS_PER_CHANNEL = 129;
 
@@ -651,12 +672,15 @@ public final class ModBlockEntities {
          * <p>判定顺序（任何一条不满足就整笔不动、只弹提示）：</p>
          * <ol>
          *   <li>正上方没有缸中节点 → 「台上方并无缸中节点」；</li>
-         *   <li>华槽不是天域之华 → 提示缺华（**任意**天华都算，内容不看）；</li>
+         *   <li>华槽不是天域之华 → 提示缺华（**任意**一瓶天华都行，不看里面封着什么，
+         *       也不管与上一瓶同不同类 —— 第二百一十四批用户「只要是天域之华，
+         *       不需要检测是否相同」）；</li>
          *   <li>锭槽没有玄枢锭 → 提示缺锭；</li>
          *   <li>法杖六元不足（{@link #VIS_COST} 用 {@link VisAction#SIMULATE} <b>先试算</b>，
          *       不扣）→ 提示「法杖要素不足」；</li>
          *   <li>都齐了：按 {@code XuanshuNodeModifierMenu#nextAspect} 抽一门
-         *       （<b>先补六门基础，六门齐了从其他要素里一直抽奖</b>），给它
+         *       （第一百六十三批三段式：<b>先补六门基础；六门没满时八成加基础、两成添新要素；
+         *       六门各满后八成加现有要素、两成添新要素</b>），给它
          *       base / current 各 +{@value #ASPECT_AMOUNT}，写回走
          *       {@link NodeApi#replaceLoadedState} 的 CAS（读当前 → 算新的 → 原状态当
          *       expected 交回）：对不上就是本体正忙着，<b>不扣要素、不吃材料</b>，下一击重试；</li>
@@ -685,7 +709,7 @@ public final class ModBlockEntities {
                 return;
             }
 
-            // ---- 华槽：**任意**天域之华（不看这瓶里封的是什么，只看是不是天华）----
+            // ---- 华槽：**任意**天域之华（不看内容、不看与上一瓶是否同类）----
             ItemStack bloomStack = this.items.getStackInSlot(SLOT_BLOOM);
             if (!XuanshuNodeModifierMenu.isWispEssence(bloomStack)) {
                 say(player, "message.skydeitymysticpivot.node_modifier.no_bloom");
@@ -720,6 +744,7 @@ public final class ModBlockEntities {
             ThaumcraftApiHelper.consumeExactVisFromWand(wand, player, VIS_COST, VisAction.EXECUTE);
             this.items.extractItem(SLOT_BLOOM, 1, false);
             this.items.extractItem(SLOT_INGOT, INGOT_COST, false);
+            this.setChanged();
             server.playSound(null, nodePos, SoundEvents.BEACON_ACTIVATE,
                     SoundSource.BLOCKS, 0.6F, 1.4F);
             server.sendParticles(ParticleTypes.END_ROD,

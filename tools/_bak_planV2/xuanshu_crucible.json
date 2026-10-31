@@ -1,0 +1,41 @@
+{
+  "type": "thaumcraft:infusion",
+  "central": {
+    "item": "thaumcraft:crucible"
+  },
+  "components": [
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "thaumcraft:thaumium_ingot"
+    },
+    {
+      "item": "thaumcraft:quicksilver"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    },
+    {
+      "item": "thaumcraft:quicksilver"
+    },
+    {
+      "item": "thaumcraft:thaumium_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:bagua_shard"
+    }
+  ],
+  "instability": 6,
+  "aspects": {
+    "aer": 20,
+    "ignis": 20,
+    "aqua": 20,
+    "terra": 20,
+    "ordo": 20,
+    "perditio": 20
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_crucible"
+  }
+}

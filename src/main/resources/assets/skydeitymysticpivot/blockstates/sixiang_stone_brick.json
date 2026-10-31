@@ -1,31 +1,8 @@
 {
   "variants": {
-    "active=false,corner=nw": {
-      "model": "skydeitymysticpivot:block/sixiang_stone_brick"
-    },
-    "active=false,corner=ne": {
-      "model": "skydeitymysticpivot:block/sixiang_stone_brick"
-    },
-    "active=false,corner=se": {
-      "model": "skydeitymysticpivot:block/sixiang_stone_brick"
-    },
-    "active=false,corner=sw": {
-      "model": "skydeitymysticpivot:block/sixiang_stone_brick"
-    },
-    "active=true,corner=nw": {
-      "model": "skydeitymysticpivot:block/sixiang_stone_brick_active"
-    },
-    "active=true,corner=ne": {
-      "model": "skydeitymysticpivot:block/sixiang_stone_brick_active",
-      "y": 90
-    },
-    "active=true,corner=se": {
-      "model": "skydeitymysticpivot:block/sixiang_stone_brick_active",
-      "y": 180
-    },
-    "active=true,corner=sw": {
-      "model": "skydeitymysticpivot:block/sixiang_stone_brick_active",
-      "y": 270
-    }
+    "active=false,center=false": { "model": "skydeitymysticpivot:block/sixiang_stone_brick" },
+    "active=false,center=true":  { "model": "skydeitymysticpivot:block/sixiang_stone_brick" },
+    "active=true,center=true":   { "model": "skydeitymysticpivot:block/sixiang_stone_brick_active" },
+    "active=true,center=false":  { "model": "skydeitymysticpivot:block/sixiang_brick_empty" }
   }
 }

@@ -35,6 +35,7 @@ SHORT = {
     "MACHINE_ALCHEMY": "alch", "XUANSHU_CHARGER": "charg", "PURIFYING_STONE": "purif",
     "BAGUA_PICKAXE": "pick1", "XUANSHU_PICKAXE": "pick2", "XUANSHU_HOE": "hoe",
     "FOCUS_GUARDIAN": "fg", "FOCUS_TELEPORT": "ft", "FOCUS_COSMOS": "fc",
+    "FOCUS_CHRONO": "fh",
 }
 
 
@@ -51,12 +52,6 @@ def icon_path(icon):
         path = os.path.join(ASSETS, namespace, rel)
         return path if os.path.exists(path) else None
     return None
-
-
-def link(draw, a, b, colour, width):
-    draw.line([a, b], fill=colour, width=width)
-    for point in (a, b):
-        pass
 
 
 def main():

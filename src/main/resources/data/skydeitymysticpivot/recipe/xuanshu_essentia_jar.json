@@ -1,0 +1,33 @@
+{
+  "type": "thaumcraft:arcane_shaped",
+  "pattern": [
+    "ABA",
+    "CDC",
+    "CCC"
+  ],
+  "key": {
+    "A": {
+      "item": "thaumcraft:thaumium_ingot"
+    },
+    "B": {
+      "item": "minecraft:diamond"
+    },
+    "C": {
+      "item": "minecraft:glass_pane"
+    },
+    "D": {
+      "item": "thaumcraft:warded_jar"
+    }
+  },
+  "result": {
+    "id": "skydeitymysticpivot:xuanshu_essentia_jar"
+  },
+  "vis": {
+    "aer": 54,
+    "terra": 54,
+    "ignis": 54,
+    "aqua": 54,
+    "ordo": 54,
+    "perditio": 54
+  }
+}

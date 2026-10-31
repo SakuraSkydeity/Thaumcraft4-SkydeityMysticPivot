@@ -43,15 +43,14 @@
   ],
   "instability": 8,
   "aspects": {
-    "ordo": 64,
-    "perditio": 32,
-    "aer": 32,
-    "ignis": 24,
-    "aqua": 24,
-    "terra": 24,
     "skydeitymysticpivot:qian": 24,
     "skydeitymysticpivot:dui": 24,
-    "skydeitymysticpivot:li": 24
+    "skydeitymysticpivot:li": 24,
+    "skydeitymysticpivot:zhen": 24,
+    "skydeitymysticpivot:xun": 24,
+    "skydeitymysticpivot:kan": 24,
+    "skydeitymysticpivot:gen": 24,
+    "skydeitymysticpivot:kun": 24
   },
   "result": {
     "id": "skydeitymysticpivot:star_dial"

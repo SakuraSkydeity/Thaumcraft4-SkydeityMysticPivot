@@ -23,6 +23,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -31,60 +32,70 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 /**
- * 玄枢奥术台方块实体（第八十九批新增）：一格<b>受附物品</b>暂存 +
- * {@link #applyWithWand} 的「一级附魔 = 1 枚玄枢锭 + 法杖六元各 129 点」。
+ * 玄枢奥术台方块实体（第八十九批新增）：一格<b>受附物品</b> + 一格<b>可选附魔书</b>，
+ * {@link #applyWithWand} 一次运转 = 法杖六元各 {@value #VIS_PER_CHANNEL} 点。
  *
- * <h2>运转（用户原话）</h2>
+ * <h2>运转（用户口径的沿革）</h2>
  * <p>第九十六批：「一个是物品要增加附魔的，一个是染灵，放玄枢锭，附魔一次消耗一个」；
  * 第九十七批加码：「升级附魔同时消耗玄枢锭和法杖 6 种要素各 129 点」。
- * 于是把要升附魔的物品放进左槽、<b>玄枢锭</b>放进右槽，<b>手持任意法杖右键方块</b>——
- * 一次运转同时扣<b>两样</b>：玄枢锭 ×{@value #DYE_COST}，以及法杖
- * <b>风 / 地 / 火 / 水 / 序 / 灭 六种要素各 {@value #VIS_PER_CHANNEL} 点（整 Vis）</b>
- * （送进 API 时换成 {@value #VIS_PER_CHANNEL_CENTIVIS} 厘；走
- * {@code ThaumcraftApiHelper.consumeExactVisFromWand}，六路**逐路足额**校验，
- * 哪一路不够就整笔不扣），成功后槽内物品的<b>每一项附魔等级 +1</b>（单条最高
- * {@value #MAX_ENCHANT_LEVEL}）。</p>
+ * <b>第二百一十四批整组改口径</b>：</p>
+ * <pre>
+ * 奥术台将原来玄枢锭一格栏位，改为可以放附魔书（可选）放了就是给物品添加这个附魔书上所有
+ * 然后附魔书消失，画一个和附魔书一样的轮廓，稍微淡一点……无论附魔能不能发挥作用直接加上。
+ * 升级一次消耗 77 点法杖 6 种要素
+ * </pre>
+ * <p>于是：<b>染灵用的玄枢锭整条去掉</b>（槽位改收附魔书、且是<b>可选</b>的），
+ * 代价只剩法杖六元各 {@value #VIS_PER_CHANNEL} 点（{@value #VIS_PER_CHANNEL_CENTIVIS} 厘，
+ * 走 {@code ThaumcraftApiHelper.consumeExactVisFromWand}，六路逐路足额，哪一路不够整笔不扣）。
+ * 一次运转做两件事：</p>
+ * <ol>
+ *   <li>物品<b>原有的每一项附魔 +1</b>（单条封顶 {@value #MAX_ENCHANT_LEVEL}）——与旧版一致；</li>
+ *   <li>书槽里若放了<b>附魔书</b>，把书上<b>所有</b>附魔<b>原样并入</b>物品
+ *       （同一条取两者较高等级），<b>不做任何「能不能生效」的判定</b>——锋利刻在镐上也照刻；
+ *       并入成功后那本书<b>消耗一本</b>（书是「可选」的，不放就只做第 1 件事）。</li>
+ * </ol>
+ *
+ * <p><b>为什么能「直接加上」</b>：附魔存在 {@link DataComponents#ENCHANTMENTS} 这个数据组件里，
+ * 是一张 {@code 附魔 → 等级} 的表；原版铁砧 / 附魔台会先过一遍
+ * {@code Enchantment.canEnchant} 与互斥表，这里<b>不走那两道</b>，直接往表里写 ——
+ * 于是「锋利 V 的能量剑」「时运与精准采集同一条」都成立。这是用户明确要的效果，不是漏判。</p>
  *
  * <ul>
  *   <li>台上无物品：提示「台上并无物品」；</li>
- *   <li>物品没有附魔：提示「此物并无附魔」；</li>
- *   <li>全部附魔已封顶：提示「诸附魔已至绝顶」（<b>封顶不烧锭、不抽魔</b>）；</li>
- *   <li>染灵槽没有玄枢锭：提示缺锭（**先查锭、再查魔**，免得白扣魔力）；</li>
- *   <li>法杖六元有缺口：提示六元不足，锭与魔力都不动。</li>
+ *   <li>既没有附魔、书槽也没有附魔书：提示「无从添加」（<b>不扣魔</b>）；</li>
+ *   <li>原有附魔全封顶、书也带不进新东西：提示「诸附魔已至绝顶」（同样不扣魔）；</li>
+ *   <li>法杖六元有缺口：提示六元不足，什么都不动。</li>
  * </ul>
  *
- * <p>法杖判定走 {@code WandApi.isBuiltinWand}（本体各级法杖都算，
- * 与 {@code WandAutoRefill}、节点修改器同口径）。</p>
+ * <p>法杖判定走 {@code WandApi.isBuiltinWand}（本体各级法杖都算，与节点修改器同口径）。</p>
  */
 public final class XuanshuArcaneTableBlockEntity extends BlockEntity implements MenuProvider, StarReader {
 
     /** 物品槽（要加附魔的物品）。 */
     public static final int SLOT_ITEM = 0;
 
-    /** 染灵槽（放玄枢锭，运转一次消耗一枚）。 */
-    public static final int SLOT_DYE = 1;
-
-    /** 运转一次消耗的染灵：玄枢锭 ×{@value #DYE_COST}。 */
-    public static final int DYE_COST = 1;
+    /**
+     * 书槽（第二百一十四批由「玄枢锭槽」改来）：放一本<b>附魔书</b>，可选。
+     *
+     * <p>放了就把书上所有附魔并进物品、书消耗一本；不放也能运转（只做「原有附魔各 +1」）。
+     * 放别的东西不报错、也不吃，按空槽处理。</p>
+     */
+    public static final int SLOT_BOOK = 1;
 
     /**
-     * 运转一次、每一种要素的消耗，单位是**整 Vis**（也就是法杖面板上直接显示的那个数）。
+     * 运转一次、每一种要素的消耗，单位是**整 Vis**（法杖面板上直接显示的那个数）。
      *
-     * <p>★ 第九十八批修正：上一批按**厘**（centivis）传了 129，于是法杖面板只掉
-     * <b>1.29</b>——因为 {@code WandItem.formatVis} 把厘数 ÷100 显示（`129 % 100 != 0`
-     * 时才显示两位小数），玩家看到的是「1.29」而不是「129」，用户当场就发现
-     * 「消耗的不是 129 点」。本版按整 Vis 记（{@value #VIS_PER_CHANNEL} Vis），
-     * 送进 API 时再 ×100 换成厘（{@link #VIS_PER_CHANNEL_CENTIVIS}）。
-     * 玄枢四杖（朱雀 918 / 四象 1949 / 鎏金 2035 / 寰宇 99999）都付得起。</p>
+     * <p>★ 第九十八批的教训：这个数按**厘**（centivis）传过一次 129，法杖面板只掉 1.29
+     * （{@code WandItem.formatVis} 把厘 ÷100 显示），用户当场就问「消耗的不是 129 点」。
+     * 所以这里一律记整 Vis，送进 API 时才 ×100（{@link #VIS_PER_CHANNEL_CENTIVIS}）。</p>
+     *
+     * <p>第二百一十四批由 129 降到 <b>77</b>（用户口径「升级一次消耗 77 点法杖 6 种要素」），
+     * 与玄枢耀光配方同一档数。</p>
      */
-    public static final int VIS_PER_CHANNEL = 129;
+    public static final int VIS_PER_CHANNEL = 77;
 
     /** 同一价码的**厘**（centivis）写法——API 收的就是这个单位。 */
     public static final int VIS_PER_CHANNEL_CENTIVIS = VIS_PER_CHANNEL * 100;
-
-    /** 染灵物料：玄枢锭。 */
-    public static final net.minecraft.world.item.Item DYE_ITEM = net.minecraft.core.registries.BuiltInRegistries.ITEM
-            .get(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("skydeitymysticpivot", "xuanshu_ingot"));
 
     /** 单条附魔的等级上限。 */
     public static final int MAX_ENCHANT_LEVEL = 128;
@@ -131,6 +142,9 @@ public final class XuanshuArcaneTableBlockEntity extends BlockEntity implements 
      * 「奥术台、注灵台用玄枢锭」。判定与门禁同源（{@link StarRite#nandouFiveIngot}），
      * 并按 {@value #GUIDE_GATE_TICKS} tick 缓存——{@code guideActive} 是渲染每帧都会问的，
      * 别每帧扫十二格星位。</p>
+     *
+     * <p>★ 第二百一十四批台内的玄枢锭槽没了，<b>台外的星位门禁不动</b>——那是南斗五星各自供锭，
+     * 与台内材料无关。</p>
      */
     @Override
     public boolean guideActive(Constellation constellation) {
@@ -180,14 +194,23 @@ public final class XuanshuArcaneTableBlockEntity extends BlockEntity implements 
         }
     }
 
+    /** 书槽里那本附魔书的附魔表；不是附魔书 / 是空书 → 空表。 */
+    private static ItemEnchantments bookEnchantments(ItemStack book) {
+        if (!book.is(Items.ENCHANTED_BOOK)) {
+            return ItemEnchantments.EMPTY;
+        }
+        ItemEnchantments ench = book.get(DataComponents.STORED_ENCHANTMENTS);
+        return ench == null ? ItemEnchantments.EMPTY : ench;
+    }
+
     /**
-     * 持法杖右键运转（第九十七批）：物品槽附魔全 +1（封顶 {@value #MAX_ENCHANT_LEVEL}），
-     * 代价<b>两样一起扣</b>——染灵槽 1 枚玄枢锭，加上法杖六种要素各
+     * 持法杖右键运转（第九十七批，第二百一十四批改价改料）：原有附魔各 +1，
+     * 书槽有附魔书就把书上所有附魔并进来（书消耗一本），代价是法杖六元各
      * {@value #VIS_PER_CHANNEL} 点（整 Vis；{@code consumeExactVisFromWand} 收厘，内部 ×100），
      * 六路逐路足额。
      *
-     * <p>判定顺序故意是「先能升 → 再查锭 → 最后扣魔」：<b>封顶不烧锭、缺锭不抽魔</b>，
-     * 任何一条不满足都整笔不动、只弹一句提示。</p>
+     * <p>判定顺序故意是「先算得出东西可加 → 再扣魔」：<b>没东西可加、六元不足都不动任何材料</b>，
+     * 只弹一句提示。</p>
      */
     public void applyWithWand(net.minecraft.world.level.Level level, Player player, ItemStack wand) {
         if (!(level instanceof ServerLevel server)) {
@@ -203,35 +226,42 @@ public final class XuanshuArcaneTableBlockEntity extends BlockEntity implements 
             say(player, "message.skydeitymysticpivot.arcane_table.empty");
             return;
         }
-        ItemEnchantments ench = target.get(DataComponents.ENCHANTMENTS);
-        if (ench == null || ench.isEmpty()) {
-            say(player, "message.skydeitymysticpivot.arcane_table.no_enchant");
-            return;
-        }
 
-        // 先全查一遍是否都已封顶（封顶就既不烧锭也不抽魔）
-        ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(ench);
+        ItemEnchantments current = target.get(DataComponents.ENCHANTMENTS);
+        if (current == null) {
+            current = ItemEnchantments.EMPTY;
+        }
+        ItemStack book = this.items.getStackInSlot(SLOT_BOOK);
+        ItemEnchantments fromBook = bookEnchantments(book);
+
+        // 先把「原有附魔各 +1」算出来
+        ItemEnchantments.Mutable merged = new ItemEnchantments.Mutable(current);
         boolean changed = false;
-        for (Holder<Enchantment> holder : ench.keySet()) {
-            int lv = ench.getLevel(holder);
+        for (Holder<Enchantment> holder : current.keySet()) {
+            int lv = current.getLevel(holder);
             if (lv < MAX_ENCHANT_LEVEL) {
-                mutable.set(holder, Math.min(MAX_ENCHANT_LEVEL, lv + 1));
+                merged.set(holder, Math.min(MAX_ENCHANT_LEVEL, lv + 1));
+                changed = true;
+            }
+        }
+        // 再把书上的附魔原样并入：同一条取较高等级；不管这东西能不能带、也不管互斥
+        for (Holder<Enchantment> holder : fromBook.keySet()) {
+            int bookLevel = Math.min(MAX_ENCHANT_LEVEL, fromBook.getLevel(holder));
+            int have = merged.getLevel(holder);
+            if (bookLevel > have) {
+                merged.set(holder, bookLevel);
                 changed = true;
             }
         }
         if (!changed) {
-            say(player, "message.skydeitymysticpivot.arcane_table.maxed");
+            // 没有附魔可升、书上也没带新东西：分两种提示，免得玩家不知道是缺书还是封顶
+            say(player, fromBook.isEmpty()
+                    ? "message.skydeitymysticpivot.arcane_table.no_enchant"
+                    : "message.skydeitymysticpivot.arcane_table.maxed");
             return;
         }
 
-        // 再查染灵：玄枢锭不够就到此为止（先查锭、后扣魔，免得白扣魔力）
-        ItemStack dye = this.items.getStackInSlot(SLOT_DYE);
-        if (dye.getCount() < DYE_COST || !dye.is(DYE_ITEM)) {
-            say(player, "message.skydeitymysticpivot.arcane_table.no_dye");
-            return;
-        }
-
-        // 最后扣魔：六种要素各 VIS_PER_CHANNEL 整 Vis，逐路足额；哪一路不够就整笔不扣
+        // 扣魔：六种要素各 VIS_PER_CHANNEL 整 Vis，逐路足额；哪一路不够就整笔不扣
         VisPaymentResult paid = ThaumcraftApiHelper.consumeExactVisFromWand(
                 wand, player, VIS_COST, VisAction.EXECUTE);
         if (!paid.consumed()) {
@@ -239,10 +269,12 @@ public final class XuanshuArcaneTableBlockEntity extends BlockEntity implements 
             return;
         }
 
-        // 结算：写附魔 → 扣锭 → 反馈
-        target.set(DataComponents.ENCHANTMENTS, mutable.toImmutable());
+        // 结算：写附魔 → 吃掉一本书（有的话）→ 反馈
+        target.set(DataComponents.ENCHANTMENTS, merged.toImmutable());
         this.items.setStackInSlot(SLOT_ITEM, target);
-        this.items.extractItem(SLOT_DYE, DYE_COST, false);
+        if (!fromBook.isEmpty()) {
+            this.items.extractItem(SLOT_BOOK, 1, false);
+        }
         this.setChanged();
         server.playSound(null, this.worldPosition, SoundEvents.ENCHANTMENT_TABLE_USE,
                 SoundSource.BLOCKS, 0.8F, 1.2F);
@@ -265,7 +297,7 @@ public final class XuanshuArcaneTableBlockEntity extends BlockEntity implements 
     private net.minecraft.world.Container drop() {
         SimpleContainer out = new SimpleContainer(2);
         out.setItem(0, this.items.getStackInSlot(SLOT_ITEM));
-        out.setItem(1, this.items.getStackInSlot(SLOT_DYE));
+        out.setItem(1, this.items.getStackInSlot(SLOT_BOOK));
         return out;
     }
 

@@ -1,12 +1,12 @@
 {
   "type": "thaumcraft:arcane_shaped",
   "vis": {
-    "aer": 77,
-    "terra": 77,
-    "ignis": 77,
-    "aqua": 77,
-    "ordo": 77,
-    "perditio": 77
+    "aer": 129,
+    "terra": 129,
+    "ignis": 129,
+    "aqua": 129,
+    "ordo": 129,
+    "perditio": 129
   },
   "pattern": [
     "TNR",

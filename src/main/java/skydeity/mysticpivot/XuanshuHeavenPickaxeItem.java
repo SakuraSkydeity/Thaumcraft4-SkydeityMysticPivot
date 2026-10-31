@@ -56,6 +56,11 @@ import net.minecraft.world.level.block.state.BlockState;
  * 换手、进箱子都不会丢。切换时给玩家一条动作栏提示，**只报模式名**
  * （{@code ...tunnel_dig.on} = 「隧道」/ {@code .off} = 「单方块」）。</p>
  *
+ * <h3>第一百六十批：普通右键归「掉落模式」</h3>
+ * <p>两柄镐（本镐与八卦开山辟地镐）新增<b>普通右键</b>循环：正常 / 精准采集 / 自动熔炼，
+ * 实现见 {@link PickaxeDropModes} 与 {@link PickaxeDropEvents}。潜行右键仍是隧道掘，
+ * 两者互不占用。</p>
+ *
  * <h3>隧道为什么要防重入</h3>
  * <p>批量开挖用的是 {@link ServerPlayerGameMode#destroyBlock(BlockPos)} —— 这是「玩家挖方块」的
  * 正规入口，掉落、耐久、统计、成就一项不落（也因此<b>时运照常生效</b>）。但它内部会回调
@@ -121,14 +126,21 @@ public class XuanshuHeavenPickaxeItem extends PickaxeItem {
     }
 
     /**
-     * 潜行右键：两种掘法之间来回切。不潜行的右键<b>不接管</b>（返回 PASS），
-     * 该给方块、该给法杖的还是它们。
+     * 右键分两路，互不打架：
+     * <ul>
+     *   <li><b>普通右键</b>：掉落模式循环（正常 / 精准采集 / 自动熔炼，
+     *       第一百六十批新增，见 {@link PickaxeDropModes}）；</li>
+     *   <li><b>潜行 + 右键</b>：两种掘法之间来回切（第七十四批起的老功能）。</li>
+     * </ul>
      */
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!player.isShiftKeyDown()) {
-            return InteractionResultHolder.pass(stack);
+            if (!level.isClientSide) {
+                PickaxeDropModes.toggleWithFeedback(stack, player);
+            }
+            return InteractionResultHolder.success(stack);
         }
         if (!level.isClientSide) {
             boolean on = !isTunnelDig(stack);

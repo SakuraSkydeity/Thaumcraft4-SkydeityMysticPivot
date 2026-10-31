@@ -120,12 +120,8 @@ public class XuanshuReplicatorScreen extends AbstractContainerScreen<XuanshuRepl
         graphics.fill(tx + 1, ty + TAB_H - 1, tx + TAB_W - 1, ty + TAB_H, COL_LO);
         graphics.fill(tx + TAB_W - 1, ty + 1, tx + TAB_W, ty + TAB_H - 1, COL_LO);
         // 极简图标：三条滑杆 + 三粒错开滑钮（「传输配置」的通用意象，深灰单色）
-        graphics.fill(tx + 3, ty + 4, tx + 12, ty + 5, COL_TITLE);
-        graphics.fill(tx + 3, ty + 8, tx + 12, ty + 9, COL_TITLE);
-        graphics.fill(tx + 3, ty + 12, tx + 12, ty + 13, COL_TITLE);
-        graphics.fill(tx + 5, ty + 3, tx + 7, ty + 6, COL_TITLE);
-        graphics.fill(tx + 9, ty + 7, tx + 11, ty + 10, COL_TITLE);
-        graphics.fill(tx + 4, ty + 11, tx + 6, ty + 14, COL_TITLE);
+        // 第二百一十五批抽到 XuanshuGui，四台机器共用，免得再有人漏画
+        XuanshuGui.tabIcon(graphics, tx, ty, COL_TITLE);
     }
 
     /** 圆角 1 像素的实心矩形：四角各缺一格。 */

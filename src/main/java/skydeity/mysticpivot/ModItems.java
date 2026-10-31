@@ -52,6 +52,15 @@ public final class ModItems {
             Star.NANDOU_TIANTONG, Star.NANDOU_TIANXIANG, Star.NANDOU_QISHA,
     };
 
+    /**
+     * 八卦齐全（八种卦石各一块）。
+     *
+     * <p>★ 第二百一十三批从下面「法杖部件」那段挪到类首：{@link #XUANSHU_VOID_EYE} 的
+     * lore 要用它，而静态字段按源码顺序初始化，留在后面拿到的会是 {@code null}。</p>
+     */
+    private static final String[] ALL_TRIGRAMS =
+            {"qian", "dui", "li", "zhen", "xun", "kan", "gen", "kun"};
+
     public static final DeferredItem<AkashicRecordsItem> AKASHIC_RECORDS = ITEMS.registerItem("akashic_records",
             AkashicRecordsItem::new, new Item.Properties().rarity(Rarity.EPIC).stacksTo(16)
                     .component(DataComponents.LORE, new ItemLore(List.of(
@@ -85,15 +94,31 @@ public final class ModItems {
     public static final DeferredItem<Item> DISENCHANT_BOOK = ITEMS.registerSimpleItem("disenchant_book",
             new Item.Properties().rarity(Rarity.RARE).stacksTo(16)
                     .component(DataComponents.LORE, new ItemLore(List.of(
-                            grayLore("item.skydeitymysticpivot.disenchant_book.lore1"),
-                            grayLore("item.skydeitymysticpivot.disenchant_book.lore2")))));
+                            grayLore("item.skydeitymysticpivot.disenchant_book.lore1")))));
+
+    /**
+     * 玄枢双生书（第二百零五批新增）：跟<b>一本附魔书</b>合成，产出<b>两本一模一样的附魔书</b>
+     * ——存着的附魔、自定义名、其余组件整份复制（见 {@link TwinBookRecipe}）。
+     *
+     * <p>与 {@link #DISENCHANT_BOOK 玄枢祛魔书} 是同一件事的两头：祛魔书把附魔从物品上
+     * <b>取下来</b>、原物退回；双生书把一册附魔书<b>拓成两册</b>。<b>双生书本身一次性</b>
+     * ——它就是变成第二本的那一本。</p>
+     *
+     * <p>{@code stacksTo(16)} 与祛魔书一致：合成时只吃一本（配方只对「被复制的那本书」
+     * 要求单件，双生书那格不限数量）。贴图与祛魔书同一套底，只把绑带从粉紫旋到<b>蓝紫偏蓝</b>
+     * （见 {@code tools/gen_book_tomes.py}）。</p>
+     */
+    public static final DeferredItem<Item> TWIN_BOOK = ITEMS.registerSimpleItem("twin_book",
+            new Item.Properties().rarity(Rarity.RARE).stacksTo(16)
+                    .component(DataComponents.LORE, new ItemLore(List.of(
+                            grayLore("item.skydeitymysticpivot.twin_book.lore1")))));
 
     /**
      * 玄枢洞虚灵目（第七十八批新增，第八十批改项链栏）：一枚<b>Curios 项链饰品</b>。
      *
      * <p>戴进<b>项链栏</b>（{@code ring} 栏位（第一百零二批由项链栏改为戒指栏））后，效果对齐
-     * 本体<b>揭示之护目镜</b>：显现灵气节点（{@code AuraRevealingGear}）、瞄准机器
-     * 浮出容器要素（{@code GogglesOverlayGear}），另给<b>护甲 +200%</b>
+     * 本体<b>揭示之护目镜</b>：显现灵气节点 + 瞄准机器浮出容器要素（{@code PlayerAbilityGear}
+     * 对 {@code AURA_REVEALING} 与 {@code GOGGLES_OVERLAY} 都返回真），另给<b>护甲 +200%</b>
      * （{@code ICurioItem#getAttributeModifiers}，ADD_MULTIPLIED_TOTAL）。三条能力的
      * 落点与「为什么不走数据组件」的考校都写在 {@link XuanshuVoidEyeItem} 的类注释里。</p>
      *
@@ -110,12 +135,13 @@ public final class ModItems {
                     .component(DataComponents.LORE, new ItemLore(List.of(
                             grayLore("item.skydeitymysticpivot.xuanshu_void_eye.lore1"),
                             grayLore("item.skydeitymysticpivot.xuanshu_void_eye.lore2"),
-                            grayLore("item.skydeitymysticpivot.xuanshu_void_eye.lore3"),
-                            grayLore("item.skydeitymysticpivot.xuanshu_void_eye.lore4")))));
+                            // 第二百一十三批：用户「戒指合成需要卦石，添加 lore」——门槛是八石齐立
+                            // （mode=all），所以八种全写，格式与其余门禁物品同一句淡靛蓝。
+                            trigramLore(ALL_TRIGRAMS)))));
 
     /**
-     * 玄枢注灵台（第八十八批新增，原名「玄枢灵气节点修改器」）：一尊 12/16 高的台座，
-     * 台面上坐一尊小香炉（第一百批起仿原版附魔台，不再是整格方块）。
+     * 玄枢注灵香炉台（第八十八批新增，原名「玄枢灵气节点修改器」）：一尊 12/16 高的台座，
+     * 形制是「底板 + 四角立柱 + 顶部方框，中间镂空」（第一百五十七批把模型与碰撞箱对齐）。
      *
      * <p>用法（见 {@link ModBlocks.XuanshuNodeModifierBlock}）：把台放下，<b>缸中节点摆在
      * 它正上方</b>；右键开界面，把<b>任意天域之华</b>放进华槽、<b>玄枢锭</b>放进锭槽；
@@ -147,53 +173,70 @@ public final class ModItems {
             new Item.Properties().rarity(Rarity.EPIC).stacksTo(MACHINE_STACK)
                     .component(DataComponents.LORE, new ItemLore(List.of(
                             grayLore("block.skydeitymysticpivot.xuanshu_arcane_table.lore1"),
-                            trigramLore("kan", "xun", "gen"),
+                            trigramLore("kan", "xun", "gen", "li"),
                             starLore(NANDOU_FIVE,
                                     Component.translatable("item.skydeitymysticpivot.xuanshu_ingot"))))));
 
 
     /**
-     * 玄枢杖的两件材料（{@code onyx_wand_rod} / {@code gilded_wand_cap}）。
+     * 各件杖上「所需卦石」的集合（玄枢杖两件走类首的 {@link #ALL_TRIGRAMS}）。
      *
-     * <p><b>两条配方都</b>受卦象门禁约束：注魔这两件时，祭坛中央台座正下方那一格为中心的
-     * 5×5 单层之内须把<b>八种卦位石各立一方</b>（凑齐一套八卦），方能引气入炉
-     * （见 {@code InfusionMatrixCraftGateMixin}）。这条提示就写在两件材料上——玩家是在造
-     * 这两件东西的时候需要先立石，成品法杖拿到手时石头早立好了，写在那里只是啰嗦。</p>
+     * <p>受卦象门禁约束的注魔配方，其材料物品都写一句淡靛蓝「所需卦石：…」——
+     * 玩家是在造这件东西的时候需要先立石，成品法杖拿到手时石头早立好了，写在那里只是啰嗦。</p>
      */
-    private static final String[] ALL_TRIGRAMS =
-            {"qian", "dui", "li", "zhen", "xun", "kan", "gen", "kun"};
-
     /** 四象杖两件：只认艮、离、巽、坤这四卦。 */
     private static final String[] SIXIANG_TRIGRAMS = {"gen", "li", "xun", "kun"};
 
     /** 朱雀杖两件：只认离、艮两卦。 */
     private static final String[] ZHUQUE_TRIGRAMS = {"li", "gen"};
 
-    public static final DeferredItem<Item> ONYX_WAND_ROD = ITEMS.registerSimpleItem("onyx_wand_rod",
-            new Item.Properties().rarity(Rarity.EPIC).stacksTo(16)
-                    .component(DataComponents.LORE, new ItemLore(List.of(trigramLore(ALL_TRIGRAMS)))));
+    /** 青龙杖两件（第一百六十一批）：只认震、巽两卦（木）。 */
+    private static final String[] QINGLONG_TRIGRAMS = {"zhen", "xun"};
 
-    public static final DeferredItem<Item> GILDED_WAND_CAP = ITEMS.registerSimpleItem("gilded_wand_cap",
-            new Item.Properties().rarity(Rarity.EPIC).stacksTo(16)
-                    .component(DataComponents.LORE, new ItemLore(List.of(trigramLore(ALL_TRIGRAMS)))));
+    /** 白虎杖两件（第一百六十一批）：只认乾、兑两卦（金）。 */
+    private static final String[] BAIHU_TRIGRAMS = {"qian", "dui"};
+
+    /** 玄武杖两件（第一百六十一批）：只认坎、坤两卦（水）。 */
+    private static final String[] XUANWU_TRIGRAMS = {"kan", "kun"};
+
+    /**
+     * 杖柄 / 杖端小件的统一注册（第一百六十一批收成一行）。
+     *
+     * <p>八件部件原先一人一段五连行，参数只有「名色」和「所需卦石」两处不同，
+     * 收成这个方法后各剩一行。lore 只写「所需卦石」一句——配方说明都在书里。</p>
+     */
+    private static DeferredItem<Item> wandPart(String id, Rarity rarity, String... trigrams) {
+        return ITEMS.registerSimpleItem(id,
+                new Item.Properties().rarity(rarity).stacksTo(16)
+                        .component(DataComponents.LORE, new ItemLore(List.of(trigramLore(trigrams)))));
+    }
+
+    public static final DeferredItem<Item> ONYX_WAND_ROD = wandPart("onyx_wand_rod", Rarity.EPIC, ALL_TRIGRAMS);
+
+    public static final DeferredItem<Item> GILDED_WAND_CAP = wandPart("gilded_wand_cap", Rarity.EPIC, ALL_TRIGRAMS);
 
     // 八卦四象法杖的两件部件（四象锭打造）
-    public static final DeferredItem<Item> SIXIANG_WAND_ROD = ITEMS.registerSimpleItem("sixiang_wand_rod",
-            new Item.Properties().rarity(Rarity.RARE).stacksTo(16)
-                    .component(DataComponents.LORE, new ItemLore(List.of(trigramLore(SIXIANG_TRIGRAMS)))));
+    public static final DeferredItem<Item> SIXIANG_WAND_ROD = wandPart("sixiang_wand_rod", Rarity.RARE, SIXIANG_TRIGRAMS);
 
-    public static final DeferredItem<Item> BAGUA_WAND_CAP = ITEMS.registerSimpleItem("bagua_wand_cap",
-            new Item.Properties().rarity(Rarity.RARE).stacksTo(16)
-                    .component(DataComponents.LORE, new ItemLore(List.of(trigramLore(SIXIANG_TRIGRAMS)))));
+    public static final DeferredItem<Item> BAGUA_WAND_CAP = wandPart("bagua_wand_cap", Rarity.RARE, SIXIANG_TRIGRAMS);
 
     // 朱雀杖部件：宏伟包裹杖柄 / 蝶舞杖端（红金配色，入门档）
-    public static final DeferredItem<Item> ZHUQUE_WAND_ROD = ITEMS.registerSimpleItem("zhuque_wand_rod",
-            new Item.Properties().rarity(Rarity.RARE).stacksTo(16)
-                    .component(DataComponents.LORE, new ItemLore(List.of(trigramLore(ZHUQUE_TRIGRAMS)))));
+    public static final DeferredItem<Item> ZHUQUE_WAND_ROD = wandPart("zhuque_wand_rod", Rarity.RARE, ZHUQUE_TRIGRAMS);
 
-    public static final DeferredItem<Item> ZHUQUE_WAND_CAP = ITEMS.registerSimpleItem("zhuque_wand_cap",
-            new Item.Properties().rarity(Rarity.RARE).stacksTo(16)
-                    .component(DataComponents.LORE, new ItemLore(List.of(trigramLore(ZHUQUE_TRIGRAMS)))));
+    public static final DeferredItem<Item> ZHUQUE_WAND_CAP = wandPart("zhuque_wand_cap", Rarity.RARE, ZHUQUE_TRIGRAMS);
+
+    // 第一百六十一批：青龙 / 白虎 / 玄武 三圣兽部件（入门档，与朱雀同规格）
+    public static final DeferredItem<Item> QINGLONG_WAND_ROD = wandPart("qinglong_wand_rod", Rarity.RARE, QINGLONG_TRIGRAMS);
+
+    public static final DeferredItem<Item> QINGLONG_WAND_CAP = wandPart("qinglong_wand_cap", Rarity.RARE, QINGLONG_TRIGRAMS);
+
+    public static final DeferredItem<Item> BAIHU_WAND_ROD = wandPart("baihu_wand_rod", Rarity.RARE, BAIHU_TRIGRAMS);
+
+    public static final DeferredItem<Item> BAIHU_WAND_CAP = wandPart("baihu_wand_cap", Rarity.RARE, BAIHU_TRIGRAMS);
+
+    public static final DeferredItem<Item> XUANWU_WAND_ROD = wandPart("xuanwu_wand_rod", Rarity.RARE, XUANWU_TRIGRAMS);
+
+    public static final DeferredItem<Item> XUANWU_WAND_CAP = wandPart("xuanwu_wand_cap", Rarity.RARE, XUANWU_TRIGRAMS);
 
     // 赤羽焚天瞬核心（法杖核心:赤羽焚天瞬）：配任一杖柄，潜行右键记点、右键耗六要素各 10 点传送（见 TeleportCore）
     public static final DeferredItem<XuanshuFocusItem> FOCUS_TELEPORT = ITEMS.registerItem("focus_teleport",
@@ -202,7 +245,27 @@ public final class ModItems {
                     .component(DataComponents.LORE, new ItemLore(List.of(
                             grayLore("item.skydeitymysticpivot.focus_teleport.lore1"),
                             grayLore("item.skydeitymysticpivot.focus_teleport.lore2"),
-                            trigramLore("gen")))));
+                            trigramLore("li", "gen")))));
+
+    // 烛龙衔时核心（法杖核心:烛龙衔时）：配任一杖柄，右键指一台机器，耗六要素各 25 点让它 16 倍速运转 32 秒，
+    // 连续催动同一台倍率翻倍至 1024 封顶（见 TemporalCore）。
+    // ★ 第一百六十六批：用户「合成表删去」——本核心没有注魔配方，也就没有「基座下面立艮卦石」那行，
+    //   recipe json、研究页的配方页与门禁表条目一并删掉。
+    // ★ 第二百一十批：用户「剩余三个法杖核心你帮我设计注魔合成……CHRONO 的注魔需要八种卦石 lore 写好」——
+    //   配方（时钟居中 + 红石 / 水银 / 下界之星 / 玄枢耀光 / 八卦碎片，八卦各 32）与门禁一起回来了，
+    //   而且这一枚是四个核心里唯一要**八种卦石齐立**的（mode=all，见 trigram_gate/machines.json），
+    //   所以 lore 多出第三行点明「缺一不成」。
+    public static final DeferredItem<XuanshuFocusItem> FOCUS_CHRONO = ITEMS.registerItem("focus_chrono",
+            props -> new XuanshuFocusItem(props, ModFocuses.CHRONO_ID),
+            new Item.Properties().rarity(Rarity.EPIC).stacksTo(1)
+                    .component(DataComponents.LORE, new ItemLore(List.of(
+                            grayLore("item.skydeitymysticpivot.focus_chrono.lore1"),
+                            grayLore("item.skydeitymysticpivot.focus_chrono.lore2"),
+                            // ★ 第二百一十七批：用户「CHRONO 的 lore 中最后一行卦石的需求改为
+                            //   和其他 lore 一样颜色一样，可以看 FOCUS_TELEPORT」——第三行不再用
+                            //   灰色的整句说明，改成与赤羽焚天瞬同一个 trigramLore（淡靛蓝 0x8FB0FF、
+                            //   不斜体），八种卦石全列出来。
+                            trigramLore(ALL_TRIGRAMS)))));
 
     // 四象锭：青龙 / 朱雀 / 白虎 / 玄武（高级锭，注魔合成）
     public static final DeferredItem<Item> AZURE_DRAGON_INGOT = ITEMS.registerSimpleItem("azure_dragon_ingot",
@@ -256,12 +319,73 @@ public final class ModItems {
     public static final DeferredItem<Item> XUANSHU_BAGUA_SALT = ITEMS.registerSimpleItem("xuanshu_bagua_salt",
             new Item.Properties().rarity(Rarity.EPIC));
 
+    /**
+     * 玄枢耀光（第二百一十批新增）：本体「闪耀之光」（{@code thaumcraft:nitor}）的近亲，
+     * 玄枢体系里的那一味「引光」材料。
+     *
+     * <p>贴图见 {@code tools/gen_xuanshu_nitor.py}：剪影与明暗全抄本体那张 16×16 火焰，
+     * 只把棕红 → 橙 → 黄换成一整条紫带（暗紫到紫白），飞散的四粒火星改星辰色
+     * （淡青白）—— 用户口径「颜色用 tc4 闪耀之光改，改为紫色带一点星辰颜色」。</p>
+     *
+     * <p>没有独立合成表：它是注魔材料，乾元罡气与烛龙衔时两枚法核要用。</p>
+     */
+    public static final DeferredItem<Item> XUANSHU_NITOR = ITEMS.registerSimpleItem("xuanshu_nitor",
+            new Item.Properties().rarity(Rarity.RARE));
+
+    /**
+     * 枫凝菼蒄（第二百一十二批新增）：枫叶里凝出来的一小簇赤橙色冰晶。
+     *
+     * <p>用户口径「添加一个新物品：枫凝菼蒄。打破枫叶树叶 20% 概率掉落。贴图为 16×16，
+     * 不要太清晰，我的世界像素风。冰晶整体颜色为红色橘色」，另说「64 一组」——
+     * 64 就是原版默认堆叠，所以这里<b>不写 stacksTo</b>。</p>
+     *
+     * <p>掉落在枫叶自己的战利品表里（{@code loot_table/blocks/maple_leaves.json}
+     * 追加一个 20% 的独立池），不走事件：这样剪刀 / 精准采集拿叶子时也能掉，
+     * 与「打破枫叶树叶就掉」这句话一致。贴图见 {@code tools/gen_maple_crystal.py}。</p>
+     *
+     * <p>★ 第二百一十三批：用户「MAPLE_CRYSTAL 放在翼膜后面，同时添加 lore：破坏枫树树叶 20%
+     * 概率掉落」——创造栏挪到翎月翼膜正后面，lore 一句话写明出处与概率，格式与玄灵三材同。</p>
+     */
+    public static final DeferredItem<Item> MAPLE_CRYSTAL = ITEMS.registerSimpleItem("maple_crystal",
+            new Item.Properties().rarity(Rarity.RARE)
+                    .component(DataComponents.LORE, new ItemLore(List.of(
+                            grayLore("item.skydeitymysticpivot.maple_crystal.lore")))));
+
     // 布匹：四象布匹（银白）/ 玄枢布匹（黑金）
     public static final DeferredItem<Item> SIXIANG_CLOTH = ITEMS.registerSimpleItem("sixiang_cloth",
             new Item.Properties().rarity(Rarity.RARE));
 
     public static final DeferredItem<Item> XUANSHU_CLOTH = ITEMS.registerSimpleItem("xuanshu_cloth",
             new Item.Properties().rarity(Rarity.EPIC));
+
+    /**
+     * 玄灵三材（第二百批新增）：三件小材料，<b>只注册 + 画贴图，别的什么都不做</b>
+     * （用户原话：「只注册和画贴图……不用做任何别的」）。
+     *
+     * <p>没有合成表、没有功能、没有 lore、不进门禁、不进研究树 —— 就是三件
+     * 摆在创造栏里看的材料。贴图走 {@code tools/gen_spirit_relics.py}：
+     * 各取一件原版剪影（兔脚 / 骨头 / 幻翼膜）按模组画风重画，
+     * 玉银 + 鎏金 + 一点灵光，16×16。</p>
+     *
+     * <p>第二百一十二批起<b>有了来源与 lore</b>：用户「给兔子脚：杀死兔子 40% 概率掉落；
+     * 骨头：击杀凋零骷髅 40%；翼膜：击杀幻翼 80%，同时添加 lore」。
+     * 掉落走 {@link SpiritRelicDrops}（{@code LivingDropsEvent}，只认玩家亲手击杀），
+     * lore 一行写明出处与概率 —— 三件都是「打怪才有的材料」，不写清楚没人知道去哪儿找。</p>
+     */
+    public static final DeferredItem<Item> XUANLING_RABBIT_FOOT = ITEMS.registerSimpleItem("xuanling_rabbit_foot",
+            new Item.Properties().rarity(Rarity.UNCOMMON)
+                    .component(DataComponents.LORE, new ItemLore(List.of(
+                            grayLore("item.skydeitymysticpivot.xuanling_rabbit_foot.lore")))));
+
+    public static final DeferredItem<Item> SHENJIN_DEMON_BONE = ITEMS.registerSimpleItem("shenjin_demon_bone",
+            new Item.Properties().rarity(Rarity.UNCOMMON)
+                    .component(DataComponents.LORE, new ItemLore(List.of(
+                            grayLore("item.skydeitymysticpivot.shenjin_demon_bone.lore")))));
+
+    public static final DeferredItem<Item> LINGYUE_WING_MEMBRANE = ITEMS.registerSimpleItem("lingyue_wing_membrane",
+            new Item.Properties().rarity(Rarity.UNCOMMON)
+                    .component(DataComponents.LORE, new ItemLore(List.of(
+                            grayLore("item.skydeitymysticpivot.lingyue_wing_membrane.lore")))));
 
     /**
      * 两个自制法杖核心：镇狱碎青峰（蓝紫，右键把目标方块化为掉落物）与
@@ -273,7 +397,7 @@ public final class ModItems {
                     .component(DataComponents.LORE, new ItemLore(List.of(
                             Component.translatable("item.skydeitymysticpivot.focus_cosmos.lore")
                                     .withStyle(style -> style.withColor(ChatFormatting.GRAY).withItalic(false)),
-                            trigramLore("gen")))));
+                            trigramLore("qian", "dui")))));
 
     public static final DeferredItem<XuanshuFocusItem> FOCUS_GUARDIAN = ITEMS.registerItem("focus_guardian",
             props -> new XuanshuFocusItem(props, ModFocuses.GUARDIAN_ID),
@@ -281,7 +405,7 @@ public final class ModItems {
                     .component(DataComponents.LORE, new ItemLore(List.of(
                             Component.translatable("item.skydeitymysticpivot.focus_guardian.lore")
                                     .withStyle(style -> style.withColor(ChatFormatting.GRAY).withItalic(false)),
-                            trigramLore("gen")))));
+                            trigramLore("kan", "gen")))));
 
     /**
      * 八卦开山辟地镐的挖掘材质：耐久 52 000（对应玄枢杖容量数字）、挖掘速度全场最快；
@@ -362,6 +486,20 @@ public final class ModItems {
     };
 
     /**
+     * 三把工具（八卦镐 / 玄枢镐 / 玄枢锄）共用的攻速加成（第一百六十二批：攻击间隔减半）。
+     *
+     * <p>原版玩家基础攻速是 <b>4.0</b>（= 每 20 刻 / 5 刻一次），本档加成 +4.0 ⇒ 8.0
+     * ⇒ 间隔 <b>2.5 刻</b>，正好是原来的<b>一半</b>。伤害另在各物品的
+     * {@code createAttributes} 第一参里给（与 Tier 自带加成相加）：</p>
+     * <ul>
+     *   <li>八卦开山辟地镐：{@link #XUANSHU_TIER} 5.0 + 15.0 = <b>20</b>；</li>
+     *   <li>玄枢翎凰焚天镐：{@link #XUANSHU_TOOL_TIER} 6.0 + 60.0 = <b>66</b>；</li>
+     *   <li>玄枢玄冥镇海锄：{@link #XUANSHU_TOOL_TIER} 6.0 + 46.0 = <b>52</b>。</li>
+     * </ul>
+     */
+    private static final float TOOL_ATTACK_SPEED = 4.0F;
+
+    /**
      * 八卦开山辟地镐（注册 id 仍为 {@code bagua_pickaxe}）：挖掘等级与钻石镐相同、速度最快、耐久 52 000。
      *
      * <p>注魔炼成（中心是本体神秘镐），基座下面须立<b>乾、坎、兑三卦石各一方</b>
@@ -369,11 +507,15 @@ public final class ModItems {
      * 乾为金、坎为险、兑为泽：金为器、险为地、泽为润，镐入地穿山须三卦同押。</p>
      *
      * <p>lore 只留一句「所需卦石」（淡靛蓝），其余说明都在书里。</p>
+     *
+     * <p>第一百六十批起换用 {@link BaguaPickaxeItem}：普通右键在
+     * 正常 / 精准采集 / 自动熔炼三个掉落模式间循环（见 {@link PickaxeDropModes}）。
+     * 类换了，注册 id 没换，注魔配方里的中心物照旧认这一枚。</p>
      */
-    public static final DeferredItem<PickaxeItem> BAGUA_PICKAXE = ITEMS.registerItem("bagua_pickaxe",
-            props -> new PickaxeItem(XUANSHU_TIER, props),
+    public static final DeferredItem<BaguaPickaxeItem> BAGUA_PICKAXE = ITEMS.registerItem("bagua_pickaxe",
+            props -> new BaguaPickaxeItem(XUANSHU_TIER, props),
             new Item.Properties().rarity(Rarity.EPIC)
-                    .attributes(PickaxeItem.createAttributes(XUANSHU_TIER, 1.0F, 0.0F))
+                    .attributes(PickaxeItem.createAttributes(XUANSHU_TIER, 15.0F, TOOL_ATTACK_SPEED))
                     .component(DataComponents.LORE, new ItemLore(List.of(
                             trigramLore("qian", "kan", "dui")))));
 
@@ -406,7 +548,7 @@ public final class ModItems {
             ITEMS.registerItem("xuanshu_pickaxe",
                     props -> new XuanshuHeavenPickaxeItem(XUANSHU_TOOL_TIER, props),
                     new Item.Properties().rarity(Rarity.EPIC)
-                            .attributes(PickaxeItem.createAttributes(XUANSHU_TOOL_TIER, 1.0F, 0.0F))
+                            .attributes(PickaxeItem.createAttributes(XUANSHU_TOOL_TIER, 60.0F, TOOL_ATTACK_SPEED))
                             .component(DataComponents.LORE, new ItemLore(List.of(
                                     trigramLore("qian", "kan", "dui")))));
 
@@ -426,7 +568,7 @@ public final class ModItems {
     public static final DeferredItem<XuanshuHoeItem> XUANSHU_HOE = ITEMS.registerItem("xuanshu_hoe",
             props -> new XuanshuHoeItem(XUANSHU_TOOL_TIER, props),
             new Item.Properties().rarity(Rarity.EPIC)
-                    .attributes(DiggerItem.createAttributes(XUANSHU_TOOL_TIER, 0.0F, 0.0F))
+                    .attributes(DiggerItem.createAttributes(XUANSHU_TOOL_TIER, 46.0F, TOOL_ATTACK_SPEED))
                     .component(DataComponents.LORE, new ItemLore(List.of(
                             trigramLore("qian", "kan", "dui")))));
 
@@ -446,7 +588,9 @@ public final class ModItems {
                             grayLore("block.skydeitymysticpivot.xuanshu_crystal_cluster.lore1"),
                             grayLore("block.skydeitymysticpivot.xuanshu_crystal_cluster.lore2"),
                             grayLore("block.skydeitymysticpivot.xuanshu_crystal_cluster.lore3"),
-                            grayLore("block.skydeitymysticpivot.xuanshu_crystal_cluster.lore4")))));
+                            grayLore("block.skydeitymysticpivot.xuanshu_crystal_cluster.lore4"),
+                            // 第二百二十一批：星象线下移到第 7 阶，注魔须立离、震、乾、坎四卦。
+                            trigramLore("li", "zhen", "qian", "kan")))));
 
     /**
      * 玄枢炎炉（{@code xuanshu_infernal_furnace}）：炼狱熔炉的单方块版本，
@@ -465,7 +609,7 @@ public final class ModItems {
 
     /**
      * 玄枢复刻台：左格放模板、右格原样复刻——连同全部数据组件一模一样。
-     * lore 一句功能 + 一句所需卦石（炉前须立巽，与三台工作方块同款）。
+     * lore 一句功能 + 一句所需卦石（第二百二十一批起要求八石齐立，与玄枢杖两件同档）。
      */
     public static final DeferredItem<Item> XUANSHU_REPLICATOR = ITEMS.registerItem(
             "xuanshu_replicator",
@@ -473,7 +617,7 @@ public final class ModItems {
             new Item.Properties().rarity(Rarity.RARE).stacksTo(MACHINE_STACK)
                     .component(DataComponents.LORE, new ItemLore(List.of(
                             grayLore("block.skydeitymysticpivot.xuanshu_replicator.lore1"),
-                            trigramLore("xun"),
+                            trigramLore(ALL_TRIGRAMS),
                             starLore(NANDOU_ALL,
                                     Component.translatable("block.minecraft.dragon_egg"))))));
 
@@ -543,14 +687,77 @@ public final class ModItems {
      * <p>两件台（{@link ModBlocks#XUANSHU_ARCANE_TABLE 奥术台} /
      * {@link ModBlocks#XUANSHU_NODE_MODIFIER 注灵台}）的注魔配方都以它为中心；
      * 它自己也是注魔产物（玄枢锭 + 四象锭 + 八卦之盐）。</p>
+     *
+     * <p><b>第二百一十一批：lore 只留卦石那一行</b>（用户「lore 只保留卦石那一行，其他的删掉」）——
+     * 原来那句「注魔祭炼而成的白玉之心。奥术台与注灵香炉台，皆以此为基。」连键带代码一并删掉，
+     * 成品说明都在魔导书里，物品上只留「基座下面立坎、巽、艮」这条用时真会卡住人的条件。</p>
      */
     public static final DeferredItem<Item> XUANSHU_SPIRIT_CORE = ITEMS.registerItem(
             "xuanshu_spirit_core",
             props -> new BlockItem(ModBlocks.XUANSHU_SPIRIT_CORE.get(), props),
             new Item.Properties().rarity(Rarity.RARE)
                     .component(DataComponents.LORE, new ItemLore(List.of(
-                            grayLore("block.skydeitymysticpivot.xuanshu_spirit_core.lore1"),
                             trigramLore("kan", "xun", "gen")))));
+
+    /**
+     * 玄枢虚空水晶塔（第一百七十四批新增；第一百九十三批定形制；第一百九十八批改名）：
+     * 一台机器 + 背后一座 8×8 / 高 13 格的水晶塔，塔齐了就自动运转，产出 {@code #c:ores} 里的所有矿。
+     *
+     * <p>第一百九十九批：lore 按用户口径压成<b>两行</b>（「我们需要重新集结部队，艾尔连接着我们所有人。」+
+     * 「虚空产出所有矿物，该方块可以自动输出产出」），原来那条讲搭建 / 收回界面的第三行删掉 ——
+     * 界面本身空手右键就开，不必占 lore 的位置。</p>
+     *
+     * <p>第二百一十二批曾补回<b>第三行</b>讲锭槽；第二百一十三批用户「矿机的 lore 你新加的两行
+     * 不要」——那一行（在提示框里折成两行）连同语言键一起撤掉，lore 回到两行。
+     * 「锭能加效率」这件事改由界面自己说：空槽悬停三行说明 + 槽下一行「效率 +N」。</p>
+     */
+    public static final DeferredItem<Item> XUANSHU_VOID_MINING = ITEMS.registerItem(
+            "xuanshu_void_mining",
+            props -> new BlockItem(ModBlocks.XUANSHU_VOID_MINING.get(), props),
+            new Item.Properties().rarity(Rarity.EPIC).stacksTo(MACHINE_STACK)
+                    .component(DataComponents.LORE, new ItemLore(List.of(
+                            grayLore("block.skydeitymysticpivot.xuanshu_void_mining.lore1"),
+                            grayLore("block.skydeitymysticpivot.xuanshu_void_mining.lore2")))));
+
+    /**
+     * 玄枢源质罐（第一百九十三批新增；第一百九十四批起内容走物品组件）：一只装得下所有要素的罐子。
+     *
+     * <p>堆叠 16：空罐能叠 —— 空罐<b>不挂</b> {@code jar_essentia} 组件（见
+     * {@link ModDataComponents#JAR_ESSENTIA}），所以和新合成出来的罐子是同一摞；
+     * 装了东西的罐子组件不同，原版按组件分堆，自然就分开，不用另外写逻辑。</p>
+     *
+     * <p>第二百一十批：lore 按用户口径压成<b>一行</b>「可以存储 32 种不同的源质，每种最多 2048 容量。」
+     * （原来讲鎏金液面与通要素面的两行删掉）—— 容量与种类是这条材料唯一需要一眼看到的事。</p>
+     */
+    public static final DeferredItem<Item> XUANSHU_ESSENTIA_JAR = ITEMS.registerItem(
+            "xuanshu_essentia_jar",
+            props -> new BlockItem(ModBlocks.XUANSHU_ESSENTIA_JAR.get(), props),
+            new Item.Properties().rarity(Rarity.RARE).stacksTo(16)
+                    .component(DataComponents.LORE, new ItemLore(List.of(
+                            grayLore("block.skydeitymysticpivot.xuanshu_essentia_jar.lore1")))));
+
+    /**
+     * 玄枢传送门（第一百九十七批新增；第一百九十八批加界面与广场；第一百九十九批提品阶）：
+     * 科技风折跃门，空手右键开界面、按「一键搭建」在背后铺开那座折跃门广场。
+     *
+     * <p>第一百九十九批按用户口径与水晶塔对齐：<b>史诗品质（紫色名字）+ 堆叠 16</b>
+     * （{@link #MACHINE_STACK}）—— 两件东西在创造栏里挨着摆，长得也该是一路的。
+     * 第二百二十六批按用户口径去掉物品 lore（「传送门和星象仪 lore 全去掉」）。</p>
+     */
+    public static final DeferredItem<Item> XUANSHU_PORTAL = ITEMS.registerItem(
+            "xuanshu_portal",
+            props -> new BlockItem(ModBlocks.XUANSHU_PORTAL.get(), props),
+            new Item.Properties().rarity(Rarity.EPIC).stacksTo(MACHINE_STACK));
+
+    /**
+     * 星象仪（第一百八十六批）：白瓷鎏金悬球台，纯装饰，暂无功能。
+     *
+     * <p>第二百二十六批按用户口径去掉物品 lore（「传送门和星象仪 lore 全去掉」）。</p>
+     */
+    public static final DeferredItem<Item> ASTROLABE = ITEMS.registerItem(
+            "astrolabe",
+            props -> new BlockItem(ModBlocks.ASTROLABE.get(), props),
+            new Item.Properties().rarity(Rarity.RARE));
 
     /**
      * 南北斗枢玄星盘（第一百零六批）：青玉盘身 + 墨玉盘面，盘面刻北斗七星与南斗六星；
@@ -558,7 +765,10 @@ public final class ModItems {
      */
     public static final DeferredItem<Item> STAR_DIAL = ITEMS.registerItem("star_dial",
             props -> new BlockItem(ModBlocks.STAR_DIAL.get(), props),
-            new Item.Properties().rarity(Rarity.RARE));
+            new Item.Properties().rarity(Rarity.RARE)
+                    .component(DataComponents.LORE, new ItemLore(List.of(
+                            // 第二百二十一批：星象线下移到第 7 阶，注魔须立离、震、乾、坎四卦。
+                            trigramLore("li", "zhen", "qian", "kan")))));
 
     /**
      * 玄枢充能器：立在灵气节点正下方，通红石十秒把节点充能成充能灵气节点——
@@ -576,6 +786,43 @@ public final class ModItems {
                             // 第一百零二批：最后一行（「挖走会炸」那条）按用户要求删去，
                             // 换成与三台工作方块同款的「所需卦石」灰字
                             trigramLore("xun", "qian", "kan")))));
+
+    /**
+     * 枫树三件套的物品形态（第一百六十七批）：枫木原木 / 枫树叶 / 枫树树苗。
+     *
+     * <p>都是<b>建筑与自然构件</b>，不套 {@link #MACHINE_STACK}（保持原版 64 堆叠，
+     * 好让玩家成组搬运），也不挂卦石门禁 lore——树是长出来的，不是注魔注出来的。</p>
+     *
+     * <p>枫木进了 {@code #minecraft:logs}（熔炉燃料 300 tick、按原版木料计），
+     * 枫树苗进了 {@code #minecraft:saplings}（100 tick）；斧头可采原木、锄头可采树叶
+     * （{@code #minecraft:mineable/axe} / {@code hoe}）。树形与掉落见
+     * {@link MapleTreeGrower} 与 {@code data/.../loot_table/blocks/maple_*.json}。</p>
+     */
+    public static final DeferredItem<Item> MAPLE_LOG = ITEMS.registerItem(
+            "maple_log",
+            props -> new BlockItem(ModBlocks.MAPLE_LOG.get(), props),
+            new Item.Properties());
+
+    /**
+     * 枫木木板（第一百六十八批）：1 块枫木原木无序合成出 4 块（见
+     * {@code data/skydeitymysticpivot/recipe/maple_planks.json}）。
+     * 进 {@code #minecraft:planks} → 顺带斧采与燃料 300 tick。
+     * 创造栏位置：枫木原木之后、枫树叶之前。
+     */
+    public static final DeferredItem<Item> MAPLE_PLANKS = ITEMS.registerItem(
+            "maple_planks",
+            props -> new BlockItem(ModBlocks.MAPLE_PLANKS.get(), props),
+            new Item.Properties());
+
+    public static final DeferredItem<Item> MAPLE_LEAVES = ITEMS.registerItem(
+            "maple_leaves",
+            props -> new BlockItem(ModBlocks.MAPLE_LEAVES.get(), props),
+            new Item.Properties());
+
+    public static final DeferredItem<Item> MAPLE_SAPLING = ITEMS.registerItem(
+            "maple_sapling",
+            props -> new BlockItem(ModBlocks.MAPLE_SAPLING.get(), props),
+            new Item.Properties());
 
     /** 八枚卦位石：须置于与卦象相符的方位方能生效（坎居北，其余类推）。 */
     public static final DeferredItem<Item> BAGUA_STONE_QIAN = baguaStone("bagua_stone_qian", "乾 · 西北");

@@ -5,7 +5,16 @@
   },
   "components": [
     {
+      "item": "minecraft:gold_ingot"
+    },
+    {
       "item": "skydeitymysticpivot:vermilion_bird_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_shard"
+    },
+    {
+      "item": "minecraft:blaze_powder"
     },
     {
       "item": "minecraft:blaze_powder"
@@ -14,31 +23,22 @@
       "item": "skydeitymysticpivot:bagua_shard"
     },
     {
-      "item": "skydeitymysticpivot:vermilion_bird_shard"
-    },
-    {
-      "item": "minecraft:blaze_powder"
-    },
-    {
       "item": "minecraft:gold_ingot"
-    },
-    {
-      "item": "skydeitymysticpivot:vermilion_bird_shard"
-    },
-    {
-      "item": "minecraft:blaze_powder"
     },
     {
       "item": "skydeitymysticpivot:bagua_shard"
     },
     {
-      "item": "skydeitymysticpivot:vermilion_bird_shard"
+      "item": "minecraft:blaze_powder"
     },
     {
       "item": "minecraft:blaze_powder"
     },
     {
-      "item": "minecraft:gold_ingot"
+      "item": "skydeitymysticpivot:vermilion_bird_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:vermilion_bird_shard"
     }
   ],
   "instability": 3,

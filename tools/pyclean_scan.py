@@ -11,6 +11,7 @@
 """
 import ast
 import os
+import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -47,9 +48,15 @@ def names_used(tree):
 
 def main():
     total = 0
+    # 先看一遍全部脚本：共享模块（如 blueprint_map.py）里的函数是别的脚本在调，不算死代码
+    corpus = {}
     for path in targets():
         with open(path, encoding="utf-8") as handle:
-            src = handle.read()
+            corpus[path] = handle.read()
+    all_text = "\n".join(corpus.values())
+
+    for path in targets():
+        src = corpus[path]
         tree = ast.parse(src)
         used = names_used(tree)
         short = os.path.relpath(path, ROOT)
@@ -67,8 +74,12 @@ def main():
         unused_funcs = []
         for node in tree.body:
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                if node.name not in used and node.name != "main":
-                    unused_funcs.append("%s()  (line %d)" % (node.name, node.lineno))
+                if node.name in used or node.name == "main":
+                    continue
+                # 定义处自己占一次，别处再出现 name( 就是有人调
+                if len(re.findall(r"\b%s\s*\(" % re.escape(node.name), all_text)) > 1:
+                    continue
+                unused_funcs.append("%s()  (line %d)" % (node.name, node.lineno))
 
         # --- 模块级常量 ---
         unused_consts = []

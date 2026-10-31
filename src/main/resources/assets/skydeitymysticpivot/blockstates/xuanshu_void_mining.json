@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,formed=false": { "model": "skydeitymysticpivot:block/xuanshu_void_mining" },
+    "facing=north,formed=true": { "model": "skydeitymysticpivot:block/xuanshu_void_mining" },
+    "facing=east,formed=false": { "model": "skydeitymysticpivot:block/xuanshu_void_mining" },
+    "facing=east,formed=true": { "model": "skydeitymysticpivot:block/xuanshu_void_mining" },
+    "facing=south,formed=false": { "model": "skydeitymysticpivot:block/xuanshu_void_mining" },
+    "facing=south,formed=true": { "model": "skydeitymysticpivot:block/xuanshu_void_mining" },
+    "facing=west,formed=false": { "model": "skydeitymysticpivot:block/xuanshu_void_mining" },
+    "facing=west,formed=true": { "model": "skydeitymysticpivot:block/xuanshu_void_mining" }
+  }
+}

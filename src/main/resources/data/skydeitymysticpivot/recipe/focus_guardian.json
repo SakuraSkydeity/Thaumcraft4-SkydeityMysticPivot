@@ -5,52 +5,52 @@
   },
   "components": [
     {
-      "item": "thaumcraft:quicksilver"
-    },
-    {
-      "item": "thaumcraft:nitor"
-    },
-    {
-      "item": "thaumcraft:salis_mundus"
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
     },
     {
       "item": "thaumcraft:quicksilver"
     },
     {
-      "item": "thaumcraft:nitor"
+      "item": "thaumcraft:quicksilver"
     },
     {
-      "item": "thaumcraft:enchanted_fabric"
+      "item": "skydeitymysticpivot:xuanshu_nitor"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_nitor"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_cloth"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_cloth"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_nitor"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_nitor"
     },
     {
       "item": "thaumcraft:quicksilver"
     },
     {
-      "item": "thaumcraft:nitor"
-    },
-    {
-      "item": "thaumcraft:salis_mundus"
-    },
-    {
       "item": "thaumcraft:quicksilver"
-    },
-    {
-      "item": "thaumcraft:nitor"
-    },
-    {
-      "item": "thaumcraft:enchanted_fabric"
     }
   ],
   "instability": 6,
   "aspects": {
-    "skydeitymysticpivot:qian": 64,
-    "skydeitymysticpivot:dui": 64,
-    "skydeitymysticpivot:li": 64,
-    "skydeitymysticpivot:zhen": 64,
-    "skydeitymysticpivot:xun": 64,
-    "skydeitymysticpivot:kan": 64,
-    "skydeitymysticpivot:gen": 64,
-    "skydeitymysticpivot:kun": 64
+    "skydeitymysticpivot:qian": 32,
+    "skydeitymysticpivot:dui": 32,
+    "skydeitymysticpivot:li": 32,
+    "skydeitymysticpivot:zhen": 32,
+    "skydeitymysticpivot:xun": 32,
+    "skydeitymysticpivot:kan": 32,
+    "skydeitymysticpivot:gen": 32,
+    "skydeitymysticpivot:kun": 32
   },
   "result": {
     "id": "skydeitymysticpivot:focus_guardian"

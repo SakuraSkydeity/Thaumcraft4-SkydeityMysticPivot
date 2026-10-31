@@ -44,7 +44,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 /**
- * 三个自制法杖核心（仿本体「九狱」核心的注册方式，均为 {@link XuanshuFocusItem}）：
+ * 四个自制法杖核心（仿本体「九狱」核心的注册方式，均为 {@link XuanshuFocusItem}）：
  *
  * <h2>一、镇狱碎青峰（{@code focus_cosmos}）</h2>
  * <p>右键方块：消耗六基础元素各 <b>10</b> 点，把目标方块<b>直接变成掉落物</b>——
@@ -59,10 +59,18 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
  * <p>潜行右键记点、右键耗六基础元素各 <b>10</b> 点回到记下的那一点（行为在
  * {@link TeleportCore}）。</p>
  *
- * <p>三核心的价码都由数据包提供（{@code focus_catalog/*.json} 的 {@code base_cost}，
+ * <h2>四、烛龙衔时（{@code focus_chrono}）</h2>
+ * <p><b>Shift + 右键</b>指一台机器，耗六基础元素各 <b>25</b> 点，让它以 <b>16 倍速</b>运转
+ * <b>32 秒</b>；对同一台再按一次倍率翻倍（16→32→…→<b>1024</b> 封顶）并续满时长，
+ * 当前倍率以悬浮字显示在机器正上方（行为在 {@link TemporalCore}；
+ * 万器皆可催，含 Mekanism 机器）。<b>潜行</b>是关键：不潜行时那一趟算「开界面」，
+ * 烛龙直接 PASS；按着 Shift 才催（原版潜行会跳过方块自己的交互，useOn 照旧调用）。</p>
+ *
+ * <p>四核心的价码都由数据包提供（{@code focus_catalog/*.json} 的 {@code base_cost}，
  * 单位是**厘 Vis**，100 厘 = 1 Vis；六卦各 128 的合成见 recipe），动作在此注册。
- * 三条路都<b>必须显式调 {@code context.pay}</b> 才会真的扣魔。
- * 守护之心挂在玩家 {@link AttachmentType} 上，随存档持久化。</p>
+ * 四条路都<b>必须显式调 {@code context.pay}</b> 才会真的扣魔。
+ * 守护之心挂在玩家 {@link AttachmentType} 上，随存档持久化；
+ * 烛龙衔时的催动表在服务端 tick 里走，只活在内存中（重启即散）。</p>
  */
 @EventBusSubscriber(modid = MysticPivot.MODID)
 public final class ModFocuses {
@@ -76,6 +84,9 @@ public final class ModFocuses {
     /** 赤羽焚天瞬核心的行为 id（对应数据包档案 skydeitymysticpivot:teleport）。 */
     public static final FocusId TELEPORT_ID = FocusId.of(rl("teleport"));
 
+    /** 烛龙衔时核心的行为 id（对应数据包档案 skydeitymysticpivot:chrono）。 */
+    public static final FocusId CHRONO_ID = FocusId.of(rl("chrono"));
+
     /*
      * ★ 三核心的价码**只存在数据包里**（focus_catalog/*.json 的 base_cost，单位厘 Vis：
      *   档里 1000 = 10 整 Vis），`FocusUpgradeCatalog` 读进来时走 `VisCost.ofCentivis`。
@@ -83,7 +94,7 @@ public final class ModFocuses {
      *   第一百批「要素不足」提示统一成一句不带数字的短句后，那两个常量就彻底没人用了 ——
      *   已删（改价只改 json，别在两处对表）。
      *
-     * 现价（整 Vis / 每通道）：镇狱碎青峰 10、乾元罡气 200、赤羽焚天瞬 10。
+     * 现价（整 Vis / 每通道）：镇狱碎青峰 10、乾元罡气 200、赤羽焚天瞬 10、烛龙衔时 25。
      * 实际扣的还会乘杖帽耗魔系数（鎏金 0.6 / 八卦 0.8 / 朱雀 0.9 / 寰宇 0.1）：
      * `PaymentPlan.addDiscounted` 走 `WandVis.modifiedCost(..., CASTING)`，
      * 这是本体法核的一贯规矩，不是本 mod 另加的。
@@ -105,7 +116,7 @@ public final class ModFocuses {
     }
 
     /**
-     * mod 构造期注册三个核心的右键动作。
+     * mod 构造期注册四个核心的右键动作。
      *
      * <p>★ 第一百二十七批（本体 20744 focus 重构）：老的
      * {@code FocusActionSpec(id, target, Set<FocusActivation>, research, range, priority, FocusCastAnimation, audience)}
@@ -132,6 +143,12 @@ public final class ModFocuses {
                         FocusCastMode.INSTANT, ResearchRequirement.none(), 8, 0,
                         ActionPresentationAudience.CONFIRMED_ALL),
                 TeleportCore::cast);
+        // 烛龙衔时：只认方块目标（要指着机器催），射程与其余核心一致取 8
+        FocusActionApi.register(new FocusActionSpec(
+                        rl("focus/chrono"), new FocusActionTarget.Focus(CHRONO_ID),
+                        FocusInput.SECONDARY, Set.of(FocusTargetKind.BLOCK), FocusCastMode.INSTANT,
+                        ResearchRequirement.none(), 8, 0, ActionPresentationAudience.CONFIRMED_ALL),
+                TemporalCore::cast);
     }
 
     // ------------------------------------------------------------------

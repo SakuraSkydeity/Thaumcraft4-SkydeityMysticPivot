@@ -1,0 +1,93 @@
+{
+  "focus_profiles": [
+    {
+      "focus": "skydeitymysticpivot:chrono",
+      "color": 4884176,
+      "base_cost": {
+        "aer": 2500,
+        "terra": 2500,
+        "ignis": 2500,
+        "aqua": 2500,
+        "ordo": 2500,
+        "perditio": 2500
+      },
+      "ranks": [
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ],
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ],
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ],
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ],
+        [
+          "thaumcraft:frugal",
+          "thaumcraft:potency"
+        ]
+      ],
+      "parameters": {
+        "vis_discount": {
+          "base": 0,
+          "per_level": {},
+          "min": 0,
+          "max": 1
+        }
+      },
+      "client_presentation": {
+        "ornament_texture": "skydeitymysticpivot:textures/item/focus_chrono_orn.png"
+      },
+      "pipeline": {
+        "modules": [
+          "thaumcraft:focus_actions"
+        ],
+        "bindings": [
+          {
+            "id": "skydeitymysticpivot:core/predict",
+            "stage": "thaumcraft:cast/predict",
+            "handler": "thaumcraft:prediction_air_cost",
+            "priority": 0
+          },
+          {
+            "id": "skydeitymysticpivot:actions/cast",
+            "stage": "thaumcraft:cast/step",
+            "handler": "thaumcraft:focus_actions",
+            "priority": -100
+          },
+          {
+            "id": "skydeitymysticpivot:actions/block",
+            "stage": "thaumcraft:use/before_formation",
+            "handler": "thaumcraft:focus_actions",
+            "priority": -100
+          },
+          {
+            "id": "skydeitymysticpivot:actions/input",
+            "stage": "thaumcraft:client/input_after_block",
+            "handler": "thaumcraft:focus_actions",
+            "priority": -100
+          },
+          {
+            "id": "skydeitymysticpivot:cost/label",
+            "stage": "thaumcraft:focus/cost_label",
+            "handler": "thaumcraft:cost/per_cast",
+            "priority": 0
+          }
+        ],
+        "casts": {
+          "secondary": [
+            {
+              "mode": "instant"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

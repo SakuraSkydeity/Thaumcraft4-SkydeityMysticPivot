@@ -1,7 +1,7 @@
 {
   "type": "thaumcraft:infusion",
   "central": {
-    "item": "skydeitymysticpivot:bagua_shard"
+    "item": "minecraft:nether_star"
   },
   "components": [
     {

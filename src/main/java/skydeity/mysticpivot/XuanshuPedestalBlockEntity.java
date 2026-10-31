@@ -49,7 +49,7 @@ import java.util.Optional;
  * 那件石砖便化为该卦之石（与旧坩埚配方同价：一件石砖 + 本卦要素 8 份）。</p>
  *
  * <p>卦气呈现：台座上方悬着所在处的卦象单字（{@link XuanshuPedestalRenderer}），
- * 四隅各有一缕絮带搭上台座顶心，台口外圈盘着一道<b>金色丝带环</b>
+ * 底座四隅各有一缕絮带搭上台座顶心，台口外圈盘着一道<b>金色丝带环</b>
  * （同见渲染器）——立在哪里、凝的哪一卦，一眼可辨。</p>
  *
  * <p><b>客户端同步</b>（曾经漏掉、导致「放上去看不见、看着像拿不下来」）：台面上的物品由
@@ -210,10 +210,10 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
     private int progress;
 
     /**
-     * 台座是否已经「开坛」——四隅立齐四象石砖、以法杖点过之后为真。
+     * 台座是否已经「开坛」——脚下的 3×3 四象石砖底座齐备、以法杖点过之后为真。
      *
      * <p>未开坛的台座<b>不纳物</b>（见 {@code XuanshuPedestalBlock#useItemOn}），
-     * 所以这是决定「这座台座能不能用」的开关，也是四砖亮不亮的依据。
+     * 所以这是决定「这座台座能不能用」的开关，也是底座九砖亮不亮的依据。
      * 它<b>要存档、要下发</b>：客户端渲染器据此多画一圈粒子。</p>
      */
     private boolean active;
@@ -221,7 +221,7 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
     /**
      * 从罐子里吸纳进来、攒在台座里的要素——<b>只可能是本地卦气对应的那一支</b>。
      *
-     * <p>收坛（四砖缺一块、或拆台座）即散：吸纳是「坛」的能耐，坛散了气也就散了。
+     * <p>收坛（底座缺一块、或拆台座）即散：吸纳是「坛」的能耐，坛散了气也就散了。
      * 卦气变了（地形被改造、台座迁到别处）同样留不住，一并清空。</p>
      */
     private AspectId bufferedAspect;
@@ -249,14 +249,27 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
     /** 与 {@link #trailSources} 配对的要素色。 */
     private final List<Integer> trailColors = new ArrayList<>(MAX_TRAILS);
 
-    /** 自查周期（tick）：已开坛的台座每 20 tick 确认一次四砖还在不在。 */
+    /** 自查周期（tick）：已开坛的台座每 20 tick 确认一次底座九砖还在不在。 */
     private static final int AUDIT_INTERVAL = 20;
 
     /**
-     * 四隅相对台座的水平偏移——3×3 的<b>四个对角</b>（不含十字四邻）。
+     * 底座 3×3 相对台座的偏移——台座站在**中心砖**上，整层在**下一层**。
      *
-     * <p>「四象」镇四方四隅，取对角而非正前后左右：正十字的四格是台座的正面与通道，
-     * 摆在那里会挡住玩家走到座前。</p>
+     * <p>第二百零二批起开坛结构从「四角立砖」改成「3×3 砖底座 + 台座上置」：
+     * 九块砖全在台座下面一层，中心那块正顶着台座的柱础。四象镇四方四隅的
+     * 意象由 {@link #CORNERS}（底座的对角四块）继续承担——渲染器的四象絮带
+     * 仍然只连那四块。</p>
+     */
+    public static final int[][] BASE = {
+            {-1, -1}, {0, -1}, {1, -1},
+            {-1, 0}, {0, 0}, {1, 0},
+            {-1, 1}, {0, 1}, {1, 1},
+    };
+
+    /**
+     * 底座 3×3 的<b>四个对角</b>（不含十字四邻）——四象絮带连的就是这四块。
+     *
+     * <p>取对角而非正十字：正十字是台座的正面与通道，摆在那里会挡住玩家走到座前。</p>
      */
     public static final int[][] CORNERS = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
 
@@ -273,14 +286,14 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
     }
 
     /**
-     * 四隅是不是各立着一块四象石砖。
+     * 底座 3×3 是不是九块都立着四象石砖（都在台座<b>下一层</b>）。
      *
      * <p>只认<b>方块种类</b>、不看它此刻 {@code active} 是真是假——正在点亮的途中
      * 也会走到这里，若把状态也算进来就会自己把自己判死。</p>
      */
-    public static boolean cornersIntact(Level level, BlockPos pos) {
-        for (int[] corner : CORNERS) {
-            if (!level.getBlockState(pos.offset(corner[0], 0, corner[1]))
+    public static boolean baseIntact(Level level, BlockPos pos) {
+        for (int[] cell : BASE) {
+            if (!level.getBlockState(pos.offset(cell[0], -1, cell[1]))
                     .is(ModBlocks.SIXIANG_STONE_BRICK.get())) {
                 return false;
             }
@@ -289,24 +302,26 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
     }
 
     /**
-     * 把四砖一并点亮 / 灭掉，并顺手把「阶梯朝哪边升」写对（只有服务端会真的写方块）。
+     * 把底座九砖一并点亮 / 灭掉（只有服务端会真的写方块）。
      *
-     * <p>★ 朝向必须在这里写：模型是照 BlockState 选的，四块砖分散在四个对角上，
-     * 各自要「最高的一侧」正对台座才有「四条阶梯合围成一坛」的样子。朝向由
-     * {@link ModBlocks.SixiangStoneBrickBlock#cornerFacing} 从偏移量算出，
-     * 与 {@link #CORNERS} 一一对应。</p>
+     * <p>第二百零二批起激活态是旋转对称的鎏金楼台，不再需要写 {@code CORNER} 朝向——
+     * 只翻 {@code active} 一个状态。</p>
+     *
+     * <p><b>第二百一十一批加 {@code CENTER}</b>：整座 3×3 楼台是一件跨格的 obj，
+     * 只由<b>正中那一格</b>渲染（其余八格是空模型）。这里顺手把「我在正中」写进方块状态——
+     * 正中的判定就是 {@link #BASE} 的 {@code (0,0)} 那一格，不必另外算。</p>
      */
     private static void lightBricks(Level level, BlockPos pos, boolean lit) {
-        for (int[] corner : CORNERS) {
-            BlockPos p = pos.offset(corner[0], 0, corner[1]);
+        for (int[] cell : BASE) {
+            BlockPos p = pos.offset(cell[0], -1, cell[1]);
             BlockState state = level.getBlockState(p);
             if (!state.is(ModBlocks.SIXIANG_STONE_BRICK.get())) {
                 continue;
             }
+            boolean center = cell[0] == 0 && cell[1] == 0;
             BlockState want = state
                     .setValue(ModBlocks.SixiangStoneBrickBlock.ACTIVE, lit)
-                    .setValue(ModBlocks.SixiangStoneBrickBlock.CORNER,
-                            ModBlocks.SixiangStoneBrickBlock.cornerFacing(corner[0], corner[1]));
+                    .setValue(ModBlocks.SixiangStoneBrickBlock.CENTER, lit && center);
             if (want != state) {
                 level.setBlock(p, want, Block.UPDATE_ALL);
             }
@@ -314,19 +329,19 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
     }
 
     /**
-     * 开坛：四隅齐备则点亮四砖并把台座转为「已启」。
+     * 开坛：底座 3×3 齐备则点亮九砖并把台座转为「已启」。
      *
-     * @return 四隅不齐（或本来就已经开着）时给 {@code false}
+     * @return 底座不齐（或本来就已经开着）时给 {@code false}
      */
     public boolean tryActivate(Level level, BlockPos pos) {
-        if (level.isClientSide || !cornersIntact(level, pos)) {
+        if (level.isClientSide || !baseIntact(level, pos)) {
             return false;
         }
         setActive(level, pos, true);
         return true;
     }
 
-    /** 收坛：台座熄火、四砖暗回去（重复调用无副作用）。 */
+    /** 收坛：台座熄火、底座九砖暗回去（重复调用无副作用）。 */
     public void deactivate(Level level, BlockPos pos) {
         setActive(level, pos, false);
     }
@@ -334,7 +349,7 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
     /**
      * 置「已启 / 已熄」，一并处理存档、下发与四砖的明暗。
      *
-     * <p>★ 顺手把四砖也按同一状态写一遍：只改台座自己会让两边对不上
+     * <p>★ 顺手把底座九砖也按同一状态写一遍：只改台座自己会让两边对不上
      * （台座已熄、砖还亮着，玩家看着就像「明明亮着却说没启」）。</p>
      */
     public void setActive(Level level, BlockPos pos, boolean value) {
@@ -384,7 +399,7 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
     }
 
     /**
-     * 每 10 tick 推进一次卦象转化；另外每 20 tick 自查一次四砖还在不在。
+     * 每 10 tick 推进一次卦象转化；另外每 20 tick 自查一次底座九砖还在不在。
      *
      * <h2>★ 这一趟的次序</h2>
      * <ol>
@@ -425,11 +440,11 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
         }
 
         if (level.getGameTime() % AUDIT_INTERVAL == 0) {
-            if (be.active && !cornersIntact(level, pos)) {
-                // 四砖缺了一块：熄火（砖那边 onRemove 也会立刻招呼一次，这里是兜底）
+            if (be.active && !baseIntact(level, pos)) {
+                // 底座缺了一块：熄火（砖那边 onRemove 也会立刻招呼一次，这里是兜底）
                 be.setActive(level, pos, false);
             } else {
-                // 把四砖抹平成台座的样子——读档、区块先后加载、砖被替换过，
+                // 把底座九砖抹平成台座的样子——读档、区块先后加载、砖被替换过，
                 // 都可能让两边对不上，十拿九稳的做法是定期往回对齐一次。
                 lightBricks(level, pos, be.active);
             }
@@ -653,7 +668,7 @@ public class XuanshuPedestalBlockEntity extends BlockEntity {
             this.trailColors.add(colors[i]);
         }
         // ★ 不在这里写方块：loadAdditional 是在区块反序列化途中调的，
-        //   那会儿 setBlock 会把邻块更新插进一段还没搭好的区块里。四砖的对齐交给
+        //   那会儿 setBlock 会把邻块更新插进一段还没搭好的区块里。底座的对齐交给
         //   serverTick 的定期自查（最多 1 秒，肉眼无感）。
     }
 }

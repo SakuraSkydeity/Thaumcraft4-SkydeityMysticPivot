@@ -5,7 +5,19 @@
   },
   "components": [
     {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
       "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_shard"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
+    },
+    {
+      "item": "skydeitymysticpivot:xuanshu_ingot"
     },
     {
       "item": "skydeitymysticpivot:xuanshu_ingot"
@@ -14,37 +26,19 @@
       "item": "skydeitymysticpivot:xuanshu_shard"
     },
     {
-      "item": "skydeitymysticpivot:xuanshu_ingot"
-    },
-    {
       "item": "skydeitymysticpivot:xuanshu_shard"
-    },
-    {
-      "item": "skydeitymysticpivot:xuanshu_ingot"
-    },
-    {
-      "item": "skydeitymysticpivot:xuanshu_shard"
-    },
-    {
-      "item": "skydeitymysticpivot:xuanshu_ingot"
     }
   ],
   "instability": 6,
   "aspects": {
-    "terra": 64,
-    "ordo": 64,
-    "ignis": 48,
-    "aer": 48,
-    "aqua": 48,
-    "perditio": 48,
-    "skydeitymysticpivot:qian": 32,
-    "skydeitymysticpivot:dui": 32,
-    "skydeitymysticpivot:li": 32,
-    "skydeitymysticpivot:zhen": 32,
-    "skydeitymysticpivot:xun": 32,
-    "skydeitymysticpivot:kan": 32,
-    "skydeitymysticpivot:gen": 32,
-    "skydeitymysticpivot:kun": 32
+    "skydeitymysticpivot:qian": 12,
+    "skydeitymysticpivot:dui": 12,
+    "skydeitymysticpivot:li": 12,
+    "skydeitymysticpivot:zhen": 12,
+    "skydeitymysticpivot:xun": 12,
+    "skydeitymysticpivot:kan": 12,
+    "skydeitymysticpivot:gen": 12,
+    "skydeitymysticpivot:kun": 12
   },
   "result": {
     "id": "skydeitymysticpivot:xuanshu_pickaxe"

@@ -5,8 +5,8 @@ import com.google.common.collect.Multimap;
 import dev.tc4port.thaumcraft.api.aspect.VisAction;
 import dev.tc4port.thaumcraft.api.aspect.VisChannel;
 import dev.tc4port.thaumcraft.api.aspect.VisCost;
-import dev.tc4port.thaumcraft.api.item.AuraRevealingGear;
-import dev.tc4port.thaumcraft.api.item.GogglesOverlayGear;
+import dev.tc4port.thaumcraft.api.ability.PlayerAbility;
+import dev.tc4port.thaumcraft.api.item.PlayerAbilityGear;
 import dev.tc4port.thaumcraft.api.wand.WandApi;
 import dev.tc4port.thaumcraft.api.wand.WandView;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,8 +15,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
@@ -25,20 +27,18 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
  * <b>项链栏</b>（{@code ring} 栏位（第一百零二批由项链栏改为戒指栏））后，效果对齐本体的
  * <b>揭示之护目镜</b>——只是不需要占用头盔格。
  *
- * <h2>三段能力各自的落点</h2>
+ * <h2>五项能力各自的落点</h2>
  * <ul>
- *   <li><b>揭示灵气节点</b>：实现本体 API 的 {@link AuraRevealingGear}。
- *       本体 {@code AuraNodeRenderer} 每帧问的是
- *       {@code RevealingEquipment.hasAuraRevealer(player)}，而它遍历
- *       「四件盔甲 + 全部 Curios 饰品」后逐个问
- *       {@code EquipmentAbilities.revealsAura(stack, wearer)}——该方法的第一个
- *       分支就是 {@code stack.getItem() instanceof AuraRevealingGear}。
- *       所以只要本类实现这个接口，节点渲染就会像对待揭示之护目镜一样
- *       把周围的灵气节点画出来（{@code revealsThaumcraftAura} 恒真）。</li>
- *   <li><b>容器要素 HUD</b>：实现 {@link GogglesOverlayGear}，与揭示之护目镜
- *       完全一致——瞄准炼金炉 / 坩埚 / 要素罐时浮出要素标签。两个接口在
- *       本体里是分开的（注释原话：addon 可以只揭示灵气基础设施而不开机器 HUD，
- *       或反之），本物按「像揭示之护目镜一样」的口径<b>两个都开</b>。</li>
+ *   <li><b>揭示灵气节点 + 容器要素 HUD</b>：实现本体 API 的 {@link PlayerAbilityGear}，
+ *       在 {@link #grantsPlayerAbility} 里对 {@link PlayerAbility#AURA_REVEALING} 与
+ *       {@link PlayerAbility#GOGGLES_OVERLAY} 都返回 {@code true}（本物按「像揭示之护目镜
+ *       一样」的口径两项都开）。本体 {@code PlayerAbilitySources} 每 tick 扫
+ *       「四件盔甲 + 全部 Curios 饰品」，逐个问
+ *       {@code EquipmentAbilities.grantsPlayerAbility(stack, wearer, ability)}，命中就把
+ *       玩家的能力属性点亮；渲染端只读属性，不认物品 —— 所以戒指戴在 Curios 栏里也能生效。
+ *       <b>第二百零八批换本体 20753</b>：原来那两个接口
+ *       （{@code AuraRevealingGear} / {@code GogglesOverlayGear}）在 20753 的
+ *       revealing-abilities 重构里删了，统一成这一个 + 属性通道。</li>
  *   <li><b>护甲 +200%</b>（第八十三批，此前是护甲 +20 → 最大生命 +100%）：覆写
  *       {@link ICurioItem#getAttributeModifiers}，向
  *       {@link Attributes#ARMOR} 挂一枚 {@code ADD_MULTIPLIED_TOTAL} 的修正
@@ -57,6 +57,10 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
  *       {@code ItemizedCurioCapability#getAttributeModifiers}，它在本物品没挂
  *       {@code CurioAttributeModifiers} 数据组件时<b>回退</b>到这个接口方法，
  *       所以覆写它即可生效。</li>
+ *   <li><b>削峰</b>（第一百五十七批）：单次受伤不超过自身最大生命的
+ *       {@value #DAMAGE_CAP_RATIO} 倍。不写在这里 —— 需要拦「即将到来的伤害」，
+ *       落点是 {@link ModEvents#onLivingIncomingDamage}，本类只提供
+ *       {@link #isWornBy} 这个「戴没戴」的判定。</li>
  * </ul>
  *
  * <h2>为什么走项链栏</h2>
@@ -85,7 +89,7 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
  * 本mod又硬依赖 TC4，故运行时 Curios 必然在场；编译期依赖由
  * {@code deps/curios-neoforge-9.5.1+1.21.1.jar}（compileOnly）提供。
  */
-public class XuanshuVoidEyeItem extends Item implements ICurioItem, AuraRevealingGear, GogglesOverlayGear {
+public class XuanshuVoidEyeItem extends Item implements ICurioItem, PlayerAbilityGear {
 
     /** 护甲修正的稳定 id（同一件饰品在戒指栏里只可能有一份，用固定 id 即可）。 */
     public static final ResourceLocation ARMOR_MODIFIER_ID =
@@ -107,20 +111,40 @@ public class XuanshuVoidEyeItem extends Item implements ICurioItem, AuraRevealin
     /** 每一跳给每一条通道补多少：容量的 1%（不足 1 Vis 按 1 Vis 算）。 */
     private static final double RECHARGE_RATIO = 0.01;
 
+    /**
+     * 单次受伤的上限：穿戴者<b>一次最多吃下自身最大生命 10% 的伤害</b>（第一百五十七批新增）。
+     *
+     * <p>落点是 {@code LivingIncomingDamageEvent}（{@link ModEvents#onLivingIncomingDamage}），
+     * 在护甲、附魔、抗性之前就把数额压下去——所以它是一道「削峰」而不是「减伤」：
+     * 小刀小剑完全不受影响，一发 40 点的重击会被削到 6 点（60 血 × 10%）。</p>
+     */
+    public static final float DAMAGE_CAP_RATIO = 0.10F;
+
     public XuanshuVoidEyeItem(Item.Properties properties) {
         super(properties);
     }
 
-    /** 灵气揭示恒开：戴上就看得见灵气节点（与揭示之护目镜同效）。 */
-    @Override
-    public boolean revealsThaumcraftAura(ItemStack stack, net.minecraft.world.entity.player.Player wearer) {
-        return true;
+    /**
+     * 这名玩家此刻是否把这枚戒指戴在饰品栏里。
+     *
+     * <p>用 Curios 的 {@code isEquipped(Item)} 而不是自己翻背包：它只认<b>已装备</b>的槽位，
+     * 放背包里不算，与「戴着才有效」的口径一致。Curios 不在场时返回 {@code false}（不生效），
+     * 不会抛异常。</p>
+     */
+    public static boolean isWornBy(Player player) {
+        return CuriosApi.getCuriosInventory(player)
+                .map(handler -> handler.isEquipped(ModItems.XUANSHU_VOID_EYE.get()))
+                .orElse(false);
     }
 
-    /** 容器要素 HUD 恒开：瞄准机器 / 容器时浮出要素标签。 */
+    /**
+     * 两项能力恒开：戴上就看得见灵气节点、瞄准机器 / 容器时浮出要素标签
+     * （与揭示之护目镜同效）。本体 {@code PlayerAbilitySources} 每 tick 扫一遍
+     * 「四件盔甲 + 全部 Curios 饰品」，问到这里就由它把玩家的能力属性点亮。
+     */
     @Override
-    public boolean showsThaumcraftGogglesOverlay(ItemStack stack, net.minecraft.world.entity.player.Player wearer) {
-        return true;
+    public boolean grantsPlayerAbility(ItemStack stack, Player wearer, PlayerAbility ability) {
+        return ability == PlayerAbility.AURA_REVEALING || ability == PlayerAbility.GOGGLES_OVERLAY;
     }
 
     /**

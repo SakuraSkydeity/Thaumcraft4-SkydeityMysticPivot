@@ -1,0 +1,197 @@
+{
+  "skydeitymysticpivot:xuanshu_crucible": {
+    "trigram": "xun",
+    "mode": "count",
+    "min": 1,
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_alchemy_furnace": {
+    "trigram": "xun",
+    "mode": "count",
+    "min": 1,
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_infernal_furnace": {
+    "trigram": "xun",
+    "mode": "count",
+    "min": 1,
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_replicator": {
+    "trigram": "xun",
+    "mode": "count",
+    "min": 1,
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:bagua_pickaxe": {
+    "trigram": [
+      "qian",
+      "kan",
+      "dui"
+    ],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_pickaxe": {
+    "trigram": [
+      "qian",
+      "kan",
+      "dui"
+    ],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_hoe": {
+    "trigram": [
+      "qian",
+      "kan",
+      "dui"
+    ],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_charger": {
+    "mode": "all",
+    "min": 1,
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3,
+    "trigram": [
+      "xun",
+      "qian",
+      "kan"
+    ]
+  },
+  "skydeitymysticpivot:xuanshu_purifying_stone": {
+    "mode": "all",
+    "min": 1,
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3,
+    "trigram": [
+      "kun",
+      "zhen",
+      "gen"
+    ]
+  },
+  "skydeitymysticpivot:xuanshu_arcane_table": {
+    "trigram": [
+      "kan",
+      "xun",
+      "gen"
+    ],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_node_modifier": {
+    "trigram": [
+      "kan",
+      "xun",
+      "gen"
+    ],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:focus_guardian": {
+    "trigram": "gen",
+    "mode": "count",
+    "min": 1,
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:focus_teleport": {
+    "trigram": "gen",
+    "mode": "count",
+    "min": 1,
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:focus_cosmos": {
+    "trigram": "gen",
+    "mode": "count",
+    "min": 1,
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_spirit_core": {
+    "trigram": [
+      "kan",
+      "xun",
+      "gen"
+    ],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:focus_chrono": {
+    "trigram": [
+      "qian",
+      "dui",
+      "li",
+      "zhen",
+      "xun",
+      "kan",
+      "gen",
+      "kun"
+    ],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  },
+  "skydeitymysticpivot:xuanshu_void_eye": {
+    "trigram": [
+      "qian",
+      "dui",
+      "li",
+      "zhen",
+      "xun",
+      "kan",
+      "gen",
+      "kun"
+    ],
+    "mode": "all",
+    "radius": 2,
+    "height": 1,
+    "relief": 2,
+    "relief_max": 3
+  }
+}

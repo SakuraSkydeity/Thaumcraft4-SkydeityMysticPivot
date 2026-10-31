@@ -1,7 +1,7 @@
 {
   "type": "thaumcraft:crucible",
   "catalyst": {
-    "item": "skydeitymysticpivot:xuanshu_bagua_salt"
+    "item": "skydeitymysticpivot:sixiang_cloth"
   },
   "result": {
     "id": "skydeitymysticpivot:xuanshu_cloth"
